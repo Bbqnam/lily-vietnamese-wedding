@@ -80,15 +80,20 @@ const StorySection = () => {
           <div className="absolute bottom-8 left-1/2 top-8 hidden -translate-x-1/2 border-l border-dashed border-primary/25 md:block" />
           {milestones.map((milestone, index) => (
             <AnimatedSection key={milestone.title} delay={0.08 * index}>
-              <div className="relative grid gap-5 md:grid-cols-[1fr_72px_1fr] md:items-center md:gap-8">
+              <div className="relative grid gap-5 md:grid-cols-[1fr_72px_1fr] md:gap-8">
                 <div
-                  className={`${index % 2 === 0 ? "md:col-start-1 md:justify-self-end" : "md:col-start-3 md:justify-self-start"} md:w-full md:max-w-[520px]`}
+                  className="md:col-span-3"
                 >
                   <div className="mb-5 text-center md:mb-6">
                     <h3 className="font-serif text-3xl font-light leading-[1.05] text-foreground md:text-[2.15rem]">
                       {milestone.title}
                     </h3>
                   </div>
+                </div>
+
+                <div
+                  className={`${index % 2 === 0 ? "md:col-start-1 md:justify-self-end" : "md:col-start-3 md:justify-self-start"} md:w-full md:max-w-[520px]`}
+                >
                   <div
                     className={`overflow-hidden border border-border/80 bg-warm-white md:grid ${
                       index % 2 === 0 ? "md:grid-cols-[0.92fr_1.08fr]" : "md:grid-cols-[1.08fr_0.92fr]"
@@ -113,7 +118,7 @@ const StorySection = () => {
                   </div>
                 </div>
 
-                <div className="relative z-10 hidden justify-center md:flex">
+                <div className="relative z-10 hidden justify-center self-center md:flex">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full border border-primary/30 bg-background text-primary shadow-[0_10px_30px_rgba(168,116,79,0.08)]">
                     {index === milestones.length - 1 ? <Heart size={16} /> : <MapPin size={16} />}
                   </div>
