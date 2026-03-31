@@ -408,6 +408,9 @@ const WelcomeOverlay = ({ open, onComplete }: WelcomeOverlayProps) => {
                       style={{
                         x: rightHalfX,
                         clipPath: "polygon(6% 0, 100% 0, 100% 100%, 0 100%)",
+                        background: `linear-gradient(180deg, hsl(38 35% 92%) 0%, hsl(36 28% 87%) 100%)`,
+                        border: `1px solid hsl(36 20% 82%)`,
+                        boxShadow: "0 1px 3px rgba(60,40,15,0.06)",
                       }}
                       animate={
                         phase === "tearing"
@@ -416,11 +419,6 @@ const WelcomeOverlay = ({ open, onComplete }: WelcomeOverlayProps) => {
                       }
                       transition={{ duration: 0.4, ease: EASE }}
                       className="absolute right-0 top-0 h-full w-1/2 rounded-r-full"
-                      style={{
-                        background: `linear-gradient(180deg, hsl(38 35% 92%) 0%, hsl(36 28% 87%) 100%)`,
-                        border: `1px solid hsl(36 20% 82%)`,
-                        boxShadow: "0 1px 3px rgba(60,40,15,0.06)",
-                      }}
                     />
 
                     {/* DRAG HANDLE (wax-seal-like pill) */}
