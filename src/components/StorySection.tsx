@@ -76,27 +76,45 @@ const StorySection = () => {
           </div>
         </AnimatedSection>
 
-        <div className="relative space-y-10 md:space-y-12">
+        <div className="relative space-y-10 md:space-y-14">
           <div className="absolute bottom-8 left-1/2 top-8 hidden -translate-x-1/2 border-l border-dashed border-primary/25 md:block" />
           {milestones.map((milestone, index) => (
             <AnimatedSection key={milestone.title} delay={0.08 * index}>
-              <div className="relative flex flex-col items-center">
-                <div className="relative z-10 mb-5 flex justify-center md:mb-6">
+              <div className="relative grid gap-5 md:grid-cols-[minmax(0,1fr)_84px_minmax(0,1fr)] md:items-center md:gap-8">
+                <div className="relative z-10 mb-5 flex justify-center md:hidden">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full border border-primary/30 bg-background text-primary shadow-[0_10px_30px_rgba(168,116,79,0.08)]">
                     {index === milestones.length - 1 ? <Heart size={16} /> : <MapPin size={16} />}
                   </div>
                 </div>
 
-                <div className="mb-5 text-center md:mb-6">
-                  <h3 className="font-serif text-3xl font-light leading-[1.05] text-foreground md:text-[2.15rem]">
-                    {milestone.title}
-                  </h3>
-                </div>
+                <div
+                  className={`w-full ${
+                    index % 2 === 0
+                      ? "md:col-start-1 md:justify-self-end"
+                      : "md:col-start-3 md:justify-self-start"
+                  } md:max-w-[31rem]`}
+                >
+                  <div
+                    className={`mb-5 text-center md:mb-6 ${
+                      index % 2 === 0 ? "md:text-right" : "md:text-left"
+                    }`}
+                  >
+                    <h3 className="font-serif text-3xl font-light leading-[1.05] text-foreground md:text-[2.15rem]">
+                      {milestone.title}
+                    </h3>
+                  </div>
 
-                <div className="w-full max-w-5xl">
-                  <div className="overflow-hidden border border-border/80 bg-warm-white md:grid md:grid-cols-[0.95fr_1.05fr]">
+                  <div
+                    className={`overflow-hidden border border-border/80 bg-warm-white md:grid ${
+                      index % 2 === 0
+                        ? "md:grid-cols-[1.02fr_0.98fr]"
+                        : "md:grid-cols-[0.98fr_1.02fr]"
+                    }`}
+                  >
                     <div
-                      className="min-h-[220px] bg-cover bg-center md:min-h-[300px]"
+                      className={`min-h-[220px] bg-cover bg-center md:min-h-[280px] ${
+                        index % 2 === 1 ? "md:order-2" : ""
+                      }`}
                       style={{
                         backgroundImage: `linear-gradient(rgba(24, 18, 14, 0.08), rgba(24, 18, 14, 0.08)), url(${milestone.image})`,
                         backgroundPosition: milestone.imagePosition,
@@ -104,11 +122,25 @@ const StorySection = () => {
                       aria-label={milestone.alt}
                       role="img"
                     />
-                    <div className="flex flex-col justify-center p-6 text-center md:p-8">
-                      <p className="mx-auto max-w-xl font-sans text-sm leading-7 text-muted-foreground md:text-[0.98rem]">
+                    <div
+                      className={`flex flex-col justify-center p-6 text-center md:p-7 ${
+                        index % 2 === 0 ? "md:text-right" : "md:text-left"
+                      }`}
+                    >
+                      <p
+                        className={`mx-auto max-w-md font-sans text-sm leading-7 text-muted-foreground md:text-[0.95rem] ${
+                          index % 2 === 0 ? "md:ml-auto md:mr-0" : "md:mx-0"
+                        }`}
+                      >
                         {milestone.description}
                       </p>
                     </div>
+                  </div>
+                </div>
+
+                <div className="relative z-10 hidden justify-center self-center md:flex">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full border border-primary/30 bg-background text-primary shadow-[0_10px_30px_rgba(168,116,79,0.08)]">
+                    {index === milestones.length - 1 ? <Heart size={16} /> : <MapPin size={16} />}
                   </div>
                 </div>
 
