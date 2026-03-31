@@ -302,13 +302,10 @@ const WelcomeOverlay = ({ open, onComplete }: WelcomeOverlayProps) => {
 
                     {/* RIGHT half */}
                     <motion.div
-                      style={{ x: rightHalfX }}
+                      style={{ x: rightHalfX, clipPath: "polygon(4% 0, 100% 0, 100% 100%, 0 100%)" }}
                       animate={phase === "tearing" ? { x: 200, rotate: 4, opacity: 0 } : {}}
                       transition={{ duration: 0.45, ease: EASING as unknown as number[] }}
                       className="absolute right-0 top-0 h-full w-1/2 rounded-r-full border border-primary/15 bg-gradient-to-b from-card to-secondary"
-                      style={{
-                        clipPath: "polygon(4% 0, 100% 0, 100% 100%, 0 100%)",
-                      }}
                     />
 
                     {/* drag handle / seal */}
