@@ -16,8 +16,8 @@
     --popover: 40 33% 98%;
     --popover-foreground: 30 15% 18%;
 
-    /* Champagne gold accent */
-    --primary: 36 35% 62%;
+    /* Bronze brown primary */
+    --primary: 30 40% 42%;
     --primary-foreground: 40 33% 98%;
 
     /* Soft champagne */
@@ -26,28 +26,29 @@
 
     /* Warm stone muted */
     --muted: 30 12% 92%;
-    --muted-foreground: 30 10% 50%;
+    --muted-foreground: 30 10% 45%;
 
     /* Muted sage */
-    --accent: 140 12% 82%;
+    --accent: 140 10% 84%;
     --accent-foreground: 140 15% 25%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 40 33% 98%;
 
-    --border: 36 20% 88%;
-    --input: 36 20% 88%;
-    --ring: 36 35% 62%;
+    --border: 36 18% 88%;
+    --input: 36 18% 88%;
+    --ring: 30 40% 42%;
 
     --radius: 0.25rem;
 
     /* Custom wedding tokens */
-    --champagne: 36 40% 85%;
+    --champagne: 36 35% 85%;
     --ivory: 40 33% 97%;
-    --stone: 30 10% 55%;
-    --sage: 140 15% 75%;
-    --warm-white: 38 25% 95%;
+    --stone: 30 10% 50%;
+    --sage: 140 12% 78%;
+    --warm-white: 38 25% 96%;
     --deep-text: 30 15% 18%;
+    --bronze: 30 40% 42%;
 
     --font-serif: 'Cormorant Garamond', Georgia, serif;
     --font-sans: 'Josefin Sans', 'Helvetica Neue', sans-serif;

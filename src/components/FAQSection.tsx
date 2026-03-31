@@ -9,12 +9,8 @@ const faqs = [
     a: "Your invitation will specify the number of guests. If you'd like to bring someone not mentioned, please reach out to us directly.",
   },
   {
-    q: "Is there parking at the venue?",
-    a: "Yes, complimentary parking is available at Ana Mandara Villas. We'll also have shuttle service from nearby hotels.",
-  },
-  {
-    q: "What's the weather like in Đà Lạt in December?",
-    a: "Đà Lạt enjoys pleasant cool weather year-round. In December, expect temperatures between 15–22°C (59–72°F). We recommend bringing a light jacket for the evening.",
+    q: "What's the weather like in Vietnam in November?",
+    a: "November is a lovely time to visit. Expect pleasant temperatures around 20–28°C. In Huế, occasional light rain is possible — we recommend bringing a light layer.",
   },
   {
     q: "Will there be vegetarian/vegan options?",
@@ -25,12 +21,8 @@ const faqs = [
     a: "It depends on your nationality. Many countries qualify for e-visa or visa-on-arrival. We recommend checking Vietnam's official immigration portal well in advance.",
   },
   {
-    q: "Are children welcome?",
-    a: "While we love your little ones, we've planned this as an adults-only celebration. We appreciate your understanding.",
-  },
-  {
     q: "What gift should I bring?",
-    a: "Your presence is the greatest gift! If you'd like to give something, we have a small registry linked below, or a monetary gift in a red envelope is a beautiful Vietnamese tradition.",
+    a: "Your presence is the greatest gift! If you'd like to give something, a monetary gift in a red envelope is a beautiful Vietnamese tradition.",
   },
 ];
 
@@ -38,7 +30,7 @@ const FAQSection = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section className="py-24 md:py-32 bg-background">
+    <section id="faq" className="py-28 md:py-36 bg-background">
       <div className="container mx-auto px-6 max-w-3xl">
         <AnimatedSection>
           <div className="text-center mb-16">

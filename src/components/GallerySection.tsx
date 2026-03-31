@@ -1,7 +1,6 @@
 import AnimatedSection from "./AnimatedSection";
 import FloralDivider from "./FloralDivider";
 
-// Placeholder gallery — user can replace with real photos
 const galleryImages = [
   { aspect: "aspect-[3/4]", alt: "Couple portrait" },
   { aspect: "aspect-square", alt: "Engagement ring" },
@@ -13,7 +12,7 @@ const galleryImages = [
 
 const GallerySection = () => {
   return (
-    <section id="gallery" className="py-24 md:py-32 bg-warm-white">
+    <section id="gallery" className="py-28 md:py-36 bg-warm-white">
       <div className="container mx-auto px-6 max-w-5xl">
         <AnimatedSection>
           <div className="text-center mb-16">
@@ -29,9 +28,7 @@ const GallerySection = () => {
         <div className="columns-2 md:columns-3 gap-4 space-y-4">
           {galleryImages.map((img, i) => (
             <AnimatedSection key={i} delay={0.1 * i}>
-              <div
-                className={`${img.aspect} bg-champagne overflow-hidden break-inside-avoid`}
-              >
+              <div className={`${img.aspect} bg-champagne overflow-hidden break-inside-avoid`}>
                 <div className="w-full h-full flex items-center justify-center">
                   <p className="text-xs tracking-[0.2em] uppercase text-stone font-sans">
                     {img.alt}
@@ -42,7 +39,7 @@ const GallerySection = () => {
           ))}
         </div>
 
-        <FloralDivider className="mt-12" />
+        <FloralDivider className="mt-14" />
       </div>
     </section>
   );
