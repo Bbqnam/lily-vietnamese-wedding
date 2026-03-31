@@ -10,29 +10,59 @@ type WelcomeOverlayProps = {
 };
 
 /* ── Geometry ── */
-const ENV_W = 400;
-const ENV_H = 280;
-const FLAP_H = 160;
-const TEAR_H = 24;
+const ENV_W = 420;
+const ENV_H = 260;
+const FLAP_H = 150;
+const TEAR_H = 26;
 const TEAR_THRESHOLD = 70;
 const EASE = [0.22, 1, 0.36, 1] as unknown as number[];
 
-/* ── Paper colours ── */
-const PAPER_LIGHT = "hsl(36 32% 90%)";
-const PAPER_MID = "hsl(36 28% 84%)";
-const PAPER_DARK = "hsl(36 24% 78%)";
-const PAPER_INNER = "hsl(36 20% 82%)";
-const BORDER = "hsl(36 18% 76%)";
+/* Wax seal SVG component */
+const WaxSeal = () => (
+  <svg viewBox="0 0 64 64" className="h-10 w-10 drop-shadow-[0_3px_8px_rgba(80,20,20,.28)]">
+    <defs>
+      <radialGradient id="wax" cx="35%" cy="30%">
+        <stop offset="0%" stopColor="#b94a4a" />
+        <stop offset="55%" stopColor="#8e2f36" />
+        <stop offset="100%" stopColor="#642028" />
+      </radialGradient>
+    </defs>
+    <path
+      d="M32 6l7 3 8-1 4 7 7 4-1 8 3 7-5 6-1 8-8 2-5 6-8-2-8 2-5-6-8-2-1-8-5-6 3-7-1-8 7-4 4-7 8 1z"
+      fill="url(#wax)"
+    />
+    {/* Decorative leaf / lily motif */}
+    <path
+      d="M22 36c7-2 12-8 13-14 3 8 8 12 13 14-9 1-17 1-26 0z"
+      fill="#f6e7cf"
+      opacity=".85"
+    />
+    {/* N & L initials */}
+    <text
+      x="32"
+      y="38"
+      textAnchor="middle"
+      fontSize="9"
+      fontFamily="serif"
+      fill="#f6e7cf"
+      opacity=".95"
+      letterSpacing="1"
+    >
+      N L
+    </text>
+  </svg>
+);
 
 const WelcomeOverlay = ({ open, onComplete }: WelcomeOverlayProps) => {
   const [phase, setPhase] = useState<Phase>("sealed");
   const timers = useRef<number[]>([]);
+  const envelopeRef = useRef<HTMLDivElement>(null);
 
   const dragX = useMotionValue(0);
   const isDragging = useRef(false);
   const dragStartSide = useRef<"left" | "right" | null>(null);
 
-  /* ── derived transforms for tear halves ── */
+  /* derived transforms for tear halves */
   const leftHalfX = useTransform(dragX, (v) => {
     if (!isDragging.current) return 0;
     return dragStartSide.current === "right"
@@ -45,39 +75,33 @@ const WelcomeOverlay = ({ open, onComplete }: WelcomeOverlayProps) => {
       ? Math.max(0, v)
       : Math.max(0, Math.abs(v));
   });
-
-  /* progressive tear gap — makes the two halves separate visually */
-  const tearGap = useTransform(dragX, (v) => Math.abs(v));
   const tearCenterOpacity = useTransform(
-    tearGap,
-    [0, TEAR_THRESHOLD * 0.4, TEAR_THRESHOLD],
-    [1, 0.6, 0]
+    dragX,
+    (v) => {
+      const abs = Math.abs(v);
+      return Math.max(0, 1 - abs / (TEAR_THRESHOLD * 0.6));
+    }
   );
 
-  /* ── lifecycle ── */
+  /* lifecycle */
   useEffect(() => {
     if (open) setPhase("sealed");
   }, [open]);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
+    return () => { document.body.style.overflow = ""; };
   }, [open]);
 
-  useEffect(
-    () => () => {
-      timers.current.forEach(clearTimeout);
-    },
-    []
-  );
+  useEffect(() => () => {
+    timers.current.forEach(clearTimeout);
+  }, []);
 
   const schedule = useCallback((fn: () => void, ms: number) => {
     timers.current.push(window.setTimeout(fn, ms));
   }, []);
 
-  /* ── tear interaction ── */
+  /* tear interaction */
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if (phase !== "sealed") return;
     const rect = e.currentTarget.getBoundingClientRect();
@@ -100,8 +124,8 @@ const WelcomeOverlay = ({ open, onComplete }: WelcomeOverlayProps) => {
     setPhase("tearing");
     schedule(() => setPhase("torn"), 450);
     schedule(() => setPhase("flap-opening"), 650);
-    schedule(() => setPhase("letter-rising"), 1400);
-    schedule(() => setPhase("revealed"), 2400);
+    schedule(() => setPhase("letter-rising"), 1500);
+    schedule(() => setPhase("revealed"), 2500);
   };
 
   const handleEnter = () => {
@@ -118,8 +142,8 @@ const WelcomeOverlay = ({ open, onComplete }: WelcomeOverlayProps) => {
     return order.indexOf(phase) >= order.indexOf(target);
   };
 
-  /* ── Total container height: flap sits above body, plus room for letter to rise ── */
-  const TOTAL_H = FLAP_H + ENV_H + 80;
+  const isLetterOut = past("letter-rising");
+  const isRevealed = past("revealed");
 
   return (
     <AnimatePresence>
@@ -137,230 +161,144 @@ const WelcomeOverlay = ({ open, onComplete }: WelcomeOverlayProps) => {
           aria-modal="true"
           aria-label="Wedding invitation"
         >
+          {/* ── ENVELOPE WRAPPER (shrinks/blurs when letter comes out) ── */}
           <motion.div
-            initial={{ opacity: 0, y: 24, scale: 0.96 }}
+            ref={envelopeRef}
+            initial={{ opacity: 0, y: 20, scale: 0.96 }}
             animate={
               phase === "closing"
-                ? { opacity: 0, y: -40, scale: 1.04 }
-                : { opacity: 1, y: 0, scale: 1 }
+                ? { opacity: 0, scale: 0.92, y: 40 }
+                : isLetterOut
+                  ? { opacity: 1, scale: 0.85, y: 80, filter: "blur(3px)" }
+                  : { opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }
             }
-            transition={{ duration: 0.6, ease: EASE }}
-            className="relative flex flex-col items-center"
+            transition={{ duration: 0.9, ease: EASE }}
+            className="absolute flex flex-col items-center"
           >
-            {/* ── Hint ── */}
+            {/* Hint text */}
             <motion.p
               animate={past("torn") ? { opacity: 0, y: -8 } : { opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
               className="mb-5 select-none font-sans text-[10px] uppercase tracking-[0.4em]"
               style={{ color: "hsl(36 20% 55%)" }}
             >
-              {phase === "sealed" ? "← Drag to tear open →" : "Opening…"}
+              {phase === "sealed" ? "← Drag the seal to tear open →" : "Opening…"}
             </motion.p>
 
             {/* ═══════════════════════════════════
-                ENVELOPE CONTAINER
+                ENVELOPE
                ═══════════════════════════════════ */}
             <div
-              className="relative mx-auto"
+              className="relative mx-auto overflow-visible"
               style={{
                 width: `min(${ENV_W}px, 90vw)`,
-                height: TOTAL_H,
+                height: FLAP_H + ENV_H,
                 perspective: "900px",
               }}
             >
-              {/* ── 1. ENVELOPE BODY (back panel) ── */}
+              {/* 1. BACK PANEL — the envelope body */}
               <div
-                className="absolute left-0 right-0"
+                className="absolute inset-x-0 rounded-[4px_4px_18px_18px]"
                 style={{
                   top: FLAP_H,
                   height: ENV_H,
-                  background: `linear-gradient(175deg, ${PAPER_MID} 0%, ${PAPER_DARK} 100%)`,
-                  borderRadius: "0 0 6px 6px",
-                  border: `1px solid ${BORDER}`,
-                  borderTop: "none",
-                  boxShadow:
-                    "0 16px 48px rgba(60,40,15,0.15), 0 4px 12px rgba(60,40,15,0.08)",
+                  background: "#efe6d6",
+                  boxShadow: "0 24px 60px rgba(0,0,0,0.16), 0 4px 12px rgba(0,0,0,0.06)",
                 }}
               />
 
-              {/* ── 2. INNER DIAMOND (the four triangular folds visible from the back) ── */}
-              {/* Left inner fold */}
+              {/* 2. LEFT INNER FOLD */}
               <div
-                className="absolute"
+                className="absolute left-0"
                 style={{
                   top: FLAP_H,
-                  left: 0,
                   width: "50%",
                   height: ENV_H,
-                  background: `linear-gradient(135deg, ${PAPER_INNER} 0%, ${PAPER_MID} 100%)`,
+                  background: "linear-gradient(135deg, #eadfce 0%, #e2d5c2 100%)",
                   clipPath: "polygon(0 0, 100% 50%, 0 100%)",
                   zIndex: 1,
                 }}
               />
-              {/* Right inner fold */}
+
+              {/* 3. RIGHT INNER FOLD */}
               <div
-                className="absolute"
+                className="absolute right-0"
                 style={{
                   top: FLAP_H,
-                  right: 0,
                   width: "50%",
                   height: ENV_H,
-                  background: `linear-gradient(-135deg, ${PAPER_INNER} 0%, ${PAPER_MID} 100%)`,
+                  background: "linear-gradient(-135deg, #e3d7c4 0%, #ddd0bc 100%)",
                   clipPath: "polygon(100% 0, 0 50%, 100% 100%)",
                   zIndex: 1,
                 }}
               />
-              {/* Bottom inner fold */}
+
+              {/* 4. BOTTOM POCKET FOLD (covers letter, highest z among folds) */}
               <div
-                className="absolute"
+                className="absolute inset-x-[8px]"
                 style={{
                   top: FLAP_H,
-                  left: 0,
-                  right: 0,
                   height: ENV_H,
-                  background: `linear-gradient(0deg, ${PAPER_MID} 0%, ${PAPER_LIGHT} 60%)`,
-                  clipPath: "polygon(0 100%, 50% 35%, 100% 100%)",
-                  zIndex: 2,
+                  background: "linear-gradient(0deg, #efe6d6 0%, #e7dcc9 60%, #dfd4c3 100%)",
+                  clipPath: "polygon(0 100%, 50% 32%, 100% 100%)",
+                  zIndex: 5,
+                  borderRadius: "0 0 16px 16px",
                 }}
               />
 
-              {/* ── 3. LETTER (hidden inside, rises after opening) ── */}
-              <motion.div
-                initial={{ y: 0, scale: 1 }}
-                animate={
-                  past("letter-rising")
-                    ? { y: -(ENV_H * 0.95), scale: 1.03 }
-                    : { y: 0, scale: 1 }
-                }
-                transition={{ duration: 1.1, ease: EASE }}
-                className="absolute"
-                style={{
-                  top: FLAP_H + 16,
-                  left: "10%",
-                  right: "10%",
-                  height: ENV_H - 32,
-                  zIndex: past("letter-rising") ? 35 : 3,
-                  borderRadius: "8px",
-                  background: "hsl(40 40% 98%)",
-                  border: "1px solid hsl(36 25% 90%)",
-                  /* letter is clipped inside the envelope body until flap opens */
-                  clipPath: past("flap-opening")
-                    ? "none"
-                    : `inset(0 0 0 0 round 8px)`,
-                  overflow: "hidden",
-                  boxShadow: past("revealed")
-                    ? "0 24px 80px rgba(60,40,15,0.22), 0 0 0 1px hsl(36 20% 92%), 0 0 60px rgba(180,150,100,0.08)"
-                    : "0 2px 8px rgba(60,40,15,0.06)",
-                }}
-              >
-                <motion.div
-                  animate={past("revealed") ? { opacity: 1 } : { opacity: 0 }}
-                  transition={{ duration: 0.6, delay: 0.4 }}
-                  className="flex h-full flex-col items-center justify-center px-6 py-5"
-                >
-                  <div className="mb-3">
-                    <WeddingLogo size="small" showText={false} />
-                  </div>
-                  <p
-                    className="mb-2 font-sans text-[9px] uppercase tracking-[0.35em]"
-                    style={{ color: "hsl(36 30% 55%)" }}
-                  >
-                    You Are Invited
-                  </p>
-                  <h2
-                    className="font-serif text-3xl font-light leading-none md:text-5xl"
-                    style={{ color: "hsl(36 25% 25%)" }}
-                  >
-                    Nam &amp; Linh
-                  </h2>
-                  <p
-                    className="mx-auto mt-3 max-w-[240px] font-sans text-xs leading-relaxed md:text-sm"
-                    style={{ color: "hsl(36 15% 45%)" }}
-                  >
-                    Join us in Vietnam as we celebrate our wedding with the people we love most.
-                  </p>
-                  <p
-                    className="mt-3 font-sans text-[9px] uppercase tracking-[0.28em]"
-                    style={{ color: "hsl(36 25% 60%)" }}
-                  >
-                    November 2026
-                  </p>
-                </motion.div>
-              </motion.div>
-
-              {/* ── 4. FRONT POCKET (the bottom-up triangle that covers the letter) ── */}
-              <div
-                className="absolute left-0 right-0"
-                style={{
-                  top: FLAP_H,
-                  height: ENV_H,
-                  zIndex: 6,
-                  background: `linear-gradient(0deg, ${PAPER_LIGHT} 0%, ${PAPER_MID} 100%)`,
-                  clipPath: "polygon(0 100%, 50% 28%, 100% 100%)",
-                  borderRadius: "0 0 6px 6px",
-                  boxShadow: "inset 0 -2px 12px rgba(60,40,15,0.04)",
-                }}
-              >
-                {/* subtle fold line */}
+              {/* 5. LETTER CARD (hidden inside envelope, stays here until phase) */}
+              {!isLetterOut && (
                 <div
-                  className="absolute left-1/2 -translate-x-1/2"
+                  className="absolute overflow-hidden rounded-lg"
                   style={{
-                    bottom: "15%",
-                    width: "1px",
-                    height: "20%",
-                    background: "hsl(36 20% 80%)",
-                    opacity: 0.4,
+                    top: FLAP_H + 14,
+                    left: "12%",
+                    right: "12%",
+                    height: ENV_H - 28,
+                    zIndex: 3,
+                    background: "#fbf7f0",
+                    border: "1px solid hsl(36 25% 90%)",
                   }}
                 />
-              </div>
+              )}
 
-              {/* ── 5. TOP FLAP (triangular, folds open via rotateX) ── */}
+              {/* 6. TOP FLAP (triangular, rotates open) */}
               <motion.div
                 animate={
                   past("flap-opening")
-                    ? { rotateX: -180, opacity: 0.5 }
+                    ? { rotateX: -180, opacity: 0.4 }
                     : { rotateX: 0, opacity: 1 }
                 }
                 transition={{ duration: 0.9, ease: EASE }}
-                className="absolute left-0 right-0"
+                className="absolute inset-x-0"
                 style={{
                   top: 0,
                   height: FLAP_H,
-                  zIndex: past("flap-opening") ? 0 : 12,
+                  zIndex: past("flap-opening") ? 0 : 10,
                   transformOrigin: `center ${FLAP_H}px`,
                   transformStyle: "preserve-3d",
                   clipPath: "polygon(0 0, 100% 0, 50% 100%)",
-                  background: `linear-gradient(180deg, ${PAPER_LIGHT} 0%, ${PAPER_MID} 70%, ${PAPER_DARK} 100%)`,
-                  borderLeft: `1px solid ${BORDER}`,
-                  borderRight: `1px solid ${BORDER}`,
-                  borderTop: `1px solid ${BORDER}`,
+                  background: "linear-gradient(180deg, #f4ecdf 0%, #e7dcc9 70%, #ddd0bc 100%)",
+                  borderLeft: "1px solid #d5c9b6",
+                  borderRight: "1px solid #d5c9b6",
+                  borderTop: "1px solid #d5c9b6",
                 }}
-              >
-                {/* fold shadow line at flap base */}
-                <div
-                  className="absolute bottom-0 left-[15%] right-[15%]"
-                  style={{
-                    height: "2px",
-                    background: "linear-gradient(90deg, transparent, hsl(36 20% 72%), transparent)",
-                    opacity: 0.5,
-                  }}
-                />
-              </motion.div>
+              />
 
-              {/* ── 6. TEAR STRIP (sits at flap base, user drags to tear) ── */}
+              {/* 7. TEAR STRIP */}
               <AnimatePresence>
                 {!past("torn") && (
                   <motion.div
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.25 }}
-                    className="absolute left-0 right-0"
+                    className="absolute inset-x-0"
                     style={{
                       top: FLAP_H - TEAR_H / 2,
                       height: TEAR_H,
                       zIndex: 15,
                     }}
                   >
-                    {/* Centre strip (fades as user drags) */}
+                    {/* Centre strip background (fades during drag) */}
                     <motion.div
                       style={{ opacity: tearCenterOpacity }}
                       className="absolute inset-0"
@@ -368,60 +306,50 @@ const WelcomeOverlay = ({ open, onComplete }: WelcomeOverlayProps) => {
                       <div
                         className="absolute inset-0 rounded-full"
                         style={{
-                          background: `linear-gradient(180deg, hsl(38 35% 92%) 0%, hsl(36 28% 87%) 100%)`,
-                          border: `1px solid hsl(36 20% 82%)`,
+                          background: "linear-gradient(180deg, #f0e8da 0%, #e4d9c8 100%)",
+                          border: "1px solid #d5c9b6",
                           boxShadow: "0 1px 4px rgba(60,40,15,0.08)",
                         }}
                       />
-                      {/* dashed perforation line */}
+                      {/* perforation */}
                       <div className="absolute inset-y-0 left-6 right-6 flex items-center">
                         <div
                           className="h-px w-full"
                           style={{
                             backgroundImage:
-                              "repeating-linear-gradient(90deg, hsl(36 20% 72%) 0px, hsl(36 20% 72%) 4px, transparent 4px, transparent 8px)",
+                              "repeating-linear-gradient(90deg, #c4b8a4 0px, #c4b8a4 4px, transparent 4px, transparent 9px)",
                           }}
                         />
                       </div>
                     </motion.div>
 
-                    {/* LEFT HALF — peels left */}
+                    {/* LEFT HALF */}
                     <motion.div
                       style={{
                         x: leftHalfX,
                         clipPath: "polygon(0 0, 100% 0, 94% 100%, 0 100%)",
-                        background: `linear-gradient(180deg, hsl(38 35% 92%) 0%, hsl(36 28% 87%) 100%)`,
-                        border: `1px solid hsl(36 20% 82%)`,
-                        boxShadow: "0 1px 3px rgba(60,40,15,0.06)",
+                        background: "linear-gradient(180deg, #f0e8da 0%, #e4d9c8 100%)",
+                        border: "1px solid #d5c9b6",
                       }}
-                      animate={
-                        phase === "tearing"
-                          ? { x: -220, rotate: -6, opacity: 0 }
-                          : {}
-                      }
+                      animate={phase === "tearing" ? { x: -240, rotate: -6, opacity: 0 } : {}}
                       transition={{ duration: 0.4, ease: EASE }}
                       className="absolute left-0 top-0 h-full w-1/2 rounded-l-full"
                     />
 
-                    {/* RIGHT HALF — peels right */}
+                    {/* RIGHT HALF */}
                     <motion.div
                       style={{
                         x: rightHalfX,
                         clipPath: "polygon(6% 0, 100% 0, 100% 100%, 0 100%)",
-                        background: `linear-gradient(180deg, hsl(38 35% 92%) 0%, hsl(36 28% 87%) 100%)`,
-                        border: `1px solid hsl(36 20% 82%)`,
-                        boxShadow: "0 1px 3px rgba(60,40,15,0.06)",
+                        background: "linear-gradient(180deg, #f0e8da 0%, #e4d9c8 100%)",
+                        border: "1px solid #d5c9b6",
                       }}
-                      animate={
-                        phase === "tearing"
-                          ? { x: 220, rotate: 6, opacity: 0 }
-                          : {}
-                      }
+                      animate={phase === "tearing" ? { x: 240, rotate: 6, opacity: 0 } : {}}
                       transition={{ duration: 0.4, ease: EASE }}
                       className="absolute right-0 top-0 h-full w-1/2 rounded-r-full"
                     />
 
-                    {/* DRAG HANDLE (wax-seal-like pill) */}
+                    {/* WAX SEAL DRAG HANDLE */}
                     <motion.div
                       drag="x"
                       dragConstraints={{ left: -180, right: 180 }}
@@ -431,65 +359,95 @@ const WelcomeOverlay = ({ open, onComplete }: WelcomeOverlayProps) => {
                       onDragEnd={handleDragEnd}
                       className="absolute left-1/2 top-1/2 z-[16] -translate-x-1/2 -translate-y-1/2 cursor-grab active:cursor-grabbing"
                     >
-                      <div
-                        className="rounded-full px-5 py-1.5"
-                        style={{
-                          background: "linear-gradient(180deg, hsl(30 40% 50%) 0%, hsl(28 35% 40%) 100%)",
-                          border: "1px solid hsl(28 30% 35%)",
-                          boxShadow:
-                            "0 2px 8px rgba(60,40,15,0.25), inset 0 1px 0 rgba(255,255,255,0.15)",
-                        }}
-                      >
-                        <span className="pointer-events-none select-none font-sans text-[8px] uppercase tracking-[0.35em] text-white/90">
-                          Tear to Open
-                        </span>
-                      </div>
+                      <WaxSeal />
                     </motion.div>
                   </motion.div>
                 )}
               </AnimatePresence>
-
-              {/* ── 7. ENVELOPE BLUR (softens envelope after letter rises) ── */}
-              <motion.div
-                animate={past("revealed") ? { opacity: 0.6 } : { opacity: 0 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
-                className="absolute left-0 right-0 backdrop-blur-[3px]"
-                style={{
-                  top: FLAP_H,
-                  height: ENV_H,
-                  zIndex: 25,
-                  pointerEvents: "none",
-                  background: "hsla(36, 30%, 92%, 0.35)",
-                  borderRadius: "0 0 6px 6px",
-                }}
-              />
             </div>
+          </motion.div>
 
-            {/* ── Enter button ── */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={
-                phase === "revealed"
-                  ? { opacity: 1, y: 0 }
-                  : { opacity: 0, y: 16 }
-              }
-              transition={{ duration: 0.5, ease: "easeOut", delay: 0.6 }}
-              className="mt-8"
+          {/* ══════════════════════════════════════════════
+              INVITATION LETTER — fixed centered on screen
+             ══════════════════════════════════════════════ */}
+          <motion.div
+            initial={{ opacity: 0, y: "18%", scale: 0.92 }}
+            animate={
+              phase === "closing"
+                ? { opacity: 0, y: "-8%", scale: 1.05 }
+                : isLetterOut
+                  ? { opacity: 1, y: "-4%", scale: 1 }
+                  : { opacity: 0, y: "18%", scale: 0.92 }
+            }
+            transition={{ duration: 1.0, ease: EASE }}
+            className="fixed left-1/2 top-1/2 z-[95] flex -translate-x-1/2 -translate-y-1/2 flex-col items-center"
+            style={{ pointerEvents: isRevealed ? "auto" : "none" }}
+          >
+            <div
+              className="w-[min(520px,88vw)] rounded-[20px] px-8 py-10 text-center md:px-12 md:py-14"
+              style={{
+                background: "#fbf7f0",
+                border: "1px solid hsl(36 25% 90%)",
+                boxShadow:
+                  "0 40px 100px rgba(0,0,0,0.18), 0 0 0 1px hsl(36 20% 92%), 0 0 80px rgba(180,150,100,0.06)",
+              }}
             >
-              <button
-                type="button"
-                onClick={handleEnter}
-                className="inline-flex items-center rounded-full px-10 py-3 font-sans text-[10px] uppercase tracking-[0.32em] transition-all duration-300 hover:shadow-lg"
-                style={{
-                  background: "linear-gradient(180deg, hsl(30 35% 48%) 0%, hsl(28 32% 38%) 100%)",
-                  color: "hsl(40 40% 96%)",
-                  border: "1px solid hsl(28 28% 35%)",
-                  boxShadow: "0 4px 16px rgba(60,40,15,0.2)",
-                }}
+              <motion.div
+                animate={isRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="flex flex-col items-center"
               >
-                Enter Wedding Site
-              </button>
-            </motion.div>
+                <div className="mb-4">
+                  <WeddingLogo size="small" showText={false} />
+                </div>
+                <p
+                  className="mb-3 font-sans text-[9px] uppercase tracking-[0.35em]"
+                  style={{ color: "hsl(36 30% 55%)" }}
+                >
+                  You Are Invited
+                </p>
+                <h2
+                  className="font-serif text-4xl font-light leading-none md:text-6xl"
+                  style={{ color: "hsl(36 25% 25%)" }}
+                >
+                  Nam &amp; Linh
+                </h2>
+                <p
+                  className="mx-auto mt-4 max-w-[280px] font-sans text-sm leading-relaxed md:text-base"
+                  style={{ color: "hsl(36 15% 45%)" }}
+                >
+                  Join us in Vietnam as we celebrate our wedding with the people we love most.
+                </p>
+                <p
+                  className="mt-4 font-sans text-[10px] uppercase tracking-[0.28em]"
+                  style={{ color: "hsl(36 25% 60%)" }}
+                >
+                  November 2026
+                </p>
+
+                {/* Enter button inside the card */}
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={isRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+                  transition={{ duration: 0.5, ease: "easeOut", delay: 0.8 }}
+                  className="mt-8"
+                >
+                  <button
+                    type="button"
+                    onClick={handleEnter}
+                    className="inline-flex items-center rounded-full px-10 py-3 font-sans text-[10px] uppercase tracking-[0.32em] transition-all duration-300 hover:shadow-lg"
+                    style={{
+                      background: "linear-gradient(180deg, hsl(30 35% 48%) 0%, hsl(28 32% 38%) 100%)",
+                      color: "hsl(40 40% 96%)",
+                      border: "1px solid hsl(28 28% 35%)",
+                      boxShadow: "0 4px 16px rgba(60,40,15,0.2)",
+                    }}
+                  >
+                    Enter Wedding Site
+                  </button>
+                </motion.div>
+              </motion.div>
+            </div>
           </motion.div>
         </motion.div>
       )}
