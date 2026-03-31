@@ -1,76 +1,55 @@
-import { Plane, Hotel, Car, Info } from "lucide-react";
+import { Plane, Info } from "lucide-react";
 import AnimatedSection from "./AnimatedSection";
 import FloralDivider from "./FloralDivider";
 
-const travelCards = [
+const locations = [
   {
-    icon: Plane,
-    title: "Getting There",
+    city: "Nam Định",
     details: [
-      "Fly into Liên Khương Airport (DLI), Đà Lạt's international airport",
-      "Direct flights available from Ho Chi Minh City (1hr) and Hanoi (2hrs)",
-      "International guests: fly into Tân Sơn Nhất (SGN), then connect to DLI",
+      "Located in the Red River Delta, about 90 km southeast of Hanoi",
+      "Easily accessible by car or bus from Hanoi (1.5–2 hours)",
+      "Nearest airport: Nội Bài International Airport (HAN), Hanoi",
     ],
   },
   {
-    icon: Hotel,
-    title: "Accommodation",
+    city: "Huế",
     details: [
-      "We've arranged a room block at Ana Mandara Villas at a special rate",
-      "Nearby options: Swiss-Belresort, Dalat Palace Heritage Hotel",
-      "Book early — December is peak season in Đà Lạt",
-    ],
-  },
-  {
-    icon: Car,
-    title: "Local Transport",
-    details: [
-      "Shuttle service from the airport on Dec 27 & 28",
-      "Grab (ride-hailing app) is widely available",
-      "We'll arrange group transport to/from the venue",
-    ],
-  },
-  {
-    icon: Info,
-    title: "Good to Know",
-    details: [
-      "Đà Lạt is cooler — expect 15–22°C in December. Bring a light jacket",
-      "Vietnamese Dong (VND) is the local currency; ATMs are easy to find",
-      "Vietnam visa: check your eligibility for e-visa or visa-on-arrival",
+      "The ancient imperial capital of Vietnam, in central Vietnam",
+      "Fly into Phú Bài International Airport (HUI) — direct flights from Hanoi & HCMC",
+      "A beautiful city on the Perfume River, rich in history and culture",
     ],
   },
 ];
 
 const TravelSection = () => {
   return (
-    <section id="travel" className="py-24 md:py-32 bg-warm-white">
-      <div className="container mx-auto px-6 max-w-5xl">
+    <section id="travel" className="py-28 md:py-36 bg-warm-white">
+      <div className="container mx-auto px-6 max-w-4xl">
         <AnimatedSection>
-          <div className="text-center mb-16">
+          <div className="text-center mb-20">
             <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-4 font-sans">
               For Our Guests
             </p>
             <h2 className="font-serif text-4xl md:text-5xl font-light text-foreground mb-4">
-              Travel to Vietnam
+              Travel & Location
             </h2>
             <p className="text-muted-foreground font-sans text-sm max-w-xl mx-auto">
-              We can't wait to share this beautiful country with you. Here's everything 
-              you need to know to plan your trip.
+              We can't wait to share this beautiful country with you.
             </p>
           </div>
         </AnimatedSection>
 
-        <div className="grid md:grid-cols-2 gap-8">
-          {travelCards.map((card, i) => (
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          {locations.map((loc, i) => (
             <AnimatedSection key={i} delay={0.1 * i}>
-              <div className="bg-background p-8 border border-border h-full">
-                <div className="flex items-center gap-3 mb-5">
-                  <card.icon size={18} className="text-primary" />
-                  <h3 className="font-serif text-xl text-foreground">{card.title}</h3>
+              <div className="bg-background p-8 md:p-10 border border-border h-full">
+                <div className="flex items-center gap-3 mb-6">
+                  <Plane size={16} className="text-primary" />
+                  <h3 className="font-serif text-2xl text-foreground">{loc.city}</h3>
                 </div>
-                <ul className="space-y-3">
-                  {card.details.map((detail, j) => (
-                    <li key={j} className="text-sm text-muted-foreground font-sans leading-relaxed flex items-start gap-2">
+                <ul className="space-y-4">
+                  {loc.details.map((detail, j) => (
+                    <li key={j} className="text-sm text-muted-foreground font-sans leading-relaxed flex items-start gap-3">
                       <span className="w-1 h-1 rounded-full bg-primary mt-2 flex-shrink-0" />
                       {detail}
                     </li>
@@ -81,7 +60,29 @@ const TravelSection = () => {
           ))}
         </div>
 
-        <FloralDivider className="mt-12" />
+        <AnimatedSection delay={0.3}>
+          <div className="bg-background p-8 border border-border">
+            <div className="flex items-center gap-3 mb-5">
+              <Info size={16} className="text-primary" />
+              <h3 className="font-serif text-xl text-foreground">Good to Know</h3>
+            </div>
+            <ul className="space-y-3">
+              {[
+                "Vietnam visa: check your eligibility for e-visa or visa-on-arrival well in advance",
+                "Vietnamese Dong (VND) is the local currency — ATMs are widely available",
+                "November weather is pleasant: 20–28°C in Nam Định, 22–27°C in Huế",
+                "Grab (ride-hailing app) works well in both cities",
+              ].map((note, j) => (
+                <li key={j} className="text-sm text-muted-foreground font-sans leading-relaxed flex items-start gap-3">
+                  <span className="w-1 h-1 rounded-full bg-primary mt-2 flex-shrink-0" />
+                  {note}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </AnimatedSection>
+
+        <FloralDivider className="mt-14" />
       </div>
     </section>
   );
