@@ -1,39 +1,145 @@
+import { MapPin, Heart } from "lucide-react";
 import AnimatedSection from "./AnimatedSection";
 import FloralDivider from "./FloralDivider";
+import heroImage from "@/assets/hero-wedding.jpg";
+import venueImage from "@/assets/venue.jpg";
+
+const milestones = [
+  {
+    title: "The First Hello",
+    description:
+      "A quiet cafe conversation in Hanoi turned into hours of talking about life, art, and the places we hoped to see together.",
+    image: heroImage,
+    alt: "The beginning of Nam and Linh's story",
+    imagePosition: "center 24%",
+  },
+  {
+    title: "Across Cities And Seasons",
+    description:
+      "From long calls across time zones to weekends that never felt long enough, love kept returning with calm certainty.",
+    image: venueImage,
+    alt: "A shared journey through beautiful places",
+    imagePosition: "center center",
+  },
+  {
+    title: "The Everyday Became Ours",
+    description:
+      "It was never only the grand adventures. It was the dinners, the walks, the small rituals, and the quiet way home began to feel the same.",
+    image: heroImage,
+    alt: "Quiet moments that became lasting memories",
+    imagePosition: "center 60%",
+  },
+  {
+    title: "Forever Begins Here",
+    description:
+      "Now the road brings us back to Vietnam, where we cannot wait to celebrate this next chapter with the people we love most.",
+    image: venueImage,
+    alt: "The road leading to the wedding celebration",
+    imagePosition: "center 35%",
+  },
+];
 
 const StorySection = () => {
   return (
-    <section id="story" className="py-28 md:py-36 bg-background">
-      <div className="container mx-auto px-6 max-w-3xl text-center">
+    <section id="story" className="bg-background py-20 md:py-24">
+      <div className="container mx-auto max-w-6xl px-6">
         <AnimatedSection>
-          <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-4 font-sans">
-            Our Story
-          </p>
-          <h2 className="font-serif text-4xl md:text-5xl font-light text-foreground mb-14">
-            How It All Began
-          </h2>
-        </AnimatedSection>
-
-        <AnimatedSection delay={0.2}>
-          <div className="space-y-8 text-muted-foreground leading-relaxed font-sans text-sm md:text-base">
-            <p>
-              We first crossed paths on a quiet autumn afternoon in Hanoi, at a small café 
-              tucked along a tree-lined street. What began as a chance encounter turned into 
-              hours of conversation — about art, dreams, and the places we longed to see.
+          <div className="mx-auto mb-14 max-w-2xl text-center">
+            <div className="mb-5 flex justify-center">
+              <svg
+                width="110"
+                height="56"
+                viewBox="0 0 110 56"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="text-primary/75"
+                aria-hidden="true"
+              >
+                <path
+                  d="M10 44C18 36 26 34 36 37C49 42 57 26 51 16C47 9 51 5 59 8C69 12 67 29 81 30C89 31 96 26 100 16"
+                  stroke="currentColor"
+                  strokeWidth="1.4"
+                  strokeDasharray="4 4"
+                  strokeLinecap="round"
+                />
+                <circle cx="12" cy="44" r="3.5" fill="currentColor" />
+                <circle cx="52" cy="16" r="3.5" fill="currentColor" />
+                <circle cx="98" cy="16" r="3.5" fill="currentColor" />
+              </svg>
+            </div>
+            <p className="mb-4 font-sans text-xs uppercase tracking-[0.3em] text-muted-foreground">
+              Our Story
             </p>
-            <p>
-              Over the years, our love has taken us across oceans and through seasons. 
-              From late-night calls across time zones to sunrise walks along the coast,
-              every moment has deepened what we share.
-            </p>
-            <p>
-              Now we're ready to begin our greatest adventure together — and we want you 
-              there to celebrate with us.
-            </p>
+            <h2 className="font-serif text-4xl font-light text-foreground md:text-5xl">
+              A Roadmap To Love
+            </h2>
           </div>
         </AnimatedSection>
 
-        <FloralDivider className="mt-14" />
+        <div className="relative space-y-8 md:space-y-10">
+          <div className="absolute bottom-8 left-1/2 top-8 hidden -translate-x-1/2 border-l border-dashed border-primary/25 md:block" />
+          {milestones.map((milestone, index) => (
+            <AnimatedSection key={milestone.title} delay={0.08 * index}>
+              <div className="relative grid gap-5 md:grid-cols-[1fr_72px_1fr] md:gap-8">
+                <div
+                  className="md:col-span-3"
+                >
+                  <div className="mb-5 text-center md:mb-6">
+                    <h3 className="font-serif text-3xl font-light leading-[1.05] text-foreground md:text-[2.15rem]">
+                      {milestone.title}
+                    </h3>
+                  </div>
+                </div>
+
+                <div
+                  className={`${index % 2 === 0 ? "md:col-start-1 md:justify-self-end" : "md:col-start-3 md:justify-self-start"} md:w-full md:max-w-[520px]`}
+                >
+                  <div
+                    className={`overflow-hidden border border-border/80 bg-warm-white md:grid ${
+                      index % 2 === 0 ? "md:grid-cols-[0.92fr_1.08fr]" : "md:grid-cols-[1.08fr_0.92fr]"
+                    }`}
+                  >
+                    <div
+                      className={`min-h-[220px] bg-cover bg-center ${
+                        index % 2 === 1 ? "md:order-2" : ""
+                      }`}
+                      style={{
+                        backgroundImage: `linear-gradient(rgba(24, 18, 14, 0.08), rgba(24, 18, 14, 0.08)), url(${milestone.image})`,
+                        backgroundPosition: milestone.imagePosition,
+                      }}
+                      aria-label={milestone.alt}
+                      role="img"
+                    />
+                    <div className="flex flex-col justify-center p-6 text-center md:p-7 md:text-left">
+                      <p className="mx-auto max-w-md font-sans text-sm leading-6 text-muted-foreground md:mx-0 md:text-[0.92rem]">
+                        {milestone.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="relative z-10 hidden justify-center self-center md:flex">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full border border-primary/30 bg-background text-primary shadow-[0_10px_30px_rgba(168,116,79,0.08)]">
+                    {index === milestones.length - 1 ? <Heart size={16} /> : <MapPin size={16} />}
+                  </div>
+                </div>
+
+                <div className="md:hidden">
+                  <div className="mb-4 flex justify-center">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/30 bg-background text-primary shadow-[0_10px_30px_rgba(168,116,79,0.08)]">
+                      {index === milestones.length - 1 ? <Heart size={16} /> : <MapPin size={16} />}
+                    </div>
+                  </div>
+                  {index !== milestones.length - 1 && (
+                    <div className="mx-auto h-10 w-px border-l border-dashed border-primary/25" />
+                  )}
+                </div>
+              </div>
+            </AnimatedSection>
+          ))}
+        </div>
+
+        <FloralDivider className="mt-10" />
       </div>
     </section>
   );

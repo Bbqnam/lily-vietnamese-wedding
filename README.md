@@ -1,3 +1,3 @@
-# Welcome to your Lovable project
+# Nam & Linh Wedding Site
 
-TODO: Document your project here
+Wedding website for Nam & Linh's celebration in Vietnam.

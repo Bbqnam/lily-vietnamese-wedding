@@ -3,7 +3,7 @@ import FloralDivider from "./FloralDivider";
 
 const VenueSection = () => {
   return (
-    <section id="venue" className="py-28 md:py-36 bg-background">
+    <section id="venue" className="py-20 md:py-24 bg-background">
       <div className="container mx-auto px-6 max-w-3xl text-center">
         <AnimatedSection>
           <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-4 font-sans">
@@ -18,7 +18,7 @@ const VenueSection = () => {
           </p>
         </AnimatedSection>
 
-        <FloralDivider className="mt-12" />
+        <FloralDivider className="mt-10" />
       </div>
     </section>
   );

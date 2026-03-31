@@ -22,7 +22,7 @@ const RSVPSection = () => {
     "w-full bg-transparent border-b border-border px-0 py-3 text-sm font-sans text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary transition-colors";
 
   return (
-    <section id="rsvp" className="py-28 md:py-36 bg-warm-white">
+    <section id="rsvp" className="py-20 md:py-24 bg-warm-white">
       <div className="container mx-auto px-6 max-w-xl">
         <AnimatedSection>
           <div className="text-center mb-16">
