@@ -1,0 +1,8 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="64" height="64" rx="16" fill="#FBF8F3"/>
+  <path d="M22 14C29 10.5 39 10.8 45.8 15.6C51.9 20 55.2 28.1 54.1 37.8" stroke="#A96F2A" stroke-width="1.1" stroke-linecap="round"/>
+  <path d="M17.6 41.1C21.1 46.1 27.5 48.9 35.2 48.3" stroke="#A96F2A" stroke-width="1.1" stroke-linecap="round"/>
+  <text x="20.8" y="31.4" text-anchor="middle" fill="#A96F2A" font-family="'Cormorant Garamond', Georgia, serif" font-size="27" font-weight="400">N</text>
+  <text x="32.7" y="41.8" text-anchor="middle" fill="#A96F2A" font-family="'Cormorant Garamond', Georgia, serif" font-size="28" font-weight="400">&amp;</text>
+  <text x="44.4" y="45.2" text-anchor="middle" fill="#A96F2A" font-family="'Cormorant Garamond', Georgia, serif" font-size="28" font-weight="400">L</text>
+</svg>

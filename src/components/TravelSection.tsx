@@ -23,10 +23,10 @@ const locations = [
 
 const TravelSection = () => {
   return (
-    <section id="travel" className="py-28 md:py-36 bg-warm-white">
+    <section id="travel" className="py-20 md:py-24 bg-warm-white">
       <div className="container mx-auto px-6 max-w-4xl">
         <AnimatedSection>
-          <div className="text-center mb-20">
+          <div className="text-center mb-16">
             <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-4 font-sans">
               For Our Guests
             </p>
@@ -82,7 +82,7 @@ const TravelSection = () => {
           </div>
         </AnimatedSection>
 
-        <FloralDivider className="mt-14" />
+        <FloralDivider className="mt-10" />
       </div>
     </section>
   );

@@ -12,7 +12,7 @@ const galleryImages = [
 
 const GallerySection = () => {
   return (
-    <section id="gallery" className="py-28 md:py-36 bg-warm-white">
+    <section id="gallery" className="py-20 md:py-24 bg-warm-white">
       <div className="container mx-auto px-6 max-w-5xl">
         <AnimatedSection>
           <div className="text-center mb-16">
@@ -39,7 +39,7 @@ const GallerySection = () => {
           ))}
         </div>
 
-        <FloralDivider className="mt-14" />
+        <FloralDivider className="mt-10" />
       </div>
     </section>
   );

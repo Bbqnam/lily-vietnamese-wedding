@@ -30,7 +30,7 @@ const FAQSection = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="py-28 md:py-36 bg-background">
+    <section id="faq" className="py-20 md:py-24 bg-background">
       <div className="container mx-auto px-6 max-w-3xl">
         <AnimatedSection>
           <div className="text-center mb-16">

@@ -1,10 +1,9 @@
 import { motion } from "framer-motion";
-import WeddingLogo from "./WeddingLogo";
 import heroImage from "@/assets/hero-wedding.jpg";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen overflow-hidden px-6 pt-24 md:px-8 md:pt-28">
       {/* Background image */}
       <div className="absolute inset-0">
         <img
@@ -14,67 +13,31 @@ const HeroSection = () => {
           width={1920}
           height={1280}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/20 to-background/70" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#18120e]/56 via-[#18120e]/28 to-[#18120e]/64" />
       </div>
 
       {/* Content */}
-      <div className="relative z-10 text-center px-6 max-w-3xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, delay: 0.2 }}
-          className="mb-10"
-        >
-          <WeddingLogo size="large" showText={false} />
-        </motion.div>
-
+      <div className="relative z-10 mx-auto flex min-h-[76vh] w-full max-w-6xl flex-col justify-between pb-10 pt-2 md:min-h-[80vh] md:pb-14">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.6 }}
-          className="font-serif text-5xl md:text-7xl lg:text-8xl font-light text-primary-foreground tracking-wide mb-10"
+          transition={{ duration: 1, delay: 0.2 }}
+          className="pt-1 text-center font-serif text-[4rem] font-light leading-[0.9] tracking-[0.03em] text-white sm:text-[4.6rem] md:pt-0 md:text-[5.6rem] lg:text-[6.2rem]"
         >
-          Nam & Linh
+          Linh & Nam
         </motion.h1>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1 }}
-          className="space-y-2 mb-10"
-        >
-          <div className="flex items-center justify-center gap-4">
-            <div className="w-12 h-px bg-primary-foreground/40" />
-            <p className="font-serif text-base md:text-lg text-primary-foreground/90 italic">
-              22 November 2026 — Nam Định
-            </p>
-            <div className="w-12 h-px bg-primary-foreground/40" />
-          </div>
-          <p className="font-serif text-base md:text-lg text-primary-foreground/90 italic">
-            25 November 2026 — Huế
-          </p>
-        </motion.div>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1.4 }}
-          className="text-sm text-primary-foreground/80 font-sans max-w-md mx-auto leading-relaxed"
-        >
-          We are so happy to celebrate our wedding in Vietnam with the people we love.
-        </motion.p>
 
         {/* Scroll indicator */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 2 }}
-          className="mt-20"
+          transition={{ duration: 1, delay: 1.35 }}
+          className="mt-10 md:mt-14"
         >
           <motion.div
             animate={{ y: [0, 8, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="w-px h-12 bg-primary-foreground/40 mx-auto"
+            className="mx-auto h-12 w-px bg-white/45"
           />
         </motion.div>
       </div>
