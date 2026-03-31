@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import WeddingLogo from "./WeddingLogo";
 
 const navLinks = [
   { label: "Our Story", href: "#story" },
@@ -15,19 +16,19 @@ const WeddingNav = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
-      <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-        <a href="#" className="font-serif text-xl tracking-wider text-foreground">
-          N & L
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/85 backdrop-blur-md border-b border-border/40">
+      <div className="container mx-auto px-6 py-3.5 flex items-center justify-between">
+        <a href="#" className="hover:opacity-80 transition-opacity">
+          <WeddingLogo size="small" showText={false} />
         </a>
 
         {/* Desktop */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-10">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="text-xs tracking-[0.2em] uppercase text-muted-foreground hover:text-primary transition-colors duration-300"
+              className="text-[11px] tracking-[0.22em] uppercase text-muted-foreground hover:text-primary transition-colors duration-300"
             >
               {link.label}
             </a>
@@ -59,7 +60,7 @@ const WeddingNav = () => {
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className="text-xs tracking-[0.2em] uppercase text-muted-foreground hover:text-primary transition-colors"
+                  className="text-[11px] tracking-[0.22em] uppercase text-muted-foreground hover:text-primary transition-colors"
                 >
                   {link.label}
                 </a>
