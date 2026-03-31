@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronDown, MapPin, Plane } from "lucide-react";
+import { ArrowUpRight, ChevronDown, MapPin, Plane } from "lucide-react";
 import AnimatedSection from "./AnimatedSection";
 import FloralDivider from "./FloralDivider";
 
@@ -14,6 +14,9 @@ const locations = [
     ],
     mapNote: "Closest arrival point: Hanoi, then continue south to Linh's hometown in Nam Định.",
     accent: "Northern Vietnam",
+    mapEmbed: "https://www.google.com/maps?q=Nam%20Dinh%2C%20Vietnam&z=10&output=embed",
+    mapLink: "https://www.google.com/maps/search/?api=1&query=Nam%20Dinh%2C%20Vietnam",
+    routeTags: ["Hanoi airport", "Car transfer"],
   },
   {
     city: "Huế",
@@ -25,15 +28,11 @@ const locations = [
     ],
     mapNote: "For Nam's hometown, you can arrive directly in Huế or come through Đà Nẵng and transfer north.",
     accent: "Central Vietnam",
+    mapEmbed: "https://www.google.com/maps?q=Hue%2C%20Vietnam&z=10&output=embed",
+    mapLink: "https://www.google.com/maps/search/?api=1&query=Hue%2C%20Vietnam",
+    routeTags: ["Huế airport", "Đà Nẵng option"],
   },
 ];
-
-const mapPoints = {
-  hanoi: { top: "22%", left: "61%" },
-  namDinh: { top: "29%", left: "58%" },
-  daNang: { top: "55%", left: "50%" },
-  hue: { top: "51%", left: "53%" },
-};
 
 const TravelSection = () => {
   const [activeCity, setActiveCity] = useState(locations[0].city);
@@ -148,111 +147,15 @@ const TravelSection = () => {
                 </div>
               </div>
 
-              <div className="grid gap-0 md:grid-cols-[1.05fr_0.95fr]">
-                <div className="relative min-h-[360px] border-b border-border bg-[linear-gradient(180deg,#faf6f0_0%,#f6efe6_100%)] md:min-h-[430px] md:border-b-0 md:border-r">
-                  <svg
-                    viewBox="0 0 360 520"
-                    className="absolute inset-0 h-full w-full"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M208 28C202 64 217 86 195 124C176 156 191 190 170 226C148 265 151 315 144 353C138 387 126 426 116 474"
-                      fill="none"
-                      stroke="rgba(168,116,79,0.25)"
-                      strokeWidth="14"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M199 26C193 64 206 85 186 121C168 154 180 189 160 225C141 260 141 312 134 349C128 384 117 423 109 471"
-                      fill="none"
-                      stroke="rgba(168,116,79,0.16)"
-                      strokeWidth="24"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-
-                  <div
-                    className="absolute"
-                    style={{ top: mapPoints.hanoi.top, left: mapPoints.hanoi.left }}
-                  >
-                    <div className="translate-x-[-50%] translate-y-[-50%]">
-                      <div className="rounded-full border border-primary/20 bg-background px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-muted-foreground shadow-sm">
-                        Hanoi
-                      </div>
-                    </div>
-                  </div>
-
-                  <div
-                    className="absolute"
-                    style={{ top: mapPoints.daNang.top, left: mapPoints.daNang.left }}
-                  >
-                    <div className="translate-x-[-50%] translate-y-[-50%]">
-                      <div
-                        className={`rounded-full border bg-background px-3 py-1 text-[10px] uppercase tracking-[0.18em] shadow-sm ${
-                          activeLocation.city === "Huế"
-                            ? "border-primary/30 text-primary"
-                            : "border-primary/15 text-muted-foreground"
-                        }`}
-                      >
-                        Đà Nẵng
-                      </div>
-                    </div>
-                  </div>
-
-                  {[
-                    {
-                      key: "Nam Định",
-                      label: "Nam Định",
-                      point: mapPoints.namDinh,
-                    },
-                    {
-                      key: "Huế",
-                      label: "Huế",
-                      point: mapPoints.hue,
-                    },
-                  ].map((marker) => {
-                    const isActive = activeLocation.city === marker.key;
-
-                    return (
-                      <button
-                        key={marker.key}
-                        type="button"
-                        onClick={() => setActiveCity(marker.key)}
-                        className="absolute"
-                        style={{ top: marker.point.top, left: marker.point.left }}
-                      >
-                        <div className="translate-x-[-50%] translate-y-[-50%]">
-                          <div
-                            className={`flex h-12 w-12 items-center justify-center rounded-full border bg-background transition-all duration-300 ${
-                              isActive
-                                ? "border-primary/40 text-primary shadow-[0_16px_35px_rgba(132,92,59,0.14)]"
-                                : "border-primary/18 text-primary/70"
-                            }`}
-                          >
-                            <MapPin size={16} />
-                          </div>
-                          <div
-                            className={`mt-3 rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.2em] ${
-                              isActive
-                                ? "bg-primary/10 text-primary"
-                                : "text-muted-foreground"
-                            }`}
-                          >
-                            {marker.label}
-                          </div>
-                        </div>
-                      </button>
-                    );
-                  })}
-
-                  {activeLocation.city === "Huế" && (
-                    <div
-                      className="absolute text-[10px] uppercase tracking-[0.18em] text-primary/75"
-                      style={{ top: "58.5%", left: "57%" }}
-                    >
-                      Arrival options
-                    </div>
-                  )}
+              <div className="grid gap-0 md:grid-cols-[1.18fr_0.82fr]">
+                <div className="min-h-[380px] border-b border-border md:min-h-[500px] md:border-b-0 md:border-r">
+                  <iframe
+                    title={`Map of ${activeLocation.city}`}
+                    src={activeLocation.mapEmbed}
+                    className="h-full w-full"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
                 </div>
 
                 <div className="flex flex-col justify-center px-6 py-8 md:px-8">
@@ -265,12 +168,31 @@ const TravelSection = () => {
                   <h4 className="mb-3 font-serif text-3xl font-light text-foreground">
                     {activeLocation.arrival}
                   </h4>
+                  <div className="mb-5 flex flex-wrap gap-2">
+                    {activeLocation.routeTags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded-full border border-border bg-warm-white px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-muted-foreground"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                   <p className="mb-4 font-sans text-sm leading-7 text-muted-foreground">
                     {activeLocation.mapNote}
                   </p>
-                  <p className="font-sans text-sm leading-7 text-muted-foreground">
+                  <p className="mb-6 font-sans text-sm leading-7 text-muted-foreground">
                     Exact venue and transfer details will be shared closer to the wedding.
                   </p>
+                  <a
+                    href={activeLocation.mapLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 self-start text-sm text-primary transition-opacity hover:opacity-70"
+                  >
+                    Open in Google Maps
+                    <ArrowUpRight size={14} />
+                  </a>
                 </div>
               </div>
             </div>
