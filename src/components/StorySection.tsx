@@ -39,6 +39,21 @@ const milestones = [
   },
 ];
 
+const routeConfigs = [
+  {
+    path: "M282 18C236 12 201 20 173 37C146 54 111 63 61 58",
+    dot: { cx: 284, cy: 18 },
+    marker: { cx: 54, cy: 58 },
+    align: "start",
+  },
+  {
+    path: "M18 18C62 11 97 21 126 38C153 54 190 63 240 58",
+    dot: { cx: 16, cy: 18 },
+    marker: { cx: 246, cy: 58 },
+    align: "end",
+  },
+];
+
 const StorySection = () => {
   return (
     <section id="story" className="bg-background py-20 md:py-24">
@@ -76,11 +91,10 @@ const StorySection = () => {
           </div>
         </AnimatedSection>
 
-        <div className="relative space-y-10 md:space-y-14">
-          <div className="absolute bottom-8 left-1/2 top-8 hidden -translate-x-1/2 border-l border-dashed border-primary/25 md:block" />
+        <div className="space-y-10 md:space-y-14">
           {milestones.map((milestone, index) => (
             <AnimatedSection key={milestone.title} delay={0.08 * index}>
-              <div className="relative grid gap-5 md:grid-cols-[minmax(0,1fr)_84px_minmax(0,1fr)] md:items-center md:gap-8">
+              <div className="relative grid gap-5 md:grid-cols-2 md:gap-12">
                 <div className="relative z-10 mb-5 flex justify-center md:hidden">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full border border-primary/30 bg-background text-primary shadow-[0_10px_30px_rgba(168,116,79,0.08)]">
                     {index === milestones.length - 1 ? <Heart size={16} /> : <MapPin size={16} />}
@@ -89,11 +103,46 @@ const StorySection = () => {
 
                 <div
                   className={`w-full ${
-                    index % 2 === 0
-                      ? "md:col-start-1 md:justify-self-end"
-                      : "md:col-start-3 md:justify-self-start"
+                    index % 2 === 0 ? "md:col-start-1 md:justify-self-start" : "md:col-start-2 md:justify-self-end"
                   } md:max-w-[31rem]`}
                 >
+                  <div
+                    className={`relative mb-4 hidden h-[74px] md:block ${
+                      index % 2 === 0 ? "mr-auto" : "ml-auto"
+                    }`}
+                  >
+                    <svg
+                      viewBox="0 0 300 74"
+                      className="h-full w-full text-primary/75"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d={routeConfigs[index % 2].path}
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.7"
+                        strokeDasharray="5 6"
+                        strokeLinecap="round"
+                      />
+                      <circle
+                        cx={routeConfigs[index % 2].dot.cx}
+                        cy={routeConfigs[index % 2].dot.cy}
+                        r="5"
+                        fill="currentColor"
+                        opacity="0.55"
+                      />
+                    </svg>
+                    <div
+                      className={`absolute top-[42px] ${
+                        routeConfigs[index % 2].align === "start" ? "left-8" : "right-8"
+                      }`}
+                    >
+                      <div className="flex h-12 w-12 items-center justify-center rounded-full border border-primary/30 bg-background text-primary shadow-[0_10px_30px_rgba(168,116,79,0.08)]">
+                        {index === milestones.length - 1 ? <Heart size={16} /> : <MapPin size={16} />}
+                      </div>
+                    </div>
+                  </div>
+
                   <div
                     className={`mb-5 text-center md:mb-6 ${
                       index % 2 === 0 ? "md:text-right" : "md:text-left"
@@ -135,12 +184,6 @@ const StorySection = () => {
                         {milestone.description}
                       </p>
                     </div>
-                  </div>
-                </div>
-
-                <div className="relative z-10 hidden justify-center self-center md:flex">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full border border-primary/30 bg-background text-primary shadow-[0_10px_30px_rgba(168,116,79,0.08)]">
-                    {index === milestones.length - 1 ? <Heart size={16} /> : <MapPin size={16} />}
                   </div>
                 </div>
 
