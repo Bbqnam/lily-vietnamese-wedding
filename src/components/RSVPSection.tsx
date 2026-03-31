@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import AnimatedSection from "./AnimatedSection";
 import { toast } from "sonner";
 
-const SEND_ANIMATION_MS = 2800;
+const SEND_ANIMATION_MS = 3200;
 
 const SendingAnimation = () => {
   return (
@@ -17,35 +17,42 @@ const SendingAnimation = () => {
         </h3>
       </div>
 
-      <div className="relative mx-auto mt-12 h-[320px] w-full max-w-[420px] overflow-hidden">
+      <div className="relative mx-auto mt-12 h-[340px] w-full max-w-[440px] overflow-hidden">
         <motion.div
           initial={{ y: 0, scale: 1, opacity: 1 }}
           animate={{
-            y: [0, 0, 56, 74],
-            scale: [1, 1, 0.94, 0.9],
-            opacity: [1, 1, 1, 0.94],
+            y: [0, 0, 78, 116],
+            scale: [1, 1, 0.98, 0.94],
+            opacity: [1, 1, 1, 0.98],
           }}
-          transition={{ duration: 1.1, times: [0, 0.28, 0.78, 1], ease: [0.22, 1, 0.36, 1] }}
-          className="absolute left-1/2 top-4 z-[1] h-[158px] w-[230px] -translate-x-1/2 rounded-[24px] border border-[#e6d7c4] bg-[#fffdfa] px-6 py-6 shadow-[0_22px_40px_rgba(104,72,45,0.08)]"
+          transition={{ duration: 1.18, times: [0, 0.22, 0.74, 1], ease: [0.22, 1, 0.36, 1] }}
+          className="absolute left-1/2 top-3 z-[1] h-[170px] w-[244px] -translate-x-1/2 rounded-[20px] border border-[#e6d7c4] bg-[#fffdfa] px-7 py-7 shadow-[0_22px_40px_rgba(104,72,45,0.08)]"
         >
-          <p className="font-serif text-[2rem] font-light text-foreground">RSVP</p>
+          <p className="text-center font-serif text-[2rem] font-light text-foreground">RSVP</p>
           <div className="mt-5 space-y-3">
-            <div className="h-[1px] w-[72%] bg-primary/20" />
-            <div className="h-[1px] w-[58%] bg-primary/14" />
-            <div className="h-[1px] w-[66%] bg-primary/14" />
+            <div className="mx-auto h-[1px] w-[72%] bg-primary/20" />
+            <div className="mx-auto h-[1px] w-[58%] bg-primary/14" />
+            <div className="mx-auto h-[1px] w-[66%] bg-primary/14" />
           </div>
         </motion.div>
 
         <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0, 0, 0.18, 0] }}
+          transition={{ duration: 1.06, delay: 0.18, times: [0, 0.38, 0.7, 1], ease: "easeOut" }}
+          className="absolute left-1/2 top-[168px] z-[2] h-[18px] w-[244px] -translate-x-1/2 rounded-full bg-primary/8 blur-md"
+        />
+
+        <motion.div
           initial={{ rotateX: 0 }}
-          animate={{ rotateX: [0, 0, -172] }}
-          transition={{ duration: 0.78, delay: 0.92, times: [0, 0.2, 1], ease: [0.22, 1, 0.36, 1] }}
-          className="absolute left-1/2 top-[116px] z-[4] h-[110px] w-[320px] -translate-x-1/2 origin-top"
+          animate={{ rotateX: [0, 0, -176] }}
+          transition={{ duration: 0.8, delay: 1.04, times: [0, 0.18, 1], ease: [0.22, 1, 0.36, 1] }}
+          className="absolute left-1/2 top-[96px] z-[5] h-[126px] w-[356px] -translate-x-1/2 origin-top"
           style={{
             transformStyle: "preserve-3d",
             clipPath: "polygon(0 0, 100% 0, 50% 100%)",
             background:
-              "linear-gradient(180deg, rgba(244,234,218,1) 0%, rgba(236,223,205,1) 100%)",
+              "linear-gradient(180deg, rgba(247,238,225,1) 0%, rgba(237,225,207,1) 100%)",
             border: "1px solid rgba(217,194,165,0.72)",
           }}
         />
@@ -53,8 +60,8 @@ const SendingAnimation = () => {
         <motion.div
           initial={{ opacity: 0, scale: 0.4, y: -28 }}
           animate={{ opacity: [0, 0, 1, 1], scale: [0.4, 0.4, 1.08, 1], y: [-28, -28, 0, 0] }}
-          transition={{ duration: 0.65, delay: 1.5, times: [0, 0.32, 0.72, 1], ease: [0.22, 1, 0.36, 1] }}
-          className="absolute left-1/2 top-[148px] z-[5] flex h-[58px] w-[58px] -translate-x-1/2 items-center justify-center rounded-full border border-primary/28 bg-background shadow-[0_14px_28px_rgba(104,72,45,0.12)]"
+          transition={{ duration: 0.62, delay: 1.68, times: [0, 0.32, 0.72, 1], ease: [0.22, 1, 0.36, 1] }}
+          className="absolute left-1/2 top-[176px] z-[6] flex h-[56px] w-[56px] -translate-x-1/2 items-center justify-center rounded-full border border-primary/28 bg-background shadow-[0_14px_28px_rgba(104,72,45,0.12)]"
         >
           <div className="h-[18px] w-[18px] rounded-full border border-primary/50 bg-primary/10" />
         </motion.div>
@@ -62,28 +69,28 @@ const SendingAnimation = () => {
         <motion.div
           initial={{ x: 0, y: 0, rotate: 0, scale: 1, opacity: 1 }}
           animate={{
-            x: [0, 0, 18, 132],
-            y: [0, 0, -18, -136],
-            rotate: [0, 0, -4, -12],
+            x: [0, 0, 20, 138],
+            y: [0, 0, -26, -146],
+            rotate: [0, 0, -3, -11],
             scale: [1, 1, 0.98, 0.86],
             opacity: [1, 1, 1, 0],
           }}
-          transition={{ duration: 1.1, delay: 1.7, times: [0, 0.2, 0.58, 1], ease: [0.22, 1, 0.36, 1] }}
-          className="absolute inset-x-0 bottom-4 z-[2] mx-auto h-[168px] w-[320px]"
+          transition={{ duration: 1.08, delay: 1.95, times: [0, 0.22, 0.58, 1], ease: [0.22, 1, 0.36, 1] }}
+          className="absolute inset-x-0 bottom-6 z-[3] mx-auto h-[192px] w-[356px]"
         >
-          <div className="absolute inset-x-0 bottom-0 h-[118px] rounded-b-[28px] border border-[#e4d6c3] bg-[linear-gradient(180deg,#faf6f0_0%,#f5ede3_100%)]" />
+          <div className="absolute inset-x-0 bottom-0 h-[132px] rounded-b-[30px] border border-[#e4d6c3] bg-[linear-gradient(180deg,#faf6f0_0%,#f5ede3_100%)]" />
           <div
-            className="absolute bottom-0 left-0 h-[118px] w-1/2 border-r border-[#eadccc]/70"
-            style={{ clipPath: "polygon(0 0, 100% 50%, 100% 100%, 0 100%)" }}
+            className="absolute bottom-0 left-0 h-[132px] w-1/2 border-r border-[#eadccc]/70"
+            style={{ clipPath: "polygon(0 14%, 100% 58%, 100% 100%, 0 100%)" }}
           />
           <div
-            className="absolute bottom-0 right-0 h-[118px] w-1/2 border-l border-[#eadccc]/70"
-            style={{ clipPath: "polygon(0 50%, 100% 0, 100% 100%, 0 100%)" }}
+            className="absolute bottom-0 right-0 h-[132px] w-1/2 border-l border-[#eadccc]/70"
+            style={{ clipPath: "polygon(0 58%, 100% 14%, 100% 100%, 0 100%)" }}
           />
           <div
-            className="absolute inset-x-0 bottom-0 h-[118px]"
+            className="absolute inset-x-0 bottom-0 h-[132px]"
             style={{
-              clipPath: "polygon(0 0, 50% 52%, 100% 0, 100% 100%, 0 100%)",
+              clipPath: "polygon(0 14%, 50% 56%, 100% 14%, 100% 100%, 0 100%)",
               background:
                 "linear-gradient(180deg, rgba(246,238,228,1) 0%, rgba(240,229,216,1) 100%)",
             }}
@@ -92,9 +99,9 @@ const SendingAnimation = () => {
 
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: [0, 0.2, 0.5, 0] }}
-          transition={{ duration: 1.1, delay: 1.84, times: [0, 0.24, 0.54, 1], ease: "easeOut" }}
-          className="absolute left-[9%] top-[58%] h-[2px] w-[200px] bg-gradient-to-r from-primary/0 via-primary/24 to-primary/0"
+          animate={{ opacity: [0, 0.18, 0.44, 0] }}
+          transition={{ duration: 1.08, delay: 2.04, times: [0, 0.24, 0.54, 1], ease: "easeOut" }}
+          className="absolute left-[11%] top-[64%] h-[2px] w-[220px] bg-gradient-to-r from-primary/0 via-primary/24 to-primary/0"
         />
       </div>
     </div>
