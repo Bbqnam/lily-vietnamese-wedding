@@ -1,4 +1,5 @@
 import WeddingNav from "@/components/WeddingNav";
+import WelcomeOverlay from "@/components/WelcomeOverlay";
 import HeroSection from "@/components/HeroSection";
 import StorySection from "@/components/StorySection";
 import EventsSection from "@/components/EventsSection";
@@ -13,6 +14,7 @@ import WeddingFooter from "@/components/WeddingFooter";
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <WelcomeOverlay />
       <WeddingNav />
       <HeroSection />
       <StorySection />
