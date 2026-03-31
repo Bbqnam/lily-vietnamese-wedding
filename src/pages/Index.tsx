@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import WeddingNav from "@/components/WeddingNav";
 import WelcomeOverlay from "@/components/WelcomeOverlay";
 import HeroSection from "@/components/HeroSection";
@@ -11,11 +12,29 @@ import RSVPSection from "@/components/RSVPSection";
 import FAQSection from "@/components/FAQSection";
 import WeddingFooter from "@/components/WeddingFooter";
 
+const STORAGE_KEY = "wedding-welcome-dismissed";
+
 const Index = () => {
+  const [isWelcomeOpen, setIsWelcomeOpen] = useState(false);
+
+  useEffect(() => {
+    const dismissed = window.sessionStorage.getItem(STORAGE_KEY) === "true";
+    setIsWelcomeOpen(!dismissed);
+  }, []);
+
+  const handleInvitationComplete = () => {
+    window.sessionStorage.setItem(STORAGE_KEY, "true");
+    setIsWelcomeOpen(false);
+  };
+
+  const handleOpenInvitation = () => {
+    setIsWelcomeOpen(true);
+  };
+
   return (
     <div className="min-h-screen bg-background">
-      <WelcomeOverlay />
-      <WeddingNav />
+      <WelcomeOverlay open={isWelcomeOpen} onComplete={handleInvitationComplete} />
+      <WeddingNav onOpenInvitation={handleOpenInvitation} />
       <HeroSection />
       <StorySection />
       <EventsSection />

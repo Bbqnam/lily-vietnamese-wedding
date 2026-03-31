@@ -12,7 +12,11 @@ const navLinks = [
   { label: "FAQ", href: "#faq" },
 ];
 
-const WeddingNav = () => {
+type WeddingNavProps = {
+  onOpenInvitation: () => void;
+};
+
+const WeddingNav = ({ onOpenInvitation }: WeddingNavProps) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -44,10 +48,17 @@ const WeddingNav = () => {
             ))}
           </div>
 
-          <div className="hidden md:flex items-center justify-end">
-            <p className="text-[0.65rem] uppercase tracking-[0.34em] text-muted-foreground/80">
+          <div className="hidden md:flex items-center justify-end gap-4">
+            <p className="hidden lg:block text-[0.65rem] uppercase tracking-[0.34em] text-muted-foreground/80">
               Vietnam 2026
             </p>
+            <button
+              type="button"
+              onClick={onOpenInvitation}
+              className="rounded-full border border-primary/20 px-4 py-2 text-[0.62rem] uppercase tracking-[0.28em] text-primary transition-colors duration-300 hover:border-primary/35 hover:bg-primary/5"
+            >
+              Invitation
+            </button>
           </div>
 
           <button
@@ -79,6 +90,16 @@ const WeddingNav = () => {
                   {link.label}
                 </a>
               ))}
+              <button
+                type="button"
+                onClick={() => {
+                  setOpen(false);
+                  onOpenInvitation();
+                }}
+                className="rounded-full border border-primary/20 px-4 py-2 text-[0.72rem] uppercase tracking-[0.28em] text-primary transition-colors hover:border-primary/35 hover:bg-primary/5"
+              >
+                Invitation
+              </button>
             </div>
           </motion.div>
         )}
