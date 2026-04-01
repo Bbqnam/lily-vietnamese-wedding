@@ -1,149 +1,79 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useMotionValue, useTransform } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import type { PanInfo } from "framer-motion";
 import WeddingLogo from "./WeddingLogo";
 
-type Phase = "sealed" | "tearing" | "torn" | "flap-opening" | "letter-rising" | "revealed" | "closing";
+type Phase = "sealed" | "opening" | "revealed";
 
 type WelcomeOverlayProps = {
   open: boolean;
   onComplete: () => void;
 };
 
-/* ── Geometry ── */
-const ENV_W = 420;
-const ENV_H = 260;
-const FLAP_H = 150;
-const TEAR_H = 26;
-const TEAR_THRESHOLD = 70;
-const EASE = [0.22, 1, 0.36, 1] as unknown as number[];
-
-/* Wax seal SVG component */
-const WaxSeal = () => (
-  <svg viewBox="0 0 64 64" className="h-10 w-10 drop-shadow-[0_3px_8px_rgba(80,20,20,.28)]">
-    <defs>
-      <radialGradient id="wax" cx="35%" cy="30%">
-        <stop offset="0%" stopColor="#b94a4a" />
-        <stop offset="55%" stopColor="#8e2f36" />
-        <stop offset="100%" stopColor="#642028" />
-      </radialGradient>
-    </defs>
-    <path
-      d="M32 6l7 3 8-1 4 7 7 4-1 8 3 7-5 6-1 8-8 2-5 6-8-2-8 2-5-6-8-2-1-8-5-6 3-7-1-8 7-4 4-7 8 1z"
-      fill="url(#wax)"
-    />
-    {/* Decorative leaf / lily motif */}
-    <path
-      d="M22 36c7-2 12-8 13-14 3 8 8 12 13 14-9 1-17 1-26 0z"
-      fill="#f6e7cf"
-      opacity=".85"
-    />
-    {/* N & L initials */}
-    <text
-      x="32"
-      y="38"
-      textAnchor="middle"
-      fontSize="9"
-      fontFamily="serif"
-      fill="#f6e7cf"
-      opacity=".95"
-      letterSpacing="1"
-    >
-      N L
-    </text>
-  </svg>
-);
+const ENV_W = 430;
+const ENV_H = 248;
+const FLAP_H = 132;
+const BODY_TOP = 130;
+const PULL_THRESHOLD = 26;
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 const WelcomeOverlay = ({ open, onComplete }: WelcomeOverlayProps) => {
   const [phase, setPhase] = useState<Phase>("sealed");
   const timers = useRef<number[]>([]);
-  const envelopeRef = useRef<HTMLDivElement>(null);
 
-  const dragX = useMotionValue(0);
-  const isDragging = useRef(false);
-  const dragStartSide = useRef<"left" | "right" | null>(null);
-
-  /* derived transforms for tear halves */
-  const leftHalfX = useTransform(dragX, (v) => {
-    if (!isDragging.current) return 0;
-    return dragStartSide.current === "right"
-      ? Math.min(0, v)
-      : Math.min(0, -Math.abs(v));
-  });
-  const rightHalfX = useTransform(dragX, (v) => {
-    if (!isDragging.current) return 0;
-    return dragStartSide.current === "left"
-      ? Math.max(0, v)
-      : Math.max(0, Math.abs(v));
-  });
-  const tearCenterOpacity = useTransform(
-    dragX,
-    (v) => {
-      const abs = Math.abs(v);
-      return Math.max(0, 1 - abs / (TEAR_THRESHOLD * 0.6));
-    }
-  );
-
-  /* lifecycle */
   useEffect(() => {
-    if (open) setPhase("sealed");
+    if (open) {
+      setPhase("sealed");
+    }
   }, [open]);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [open]);
 
-  useEffect(() => () => {
-    timers.current.forEach(clearTimeout);
+  useEffect(() => {
+    return () => {
+      timers.current.forEach((timer) => window.clearTimeout(timer));
+      timers.current = [];
+    };
   }, []);
 
-  const schedule = useCallback((fn: () => void, ms: number) => {
+  const schedule = (fn: () => void, ms: number) => {
     timers.current.push(window.setTimeout(fn, ms));
-  }, []);
-
-  /* tear interaction */
-  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (phase !== "sealed") return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const relX = e.clientX - rect.left;
-    dragStartSide.current = relX < rect.width / 2 ? "left" : "right";
-    isDragging.current = true;
   };
 
-  const handleDragEnd = () => {
-    if (phase !== "sealed") return;
-    if (Math.abs(dragX.get()) >= TEAR_THRESHOLD) {
-      completeTear();
-    } else {
-      isDragging.current = false;
-      dragX.set(0);
+  const startOpening = () => {
+    if (phase !== "sealed") {
+      return;
+    }
+
+    setPhase("opening");
+    schedule(() => setPhase("revealed"), 1020);
+  };
+
+  const handlePullEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    if (phase !== "sealed") {
+      return;
+    }
+
+    if (Math.abs(info.offset.y) >= PULL_THRESHOLD) {
+      startOpening();
     }
   };
 
-  const completeTear = () => {
-    setPhase("tearing");
-    schedule(() => setPhase("torn"), 450);
-    schedule(() => setPhase("flap-opening"), 650);
-    schedule(() => setPhase("letter-rising"), 1500);
-    schedule(() => setPhase("revealed"), 2500);
-  };
-
   const handleEnter = () => {
-    if (phase !== "revealed") return;
-    setPhase("closing");
-    schedule(onComplete, 700);
+    if (phase !== "revealed") {
+      return;
+    }
+
+    onComplete();
   };
 
-  const past = (target: Phase) => {
-    const order: Phase[] = [
-      "sealed", "tearing", "torn", "flap-opening",
-      "letter-rising", "revealed", "closing",
-    ];
-    return order.indexOf(phase) >= order.indexOf(target);
-  };
-
-  const isLetterOut = past("letter-rising");
-  const isRevealed = past("revealed");
+  const isOpening = phase === "opening" || phase === "revealed";
+  const isRevealed = phase === "revealed";
 
   return (
     <AnimatePresence>
@@ -152,303 +82,305 @@ const WelcomeOverlay = ({ open, onComplete }: WelcomeOverlayProps) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
-          className="fixed inset-0 z-[90] flex items-center justify-center"
+          transition={{ duration: 0.35, ease: "easeOut" }}
+          className="pointer-events-none fixed inset-0 z-[90] flex items-center justify-center px-4 py-8 md:px-6"
           style={{
-            background: "radial-gradient(ellipse at center, hsl(36 20% 94%) 0%, hsl(36 15% 88%) 60%, hsl(36 12% 80%) 100%)",
+            background:
+              "radial-gradient(ellipse at center, hsl(36 22% 94%) 0%, hsl(36 16% 88%) 58%, hsl(36 12% 80%) 100%)",
           }}
           role="dialog"
           aria-modal="true"
           aria-label="Wedding invitation"
         >
-          {/* ── ENVELOPE WRAPPER (shrinks/blurs when letter comes out) ── */}
           <motion.div
-            ref={envelopeRef}
-            initial={{ opacity: 0, y: 20, scale: 0.96 }}
-            animate={
-              phase === "closing"
-                ? { opacity: 0, scale: 0.92, y: 40 }
-                : isLetterOut
-                  ? { opacity: 1, scale: 0.85, y: 80, filter: "blur(3px)" }
-                  : { opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }
-            }
-            transition={{ duration: 0.9, ease: EASE }}
-            className="absolute flex flex-col items-center"
+            animate={phase === "sealed" ? { opacity: 1, y: 0 } : { opacity: 0.34, y: 0 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="pointer-events-none absolute inset-x-0 top-10 flex flex-col items-center text-center"
           >
-            {/* Hint text */}
-            <motion.p
-              animate={past("torn") ? { opacity: 0, y: -8 } : { opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-              className="mb-5 select-none font-sans text-[10px] uppercase tracking-[0.4em]"
-              style={{ color: "hsl(36 20% 55%)" }}
-            >
-              {phase === "sealed" ? "← Drag the seal to tear open →" : "Opening…"}
-            </motion.p>
+            <p className="font-sans text-[10px] uppercase tracking-[0.34em] text-primary/60">
+              Welcome
+            </p>
+            <h1 className="mt-2 font-serif text-[2rem] font-light leading-none text-foreground/80 md:text-[2.5rem]">
+              To The Wedding Celebration Of Nam &amp; Linh
+            </h1>
+          </motion.div>
 
-            {/* ═══════════════════════════════════
-                ENVELOPE
-               ═══════════════════════════════════ */}
+          <div className="relative flex w-full max-w-4xl flex-col items-center">
             <div
               className="relative mx-auto overflow-visible"
               style={{
-                width: `min(${ENV_W}px, 90vw)`,
-                height: FLAP_H + ENV_H,
+                width: `min(${ENV_W}px, 92vw)`,
+                height: FLAP_H + ENV_H + 132,
                 perspective: "900px",
               }}
             >
-              {/* 1. BACK PANEL — the envelope body */}
-              <div
-                className="absolute inset-x-0 rounded-[4px_4px_18px_18px]"
-                style={{
-                  top: FLAP_H,
-                  height: ENV_H,
-                  background: "#efe6d6",
-                  boxShadow: "0 24px 60px rgba(0,0,0,0.16), 0 4px 12px rgba(0,0,0,0.06)",
-                }}
-              />
-
-              {/* 2. LEFT INNER FOLD */}
-              <div
-                className="absolute left-0"
-                style={{
-                  top: FLAP_H,
-                  width: "50%",
-                  height: ENV_H,
-                  background: "linear-gradient(135deg, #eadfce 0%, #e2d5c2 100%)",
-                  clipPath: "polygon(0 0, 100% 50%, 0 100%)",
-                  zIndex: 1,
-                }}
-              />
-
-              {/* 3. RIGHT INNER FOLD */}
-              <div
-                className="absolute right-0"
-                style={{
-                  top: FLAP_H,
-                  width: "50%",
-                  height: ENV_H,
-                  background: "linear-gradient(-135deg, #e3d7c4 0%, #ddd0bc 100%)",
-                  clipPath: "polygon(100% 0, 0 50%, 100% 100%)",
-                  zIndex: 1,
-                }}
-              />
-
-              {/* 4. BOTTOM POCKET FOLD (covers letter, highest z among folds) */}
-              <div
-                className="absolute inset-x-[8px]"
-                style={{
-                  top: FLAP_H,
-                  height: ENV_H,
-                  background: "linear-gradient(0deg, #efe6d6 0%, #e7dcc9 60%, #dfd4c3 100%)",
-                  clipPath: "polygon(0 100%, 50% 32%, 100% 100%)",
-                  zIndex: 5,
-                  borderRadius: "0 0 16px 16px",
-                }}
-              />
-
-              {/* 5. LETTER CARD (hidden inside envelope, stays here until phase) */}
-              {!isLetterOut && (
-                <div
-                  className="absolute overflow-hidden rounded-lg"
-                  style={{
-                    top: FLAP_H + 14,
-                    left: "12%",
-                    right: "12%",
-                    height: ENV_H - 28,
-                    zIndex: 3,
-                    background: "#fbf7f0",
-                    border: "1px solid hsl(36 25% 90%)",
-                  }}
-                />
-              )}
-
-              {/* 6. TOP FLAP (triangular, rotates open) */}
               <motion.div
                 animate={
-                  past("flap-opening")
-                    ? { rotateX: -180, opacity: 0.4 }
-                    : { rotateX: 0, opacity: 1 }
+                  isOpening
+                    ? { opacity: 1, y: -132, scale: 1.015 }
+                    : { opacity: 0, y: 88, scale: 0.97 }
                 }
                 transition={{ duration: 0.9, ease: EASE }}
-                className="absolute inset-x-0"
-                style={{
-                  top: 0,
-                  height: FLAP_H,
-                  zIndex: past("flap-opening") ? 0 : 10,
-                  transformOrigin: `center ${FLAP_H}px`,
-                  transformStyle: "preserve-3d",
-                  clipPath: "polygon(0 0, 100% 0, 50% 100%)",
-                  background: "linear-gradient(180deg, #f4ecdf 0%, #e7dcc9 70%, #ddd0bc 100%)",
-                  borderLeft: "1px solid #d5c9b6",
-                  borderRight: "1px solid #d5c9b6",
-                  borderTop: "1px solid #d5c9b6",
-                }}
-              />
-
-              {/* 7. TEAR STRIP */}
-              <AnimatePresence>
-                {!past("torn") && (
-                  <motion.div
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.25 }}
-                    className="absolute inset-x-0"
-                    style={{
-                      top: FLAP_H - TEAR_H / 2,
-                      height: TEAR_H,
-                      zIndex: 15,
-                    }}
-                  >
-                    {/* Centre strip background (fades during drag) */}
-                    <motion.div
-                      style={{ opacity: tearCenterOpacity }}
-                      className="absolute inset-0"
-                    >
-                      <div
-                        className="absolute inset-0 rounded-full"
-                        style={{
-                          background: "linear-gradient(180deg, #f0e8da 0%, #e4d9c8 100%)",
-                          border: "1px solid #d5c9b6",
-                          boxShadow: "0 1px 4px rgba(60,40,15,0.08)",
-                        }}
-                      />
-                      {/* perforation */}
-                      <div className="absolute inset-y-0 left-6 right-6 flex items-center">
-                        <div
-                          className="h-px w-full"
-                          style={{
-                            backgroundImage:
-                              "repeating-linear-gradient(90deg, #c4b8a4 0px, #c4b8a4 4px, transparent 4px, transparent 9px)",
-                          }}
-                        />
-                      </div>
-                    </motion.div>
-
-                    {/* LEFT HALF */}
-                    <motion.div
-                      style={{
-                        x: leftHalfX,
-                        clipPath: "polygon(0 0, 100% 0, 94% 100%, 0 100%)",
-                        background: "linear-gradient(180deg, #f0e8da 0%, #e4d9c8 100%)",
-                        border: "1px solid #d5c9b6",
-                      }}
-                      animate={phase === "tearing" ? { x: -240, rotate: -6, opacity: 0 } : {}}
-                      transition={{ duration: 0.4, ease: EASE }}
-                      className="absolute left-0 top-0 h-full w-1/2 rounded-l-full"
-                    />
-
-                    {/* RIGHT HALF */}
-                    <motion.div
-                      style={{
-                        x: rightHalfX,
-                        clipPath: "polygon(6% 0, 100% 0, 100% 100%, 0 100%)",
-                        background: "linear-gradient(180deg, #f0e8da 0%, #e4d9c8 100%)",
-                        border: "1px solid #d5c9b6",
-                      }}
-                      animate={phase === "tearing" ? { x: 240, rotate: 6, opacity: 0 } : {}}
-                      transition={{ duration: 0.4, ease: EASE }}
-                      className="absolute right-0 top-0 h-full w-1/2 rounded-r-full"
-                    />
-
-                    {/* WAX SEAL DRAG HANDLE */}
-                    <motion.div
-                      drag="x"
-                      dragConstraints={{ left: -180, right: 180 }}
-                      dragElastic={0.06}
-                      style={{ x: dragX }}
-                      onPointerDown={handlePointerDown as any}
-                      onDragEnd={handleDragEnd}
-                      className="absolute left-1/2 top-1/2 z-[16] -translate-x-1/2 -translate-y-1/2 cursor-grab active:cursor-grabbing"
-                    >
-                      <WaxSeal />
-                    </motion.div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </motion.div>
-
-          {/* ══════════════════════════════════════════════
-              INVITATION LETTER — fixed centered on screen
-             ══════════════════════════════════════════════ */}
-          <motion.div
-            initial={{ opacity: 0, y: "18%", scale: 0.92 }}
-            animate={
-              phase === "closing"
-                ? { opacity: 0, y: "-8%", scale: 1.05 }
-                : isLetterOut
-                  ? { opacity: 1, y: "-4%", scale: 1 }
-                  : { opacity: 0, y: "18%", scale: 0.92 }
-            }
-            transition={{ duration: 1.0, ease: EASE }}
-            className="fixed left-1/2 top-1/2 z-[95] flex -translate-x-1/2 -translate-y-1/2 flex-col items-center"
-            style={{ pointerEvents: isRevealed ? "auto" : "none" }}
-          >
-            <div
-              className="w-[min(520px,88vw)] rounded-[20px] px-8 py-10 text-center md:px-12 md:py-14"
-              style={{
-                background: "#fbf7f0",
-                border: "1px solid hsl(36 25% 90%)",
-                boxShadow:
-                  "0 40px 100px rgba(0,0,0,0.18), 0 0 0 1px hsl(36 20% 92%), 0 0 80px rgba(180,150,100,0.06)",
-              }}
-            >
-              <motion.div
-                animate={isRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="flex flex-col items-center"
+                className="pointer-events-auto absolute inset-x-[-22px] z-[40]"
+                style={{ top: BODY_TOP - 6, pointerEvents: isRevealed ? "auto" : "none" }}
               >
-                <div className="mb-4">
-                  <WeddingLogo size="small" showText={false} />
-                </div>
-                <p
-                  className="mb-3 font-sans text-[9px] uppercase tracking-[0.35em]"
-                  style={{ color: "hsl(36 30% 55%)" }}
+                <div
+                  className="relative overflow-hidden rounded-[30px] p-[1.5px] text-center"
+                  style={{
+                    boxShadow: "0 34px 78px rgba(0,0,0,0.16), 0 10px 24px rgba(124,92,60,0.08)",
+                  }}
                 >
-                  You Are Invited
-                </p>
-                <h2
-                  className="font-serif text-4xl font-light leading-none md:text-6xl"
-                  style={{ color: "hsl(36 25% 25%)" }}
-                >
-                  Nam &amp; Linh
-                </h2>
-                <p
-                  className="mx-auto mt-4 max-w-[280px] font-sans text-sm leading-relaxed md:text-base"
-                  style={{ color: "hsl(36 15% 45%)" }}
-                >
-                  Join us in Vietnam as we celebrate our wedding with the people we love most.
-                </p>
-                <p
-                  className="mt-4 font-sans text-[10px] uppercase tracking-[0.28em]"
-                  style={{ color: "hsl(36 25% 60%)" }}
-                >
-                  November 2026
-                </p>
-
-                {/* Enter button inside the card */}
-                <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={isRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
-                  transition={{ duration: 0.5, ease: "easeOut", delay: 0.8 }}
-                  className="mt-8"
-                >
-                  <button
-                    type="button"
-                    onClick={handleEnter}
-                    className="inline-flex items-center rounded-full px-10 py-3 font-sans text-[10px] uppercase tracking-[0.32em] transition-all duration-300 hover:shadow-lg"
+                  <motion.div
+                    aria-hidden="true"
+                    animate={{ rotate: isRevealed ? 360 : 180 }}
+                    transition={{ duration: isRevealed ? 14 : 0.9, repeat: isRevealed ? Infinity : 0, ease: "linear" }}
+                    className="pointer-events-none absolute inset-[-42%] opacity-75"
                     style={{
-                      background: "linear-gradient(180deg, hsl(30 35% 48%) 0%, hsl(28 32% 38%) 100%)",
-                      color: "hsl(40 40% 96%)",
-                      border: "1px solid hsl(28 28% 35%)",
-                      boxShadow: "0 4px 16px rgba(60,40,15,0.2)",
+                      background:
+                        "conic-gradient(from 0deg, rgba(255,227,184,0) 0deg, rgba(255,205,132,0.94) 60deg, rgba(255,242,214,0.24) 108deg, rgba(255,188,124,0.88) 168deg, rgba(255,229,186,0.18) 220deg, rgba(255,213,146,0.9) 282deg, rgba(255,227,184,0) 360deg)",
+                    }}
+                  />
+
+                  <div
+                    className="pointer-events-none absolute inset-[1.5px] rounded-[28px]"
+                    style={{
+                      background:
+                        "linear-gradient(180deg, rgba(255,252,247,0.985) 0%, rgba(252,247,239,1) 45%, rgba(247,238,226,1) 100%)",
+                    }}
+                  />
+
+                  <div className="pointer-events-none absolute inset-[10px] rounded-[22px] border border-[#eadfcd]/90" />
+
+                  <div
+                    className="pointer-events-none absolute inset-x-10 top-0 h-24"
+                    style={{
+                      background:
+                        "radial-gradient(circle at top, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0) 72%)",
+                    }}
+                  />
+
+                  <div className="relative z-10 flex flex-col items-center px-10 py-11 md:px-12 md:py-12">
+                    <div className="mb-5 flex w-full items-center gap-4 text-[#d8c0a1]/90">
+                      <div className="h-px flex-1 bg-gradient-to-r from-transparent to-current" />
+                      <div className="h-1.5 w-1.5 rounded-full bg-current" />
+                      <div className="h-px flex-1 bg-gradient-to-l from-transparent to-current" />
+                    </div>
+
+                    <div className="mb-4 scale-[0.9]">
+                      <WeddingLogo size="default" showText={false} />
+                    </div>
+
+                    <p className="mb-4 bg-gradient-to-r from-[#b97743] via-[#d8a46b] to-[#c88756] bg-clip-text font-sans text-[13px] uppercase tracking-[0.38em] text-transparent">
+                      You Are Invited
+                    </p>
+
+                    <h2 className="whitespace-nowrap bg-gradient-to-r from-[#865a31] via-[#d7aa6a] to-[#a9683e] bg-clip-text font-serif text-[3.85rem] font-light leading-none text-transparent md:text-[4.5rem]">
+                      Nam &amp; Linh
+                    </h2>
+
+                    <p className="mx-auto mt-5 max-w-[360px] font-sans text-[1.05rem] leading-8 text-foreground/72">
+                      Join us in Vietnam as we celebrate our wedding with the people we love most.
+                    </p>
+
+                    <div className="mt-6 rounded-full border border-[#e2cfb4] bg-[#f6ecde] px-5 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+                      <p className="bg-gradient-to-r from-[#9c7449] via-[#c19867] to-[#9c7449] bg-clip-text font-sans text-[11px] uppercase tracking-[0.3em] text-transparent">
+                        November 2026
+                      </p>
+                    </div>
+
+                    <div className="mt-8">
+                      <button
+                        type="button"
+                        onClick={handleEnter}
+                        className="group inline-flex min-w-[17.5rem] items-center justify-center gap-2 rounded-full border border-[#936a41] px-9 py-3.5 font-sans text-[10px] uppercase tracking-[0.34em] text-[#fff8ef] transition-all duration-300 hover:-translate-y-0.5"
+                        style={{
+                          background:
+                            "linear-gradient(135deg, rgba(209,156,91,1) 0%, rgba(186,131,73,1) 42%, rgba(149,100,55,1) 100%)",
+                          boxShadow:
+                            "0 14px 24px rgba(120,86,50,0.22), inset 0 1px 0 rgba(255,243,225,0.42)",
+                        }}
+                      >
+                        <span>Enter The Wedding Site</span>
+                        <span className="text-[0.8rem] transition-transform duration-300 group-hover:translate-x-0.5">
+                          →
+                        </span>
+                      </button>
+                    </div>
+
+                    <div className="mt-6 flex w-full items-center gap-4 text-[#d8c0a1]/80">
+                      <div className="h-px flex-1 bg-gradient-to-r from-transparent to-[#d8c0a1]" />
+                      <div className="h-1.5 w-1.5 rounded-full bg-[#d8c0a1]" />
+                      <div className="h-px flex-1 bg-gradient-to-l from-transparent to-[#d8c0a1]" />
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              <motion.div
+                animate={
+                  isOpening
+                    ? { opacity: 0.16, y: 42, scale: 0.88 }
+                    : { opacity: 1, y: 0, scale: 1 }
+                }
+                transition={{ duration: 0.78, ease: EASE }}
+                className="pointer-events-none absolute inset-0 z-[8] origin-center"
+              >
+                <motion.div
+                  animate={isOpening ? { opacity: 0, y: -18, scaleY: 0.94 } : { opacity: 1, y: 0, scaleY: 1 }}
+                  transition={{ duration: 0.56, ease: EASE }}
+                  className="absolute inset-x-[22px]"
+                  style={{
+                    top: BODY_TOP + 4,
+                    height: 138,
+                    zIndex: 12,
+                    clipPath: "polygon(0 0, 100% 0, 50% 100%)",
+                    background: "linear-gradient(180deg, #f5edde 0%, #ece1cf 58%, #e2d6c2 100%)",
+                    borderLeft: "1px solid rgba(213,201,182,0.72)",
+                    borderRight: "1px solid rgba(213,201,182,0.72)",
+                    borderBottom: "1px solid rgba(213,201,182,0.72)",
+                    transformOrigin: "center top",
+                  }}
+                />
+
+                <div
+                  className="absolute inset-x-0 rounded-[6px_6px_22px_22px]"
+                  style={{
+                    top: BODY_TOP,
+                    height: ENV_H,
+                    background: "linear-gradient(180deg, #efe5d5 0%, #eadfce 100%)",
+                    boxShadow: "0 24px 60px rgba(0,0,0,0.16), 0 6px 14px rgba(60,40,15,0.06)",
+                  }}
+                />
+
+                <div
+                  className="absolute left-0"
+                  style={{
+                    top: BODY_TOP + 6,
+                    width: "50%",
+                    height: ENV_H - 8,
+                    background: "linear-gradient(135deg, #e8dccb 0%, #dfd2bf 100%)",
+                    clipPath: "polygon(0 0, 100% 50%, 0 100%)",
+                    zIndex: 2,
+                  }}
+                />
+
+                <div
+                  className="absolute right-0"
+                  style={{
+                    top: BODY_TOP + 6,
+                    width: "50%",
+                    height: ENV_H - 8,
+                    background: "linear-gradient(-135deg, #e5d8c6 0%, #dccfbc 100%)",
+                    clipPath: "polygon(100% 0, 0 50%, 100% 100%)",
+                    zIndex: 2,
+                  }}
+                />
+
+                <div
+                  className="absolute inset-x-[12px] overflow-hidden rounded-b-[22px]"
+                  style={{
+                    top: BODY_TOP + 10,
+                    height: ENV_H - 12,
+                    background: "linear-gradient(180deg, #f0e6d7 0%, #e9decd 100%)",
+                    zIndex: 3,
+                  }}
+                />
+
+                <div
+                  className="absolute inset-x-0"
+                  style={{
+                    top: BODY_TOP + 10,
+                    height: ENV_H - 12,
+                    background: "linear-gradient(180deg, #efe4d3 0%, #e4d6c2 100%)",
+                    clipPath: "polygon(0 100%, 50% 28%, 100% 100%)",
+                    borderBottomLeftRadius: "22px",
+                    borderBottomRightRadius: "22px",
+                    zIndex: 8,
+                  }}
+                />
+
+                <motion.div
+                  animate={isOpening ? { opacity: 1, y: -6, scale: 1 } : { opacity: 0, y: 18, scale: 0.94 }}
+                  transition={{ duration: 0.96, ease: EASE }}
+                  className="absolute inset-x-0"
+                  style={{
+                    top: BODY_TOP - FLAP_H + 4,
+                    height: FLAP_H,
+                    zIndex: 14,
+                    clipPath: "polygon(0 100%, 50% 0, 100% 100%)",
+                    background: "linear-gradient(180deg, #ddd0bc 0%, #eadfce 38%, #f4ecdf 100%)",
+                    borderLeft: "1px solid #d5c9b6",
+                    borderRight: "1px solid #d5c9b6",
+                    borderBottom: "1px solid #d5c9b6",
+                  }}
+                />
+              </motion.div>
+
+              {phase === "sealed" && (
+                <motion.div
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.28, ease: "easeOut" }}
+                  className="absolute left-1/2 z-[26] -translate-x-1/2"
+                  style={{
+                    top: BODY_TOP + 78,
+                    marginLeft: "-30px",
+                    pointerEvents: "auto",
+                  }}
+                >
+                  <motion.button
+                    type="button"
+                    drag="y"
+                    dragConstraints={{ top: -10, bottom: 48 }}
+                    dragElastic={0.08}
+                    dragSnapToOrigin
+                    onDragEnd={handlePullEnd}
+                    onClick={startOpening}
+                    aria-label="Pull or click the monogram to open"
+                    className="cursor-grab rounded-full active:cursor-grabbing"
+                    style={{
+                      background:
+                        "radial-gradient(circle at 50% 50%, rgba(255,251,245,0.98) 0%, rgba(255,247,237,0.82) 55%, rgba(255,247,237,0) 88%)",
                     }}
                   >
-                    Enter Wedding Site
-                  </button>
+                    <div className="rounded-full border border-[#d9c9b7] bg-[#fbf7f0] p-1.5 shadow-[0_12px_24px_rgba(88,64,40,0.16)]">
+                      <div className="scale-[0.84]">
+                        <WeddingLogo size="small" showText={false} />
+                      </div>
+                    </div>
+                  </motion.button>
                 </motion.div>
-              </motion.div>
+              )}
             </div>
-          </motion.div>
+
+            {phase === "sealed" && (
+              <motion.div
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.24, ease: "easeOut" }}
+                className="-mt-2"
+              >
+                <div className="flex items-center justify-center gap-3 text-[#b9966c]">
+                  <div className="h-px w-10 bg-gradient-to-r from-transparent to-current" />
+                  <svg viewBox="0 0 140 22" className="h-6 w-[8.5rem]" aria-hidden="true">
+                    <path
+                      d="M6 11C20 11 22 4 30 4C38 4 40 11 54 11C68 11 70 4 78 4C86 4 88 11 102 11C116 11 118 4 126 4C132 4 135 8 134 11C135 14 132 18 126 18C118 18 116 11 102 11C88 11 86 18 78 18C70 18 68 11 54 11C40 11 38 18 30 18C22 18 20 11 6 11Z"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <circle cx="70" cy="11" r="2.1" fill="currentColor" />
+                  </svg>
+                  <div className="h-px w-10 bg-gradient-to-l from-transparent to-current" />
+                </div>
+                <div className="mt-2 rounded-full border border-[#e0ceb7] bg-[linear-gradient(180deg,#fbf3e8_0%,#f4e8d6_100%)] px-6 py-3 shadow-[0_12px_24px_rgba(150,118,80,0.1),inset_0_1px_0_rgba(255,255,255,0.82)]">
+                  <p className="font-sans text-[10px] uppercase tracking-[0.3em] text-primary/70">
+                    Click or gently pull the monogram to open your invitation
+                  </p>
+                </div>
+              </motion.div>
+            )}
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

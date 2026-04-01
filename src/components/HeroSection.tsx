@@ -15,16 +15,7 @@ const HeroSection = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-[#18120e]/56 via-[#18120e]/28 to-[#18120e]/64" />
       </div>
 
-      <div className="relative z-10 mx-auto flex min-h-[76vh] w-full max-w-6xl flex-col justify-between pb-10 pt-2 md:min-h-[80vh] md:pb-14">
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2 }}
-          className="pt-1 text-center font-serif text-[4rem] font-light leading-[0.9] tracking-[0.03em] text-white sm:text-[4.6rem] md:pt-0 md:text-[5.6rem] lg:text-[6.2rem]"
-        >
-          Linh &amp; Nam
-        </motion.h1>
-
+      <div className="relative z-10 mx-auto flex min-h-[76vh] w-full max-w-6xl flex-col justify-end pb-10 pt-2 md:min-h-[80vh] md:pb-14">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

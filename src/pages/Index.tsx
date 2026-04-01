@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import WeddingNav from "@/components/WeddingNav";
 import WelcomeOverlay from "@/components/WelcomeOverlay";
 import HeroSection from "@/components/HeroSection";
@@ -12,18 +12,10 @@ import RSVPSection from "@/components/RSVPSection";
 import FAQSection from "@/components/FAQSection";
 import WeddingFooter from "@/components/WeddingFooter";
 
-const STORAGE_KEY = "wedding-welcome-dismissed";
-
 const Index = () => {
-  const [isWelcomeOpen, setIsWelcomeOpen] = useState(false);
-
-  useEffect(() => {
-    const dismissed = window.sessionStorage.getItem(STORAGE_KEY) === "true";
-    setIsWelcomeOpen(!dismissed);
-  }, []);
+  const [isWelcomeOpen, setIsWelcomeOpen] = useState(true);
 
   const handleInvitationComplete = () => {
-    window.sessionStorage.setItem(STORAGE_KEY, "true");
     setIsWelcomeOpen(false);
   };
 

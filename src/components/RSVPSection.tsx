@@ -1,9 +1,15 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import AnimatedSection from "./AnimatedSection";
+import WeddingLogo from "./WeddingLogo";
 import { toast } from "sonner";
 
-const SEND_ANIMATION_MS = 3200;
+const SEND_ANIMATION_MS = 2500;
+const ENV_W = 356;
+const ENV_H = 224;
+const FLAP_H = 122;
+const BODY_TOP = 118;
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 const SendingAnimation = () => {
   return (
@@ -13,24 +19,160 @@ const SendingAnimation = () => {
           Sending Your Reply
         </p>
         <h3 className="mt-4 font-serif text-3xl font-light text-foreground md:text-4xl">
-          Folding Your Note Into An Envelope
+          Sealing Your Note And Sending It Away
         </h3>
       </div>
 
-      <div className="relative mx-auto mt-12 h-[340px] w-full max-w-[440px] overflow-hidden">
+      <div
+        className="relative mx-auto mt-12 h-[380px] w-full max-w-[440px] overflow-hidden"
+        style={{ perspective: "900px" }}
+      >
+        <motion.div
+          initial={{ opacity: 1, x: 0, y: 0, rotate: 0, scale: 1 }}
+          animate={{ opacity: 0, x: 136, y: -126, rotate: -10, scale: 0.84 }}
+          transition={{
+            duration: 0.92,
+            delay: 1.05,
+            ease: EASE,
+          }}
+          className="absolute inset-x-0 top-0 z-[8] mx-auto h-[340px]"
+          style={{ width: ENV_W }}
+        >
+          <motion.div
+            initial={{ opacity: 1, y: 0, scale: 1 }}
+            animate={{ opacity: 0.12, y: 48, scale: 0.88 }}
+            transition={{ duration: 0.82, delay: 0.18, ease: EASE }}
+            className="absolute inset-0 z-[1] origin-center"
+          >
+            <div
+              className="absolute inset-x-0 rounded-[6px_6px_22px_22px]"
+              style={{
+                top: BODY_TOP,
+                height: ENV_H,
+                background: "linear-gradient(180deg, #efe5d5 0%, #eadfce 100%)",
+                boxShadow: "0 24px 60px rgba(0,0,0,0.16), 0 6px 14px rgba(60,40,15,0.06)",
+              }}
+            />
+
+            <div
+              className="absolute left-0"
+              style={{
+                top: BODY_TOP + 6,
+                width: "50%",
+                height: ENV_H - 8,
+                background: "linear-gradient(135deg, #e8dccb 0%, #dfd2bf 100%)",
+                clipPath: "polygon(0 0, 100% 50%, 0 100%)",
+                zIndex: 2,
+              }}
+            />
+
+            <div
+              className="absolute right-0"
+              style={{
+                top: BODY_TOP + 6,
+                width: "50%",
+                height: ENV_H - 8,
+                background: "linear-gradient(-135deg, #e5d8c6 0%, #dccfbc 100%)",
+                clipPath: "polygon(100% 0, 0 50%, 100% 100%)",
+                zIndex: 2,
+              }}
+            />
+
+            <div
+              className="absolute inset-x-[12px] overflow-hidden rounded-b-[22px]"
+              style={{
+                top: BODY_TOP + 10,
+                height: ENV_H - 12,
+                background: "linear-gradient(180deg, #f0e6d7 0%, #e9decd 100%)",
+                zIndex: 3,
+              }}
+            />
+
+            <div
+              className="absolute inset-x-0"
+              style={{
+                top: BODY_TOP + 10,
+                height: ENV_H - 12,
+                background: "linear-gradient(180deg, #efe4d3 0%, #e4d6c2 100%)",
+                clipPath: "polygon(0 100%, 50% 28%, 100% 100%)",
+                borderBottomLeftRadius: "22px",
+                borderBottomRightRadius: "22px",
+                zIndex: 8,
+              }}
+            />
+
+            <motion.div
+              initial={{ opacity: 1, y: 0, scale: 1 }}
+              animate={{ opacity: 0, y: 22, scale: 0.94 }}
+              transition={{ duration: 0.54, delay: 0.16, ease: EASE }}
+              className="absolute inset-x-[22px]"
+              style={{
+                top: BODY_TOP - FLAP_H + 8,
+                height: FLAP_H,
+                zIndex: 1,
+                clipPath: "polygon(0 100%, 50% 0, 100% 100%)",
+                background: "linear-gradient(180deg, #f5edde 0%, #ece1cf 58%, #e2d6c2 100%)",
+                borderLeft: "1px solid rgba(213,201,182,0.72)",
+                borderRight: "1px solid rgba(213,201,182,0.72)",
+                borderTop: "1px solid rgba(213,201,182,0.72)",
+              }}
+            />
+
+            <motion.div
+              initial={{ opacity: 0, y: -24, scaleY: 0.9 }}
+              animate={{ opacity: 1, y: 0, scaleY: 1 }}
+              transition={{ duration: 0.6, delay: 0.3, ease: EASE }}
+              className="absolute inset-x-[22px]"
+              style={{
+                top: BODY_TOP + 4,
+                height: 136,
+                zIndex: 12,
+                clipPath: "polygon(0 0, 100% 0, 50% 100%)",
+                background: "linear-gradient(180deg, #f5edde 0%, #ece1cf 58%, #e2d6c2 100%)",
+                borderLeft: "1px solid rgba(213,201,182,0.72)",
+                borderRight: "1px solid rgba(213,201,182,0.72)",
+                borderBottom: "1px solid rgba(213,201,182,0.72)",
+              }}
+            />
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.38, y: -22 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.34, delay: 0.68, ease: EASE }}
+              className="absolute left-1/2 z-[14] -translate-x-1/2"
+              style={{
+                top: BODY_TOP + 82,
+              }}
+            >
+              <div className="rounded-full border border-[#d9c9b7] bg-[#fbf7f0] p-1.5 shadow-[0_12px_24px_rgba(88,64,40,0.16)]">
+                <div className="scale-[0.8]">
+                  <WeddingLogo size="small" showText={false} />
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+
         <motion.div
           initial={{ y: 0, scale: 1, opacity: 1 }}
-          animate={{
-            y: [0, 0, 78, 116],
-            scale: [1, 1, 0.98, 0.94],
-            opacity: [1, 1, 1, 0.98],
-          }}
-          transition={{ duration: 1.18, times: [0, 0.22, 0.74, 1], ease: [0.22, 1, 0.36, 1] }}
-          className="absolute left-1/2 top-3 z-[1] h-[170px] w-[244px] -translate-x-1/2 rounded-[20px] border border-[#e6d7c4] bg-[#fffdfa] px-7 py-7 shadow-[0_22px_40px_rgba(104,72,45,0.08)]"
+          animate={{ y: 126, scale: 0.94, opacity: 0.12 }}
+          transition={{ duration: 1.05, ease: EASE }}
+          className="absolute left-1/2 top-4 z-[10] h-[186px] w-[272px] rounded-[24px] border border-[#e6d7c4] bg-[#fffdfa] px-8 py-8 shadow-[0_22px_40px_rgba(104,72,45,0.08)]"
+          style={{ marginLeft: "-136px", willChange: "transform, opacity" }}
         >
-          <p className="text-center font-serif text-[2rem] font-light text-foreground">RSVP</p>
+          <div className="mb-5 flex items-center justify-center gap-3 text-[#d8c0a1]/90">
+            <div className="h-px w-14 bg-gradient-to-r from-transparent to-current" />
+            <div className="h-1.5 w-1.5 rounded-full bg-current" />
+            <div className="h-px w-14 bg-gradient-to-l from-transparent to-current" />
+          </div>
+
+          <p className="text-center font-serif text-[2.1rem] font-light text-foreground">RSVP</p>
+          <p className="mt-3 text-center font-sans text-[10px] uppercase tracking-[0.32em] text-primary/60">
+            Reply Enclosed With Love
+          </p>
+
           <div className="mt-5 space-y-3">
-            <div className="mx-auto h-[1px] w-[72%] bg-primary/20" />
+            <div className="mx-auto h-[1px] w-[74%] bg-primary/20" />
             <div className="mx-auto h-[1px] w-[58%] bg-primary/14" />
             <div className="mx-auto h-[1px] w-[66%] bg-primary/14" />
           </div>
@@ -38,70 +180,16 @@ const SendingAnimation = () => {
 
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: [0, 0, 0.18, 0] }}
-          transition={{ duration: 1.06, delay: 0.18, times: [0, 0.38, 0.7, 1], ease: "easeOut" }}
-          className="absolute left-1/2 top-[168px] z-[2] h-[18px] w-[244px] -translate-x-1/2 rounded-full bg-primary/8 blur-md"
+          animate={{ opacity: 0 }}
+          transition={{ duration: 0.9, ease: "easeOut" }}
+          className="absolute left-1/2 top-[190px] z-[2] h-[18px] w-[268px] -translate-x-1/2 rounded-full bg-primary/8 blur-md"
         />
-
-        <motion.div
-          initial={{ rotateX: 0 }}
-          animate={{ rotateX: [0, 0, -176] }}
-          transition={{ duration: 0.8, delay: 1.04, times: [0, 0.18, 1], ease: [0.22, 1, 0.36, 1] }}
-          className="absolute left-1/2 top-[96px] z-[5] h-[126px] w-[356px] -translate-x-1/2 origin-top"
-          style={{
-            transformStyle: "preserve-3d",
-            clipPath: "polygon(0 0, 100% 0, 50% 100%)",
-            background:
-              "linear-gradient(180deg, rgba(247,238,225,1) 0%, rgba(237,225,207,1) 100%)",
-            border: "1px solid rgba(217,194,165,0.72)",
-          }}
-        />
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.4, y: -28 }}
-          animate={{ opacity: [0, 0, 1, 1], scale: [0.4, 0.4, 1.08, 1], y: [-28, -28, 0, 0] }}
-          transition={{ duration: 0.62, delay: 1.68, times: [0, 0.32, 0.72, 1], ease: [0.22, 1, 0.36, 1] }}
-          className="absolute left-1/2 top-[176px] z-[6] flex h-[56px] w-[56px] -translate-x-1/2 items-center justify-center rounded-full border border-primary/28 bg-background shadow-[0_14px_28px_rgba(104,72,45,0.12)]"
-        >
-          <div className="h-[18px] w-[18px] rounded-full border border-primary/50 bg-primary/10" />
-        </motion.div>
-
-        <motion.div
-          initial={{ x: 0, y: 0, rotate: 0, scale: 1, opacity: 1 }}
-          animate={{
-            x: [0, 0, 20, 138],
-            y: [0, 0, -26, -146],
-            rotate: [0, 0, -3, -11],
-            scale: [1, 1, 0.98, 0.86],
-            opacity: [1, 1, 1, 0],
-          }}
-          transition={{ duration: 1.08, delay: 1.95, times: [0, 0.22, 0.58, 1], ease: [0.22, 1, 0.36, 1] }}
-          className="absolute inset-x-0 bottom-6 z-[3] mx-auto h-[192px] w-[356px]"
-        >
-          <div className="absolute inset-x-0 bottom-0 h-[132px] rounded-b-[30px] border border-[#e4d6c3] bg-[linear-gradient(180deg,#faf6f0_0%,#f5ede3_100%)]" />
-          <div
-            className="absolute bottom-0 left-0 h-[132px] w-1/2 border-r border-[#eadccc]/70"
-            style={{ clipPath: "polygon(0 14%, 100% 58%, 100% 100%, 0 100%)" }}
-          />
-          <div
-            className="absolute bottom-0 right-0 h-[132px] w-1/2 border-l border-[#eadccc]/70"
-            style={{ clipPath: "polygon(0 58%, 100% 14%, 100% 100%, 0 100%)" }}
-          />
-          <div
-            className="absolute inset-x-0 bottom-0 h-[132px]"
-            style={{
-              clipPath: "polygon(0 14%, 50% 56%, 100% 14%, 100% 100%, 0 100%)",
-              background:
-                "linear-gradient(180deg, rgba(246,238,228,1) 0%, rgba(240,229,216,1) 100%)",
-            }}
-          />
-        </motion.div>
 
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: [0, 0.18, 0.44, 0] }}
-          transition={{ duration: 1.08, delay: 2.04, times: [0, 0.24, 0.54, 1], ease: "easeOut" }}
-          className="absolute left-[11%] top-[64%] h-[2px] w-[220px] bg-gradient-to-r from-primary/0 via-primary/24 to-primary/0"
+          animate={{ opacity: [0, 0.48, 0] }}
+          transition={{ duration: 0.82, delay: 1.08, times: [0, 0.34, 1], ease: "easeOut" }}
+          className="absolute left-[14%] top-[66%] h-[2px] w-[214px] bg-gradient-to-r from-primary/0 via-primary/24 to-primary/0"
         />
       </div>
     </div>
@@ -114,6 +202,7 @@ const RSVPSection = () => {
     attending: "",
     event: "",
     dietary: "",
+    wishes: "",
   });
   const [submitPhase, setSubmitPhase] = useState<"idle" | "sending" | "done">("idle");
 
@@ -249,6 +338,14 @@ const RSVPSection = () => {
                 value={formData.dietary}
                 onChange={(e) => setFormData({ ...formData, dietary: e.target.value })}
                 className={inputClasses}
+              />
+
+              <textarea
+                placeholder="Send your wishes to the couple"
+                value={formData.wishes}
+                onChange={(e) => setFormData({ ...formData, wishes: e.target.value })}
+                rows={3}
+                className="min-h-[96px] w-full resize-none rounded-[18px] border border-border bg-transparent px-4 py-4 text-sm font-sans text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none transition-colors"
               />
 
               <div className="pt-4 text-center">
