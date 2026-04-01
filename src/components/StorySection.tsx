@@ -67,6 +67,26 @@ const MobileJourneyDivider = () => (
   </div>
 );
 
+const JourneyTitle = ({ title, subtitle }: { title: string; subtitle?: string }) => (
+  <div className="mt-5 flex w-full max-w-[16rem] items-center gap-3">
+    <span className="h-px flex-1 bg-[linear-gradient(90deg,transparent_0%,rgba(190,152,116,0.36)_100%)]" />
+    <div className="min-w-0 rounded-[20px] border border-primary/12 bg-[linear-gradient(180deg,rgba(255,252,247,0.98)_0%,rgba(249,242,233,0.94)_100%)] px-4 py-3 text-center shadow-[0_18px_34px_rgba(183,137,92,0.12)]">
+      <p
+        className="font-serif text-[1.18rem] font-light leading-[1.15] text-foreground md:text-[1.28rem]"
+        style={{ textWrap: "balance" }}
+      >
+        {title}
+      </p>
+      {subtitle ? (
+        <p className="mt-1.5 font-sans text-[0.58rem] uppercase tracking-[0.24em] text-primary/50">
+          {subtitle}
+        </p>
+      ) : null}
+    </div>
+    <span className="h-px flex-1 bg-[linear-gradient(90deg,rgba(190,152,116,0.36)_0%,transparent_100%)]" />
+  </div>
+);
+
 const StorySection = () => {
   return (
     <section id="story" className="bg-background py-20 md:py-24">
@@ -106,9 +126,9 @@ const StorySection = () => {
 
         <div className="relative space-y-16 md:space-y-24">
           <div className="pointer-events-none absolute inset-y-8 left-1/2 hidden -translate-x-1/2 md:block">
-            <div className="absolute inset-y-0 left-1/2 w-8 -translate-x-1/2 bg-[radial-gradient(circle,rgba(196,162,126,0.16)_0%,rgba(196,162,126,0.06)_42%,transparent_72%)] blur-[12px]" />
-            <div className="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-[linear-gradient(180deg,rgba(188,149,111,0.08)_0%,rgba(188,149,111,0.34)_10%,rgba(188,149,111,0.22)_90%,rgba(188,149,111,0.06)_100%)]" />
-            <div className="absolute inset-y-0 left-1/2 w-[6px] -translate-x-1/2 bg-[radial-gradient(circle,rgba(188,149,111,0.22)_1px,transparent_1.6px)] [background-size:6px_20px] opacity-70" />
+            <div className="absolute inset-y-0 left-1/2 w-12 -translate-x-1/2 bg-[radial-gradient(circle,rgba(196,162,126,0.24)_0%,rgba(196,162,126,0.1)_38%,transparent_72%)] blur-[14px]" />
+            <div className="absolute inset-y-0 left-1/2 w-[2px] -translate-x-1/2 bg-[linear-gradient(180deg,rgba(188,149,111,0.12)_0%,rgba(188,149,111,0.56)_12%,rgba(188,149,111,0.4)_88%,rgba(188,149,111,0.1)_100%)]" />
+            <div className="absolute inset-y-0 left-1/2 w-[10px] -translate-x-1/2 bg-[radial-gradient(circle,rgba(188,149,111,0.3)_1.2px,transparent_1.9px)] [background-size:10px_20px] opacity-90" />
           </div>
 
           {milestones.map((milestone, index) => {
@@ -131,10 +151,7 @@ const StorySection = () => {
                           role="img"
                         />
                         <div className="flex flex-col justify-center p-6 text-center md:p-7 md:text-right">
-                          <h3 className="font-serif text-3xl font-light leading-[1.05] text-foreground md:text-[2.15rem]">
-                            {milestone.title}
-                          </h3>
-                          <p className="mt-4 max-w-md font-sans text-sm leading-7 text-muted-foreground md:ml-auto md:mr-0 md:text-[0.95rem]">
+                          <p className="max-w-md font-sans text-sm leading-7 text-muted-foreground md:ml-auto md:mr-0 md:text-[0.95rem]">
                             {milestone.description}
                           </p>
                         </div>
@@ -158,11 +175,7 @@ const StorySection = () => {
                       </div>
                     </div>
 
-                    <div className="mt-4 max-w-[10.5rem] rounded-[18px] bg-background/90 px-3 py-2 text-center shadow-[0_10px_30px_rgba(250,247,240,0.95)]">
-                      <p className="font-sans text-[0.72rem] uppercase leading-[1.55] tracking-[0.24em] text-muted-foreground/80 md:text-[0.68rem]">
-                        {milestone.date}
-                      </p>
-                    </div>
+                    <JourneyTitle title={milestone.title} subtitle={milestone.date} />
 
                     <MobileJourneyDivider />
                   </div>
@@ -182,10 +195,7 @@ const StorySection = () => {
                           role="img"
                         />
                         <div className="flex flex-col justify-center p-6 text-center md:p-7 md:text-left">
-                          <h3 className="font-serif text-3xl font-light leading-[1.05] text-foreground md:text-[2.15rem]">
-                            {milestone.title}
-                          </h3>
-                          <p className="mt-4 max-w-md font-sans text-sm leading-7 text-muted-foreground md:mx-0 md:text-[0.95rem]">
+                          <p className="max-w-md font-sans text-sm leading-7 text-muted-foreground md:mx-0 md:text-[0.95rem]">
                             {milestone.description}
                           </p>
                         </div>
@@ -198,9 +208,7 @@ const StorySection = () => {
           })}
 
           <AnimatedSection delay={0.36}>
-            <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_9rem_minmax(0,1fr)] md:items-start md:gap-12">
-              <div className="hidden md:block" />
-
+            <div className="mx-auto flex max-w-5xl flex-col items-center">
               <div className="relative z-10 flex flex-col items-center md:pt-4">
                 <div className="min-w-[8.9rem] rounded-full border border-primary/18 bg-[linear-gradient(180deg,rgba(252,247,239,0.96)_0%,rgba(248,239,227,0.92)_100%)] px-5 py-2.5 text-center shadow-[0_14px_34px_rgba(142,108,74,0.08)]">
                   <p className="font-sans text-[10px] uppercase tracking-[0.24em] text-primary/60">
@@ -215,20 +223,26 @@ const StorySection = () => {
                   </div>
                 </div>
 
-                <div className="mt-4 max-w-[10.5rem] rounded-[18px] bg-background/90 px-3 py-2 text-center shadow-[0_10px_30px_rgba(250,247,240,0.95)]">
-                  <p className="font-sans text-[0.72rem] uppercase leading-[1.55] tracking-[0.24em] text-muted-foreground/80 md:text-[0.68rem]">
-                    {finalStop.date}
-                  </p>
-                </div>
+                <JourneyTitle title={finalStop.date} />
+
+                <div className="mt-5 hidden h-12 w-px bg-[linear-gradient(180deg,rgba(188,149,111,0.44)_0%,rgba(188,149,111,0.08)_100%)] md:block" />
               </div>
 
-              <div className="rounded-[26px] border border-border/80 bg-[linear-gradient(180deg,rgba(251,246,239,1)_0%,rgba(246,238,226,0.94)_100%)] p-6 text-center shadow-[0_18px_40px_rgba(124,92,60,0.06)] md:p-7 md:text-left">
-                <p className="font-serif text-[1.9rem] font-light leading-[1.08] text-foreground md:text-[2.1rem]">
+              <div className="mt-6 w-full rounded-[30px] border border-border/80 bg-[linear-gradient(180deg,rgba(251,246,239,1)_0%,rgba(246,238,226,0.94)_100%)] p-7 text-center shadow-[0_22px_48px_rgba(124,92,60,0.08)] md:p-10">
+                <p
+                  className="font-serif text-[2.05rem] font-light leading-[1.04] text-foreground md:text-[3rem]"
+                  style={{ textWrap: "balance" }}
+                >
                   {finalStop.title}
                 </p>
-                <p className="mt-4 max-w-md font-sans text-sm leading-7 text-muted-foreground md:text-[0.95rem]">
+                <p className="mx-auto mt-5 max-w-3xl font-sans text-sm leading-8 text-muted-foreground md:text-[1rem]">
                   {finalStop.description}
                 </p>
+                <div className="pointer-events-none mt-6 flex items-center justify-center gap-3" aria-hidden="true">
+                  <span className="h-px w-14 bg-[linear-gradient(90deg,transparent_0%,rgba(188,149,111,0.42)_100%)]" />
+                  <span className="h-2 w-2 rounded-full border border-primary/20 bg-background shadow-[0_8px_18px_rgba(183,137,92,0.12)]" />
+                  <span className="h-px w-14 bg-[linear-gradient(90deg,rgba(188,149,111,0.42)_0%,transparent_100%)]" />
+                </div>
               </div>
             </div>
           </AnimatedSection>
