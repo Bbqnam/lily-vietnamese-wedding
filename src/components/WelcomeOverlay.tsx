@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { PanInfo } from "framer-motion";
 import WeddingLogo from "./WeddingLogo";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 type Phase = "sealed" | "opening" | "revealed";
 
@@ -18,12 +19,15 @@ const PULL_THRESHOLD = 26;
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 const WelcomeOverlay = ({ open, onComplete }: WelcomeOverlayProps) => {
+  const { language } = useLanguage();
   const [phase, setPhase] = useState<Phase>("sealed");
+  const [isLeaving, setIsLeaving] = useState(false);
   const timers = useRef<number[]>([]);
 
   useEffect(() => {
     if (open) {
       setPhase("sealed");
+      setIsLeaving(false);
     }
   }, [open]);
 
@@ -69,7 +73,8 @@ const WelcomeOverlay = ({ open, onComplete }: WelcomeOverlayProps) => {
       return;
     }
 
-    onComplete();
+    setIsLeaving(true);
+    schedule(onComplete, 40);
   };
 
   const isOpening = phase === "opening" || phase === "revealed";
@@ -86,7 +91,7 @@ const WelcomeOverlay = ({ open, onComplete }: WelcomeOverlayProps) => {
           className="pointer-events-none fixed inset-0 z-[90] flex items-center justify-center px-4 py-8 md:px-6"
           style={{
             background:
-              "radial-gradient(ellipse at center, hsl(36 22% 94%) 0%, hsl(36 16% 88%) 58%, hsl(36 12% 80%) 100%)",
+              "radial-gradient(ellipse at center, #fffaf2 0%, #ead8c5 58%, #b98576 100%)",
           }}
           role="dialog"
           aria-modal="true"
@@ -98,10 +103,10 @@ const WelcomeOverlay = ({ open, onComplete }: WelcomeOverlayProps) => {
             className="pointer-events-none absolute inset-x-0 top-10 flex flex-col items-center text-center"
           >
             <p className="font-sans text-[10px] uppercase tracking-[0.34em] text-primary/60">
-              Welcome
+              {language === "vi" ? "Trân Trọng Kính Mời" : "Welcome"}
             </p>
             <h1 className="mt-2 font-serif text-[2rem] font-light leading-none text-foreground/80 md:text-[2.5rem]">
-              To The Wedding Celebration Of Nam &amp; Linh
+              {language === "vi" ? "Đến Chung Vui Cùng Nam & Linh" : "To The Wedding Celebration Of Nam & Linh"}
             </h1>
           </motion.div>
 
@@ -122,7 +127,7 @@ const WelcomeOverlay = ({ open, onComplete }: WelcomeOverlayProps) => {
                 }
                 transition={{ duration: 0.9, ease: EASE }}
                 className="pointer-events-auto absolute inset-x-[-22px] z-[40]"
-                style={{ top: BODY_TOP - 6, pointerEvents: isRevealed ? "auto" : "none" }}
+                style={{ top: BODY_TOP - 6, pointerEvents: isRevealed && !isLeaving ? "auto" : "none" }}
               >
                 <div
                   className="relative overflow-hidden rounded-[30px] p-[1.5px] text-center"
@@ -171,20 +176,22 @@ const WelcomeOverlay = ({ open, onComplete }: WelcomeOverlayProps) => {
                     </div>
 
                     <p className="mb-4 bg-gradient-to-r from-[#b97743] via-[#d8a46b] to-[#c88756] bg-clip-text font-sans text-[13px] uppercase tracking-[0.38em] text-transparent">
-                      You Are Invited
+                      {language === "vi" ? "Trân Trọng Kính Mời" : "You Are Invited"}
                     </p>
 
-                    <h2 className="whitespace-nowrap bg-gradient-to-r from-[#865a31] via-[#d7aa6a] to-[#a9683e] bg-clip-text font-serif text-[3.85rem] font-light leading-none text-transparent md:text-[4.5rem]">
+                    <h2 className="whitespace-nowrap bg-gradient-to-r from-[#681626] via-[#b8793f] to-[#681626] bg-clip-text font-serif text-[3.85rem] font-light leading-none text-transparent md:text-[4.5rem]">
                       Nam &amp; Linh
                     </h2>
 
                     <p className="mx-auto mt-5 max-w-[360px] font-sans text-[1.05rem] leading-8 text-foreground/72">
-                      Join us in Vietnam as we celebrate our wedding with the people we love most.
+                      {language === "vi"
+                        ? "Mời bạn đến Việt Nam chung vui ngày cưới cùng chúng mình."
+                        : "Join us in Vietnam as we celebrate our wedding with the people we love most."}
                     </p>
 
                     <div className="mt-6 rounded-full border border-[#e2cfb4] bg-[#f6ecde] px-5 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
                       <p className="bg-gradient-to-r from-[#9c7449] via-[#c19867] to-[#9c7449] bg-clip-text font-sans text-[11px] uppercase tracking-[0.3em] text-transparent">
-                        November 2026
+                        22 &amp; 28 · 11 · 2026
                       </p>
                     </div>
 
@@ -195,12 +202,12 @@ const WelcomeOverlay = ({ open, onComplete }: WelcomeOverlayProps) => {
                         className="group inline-flex min-w-[17.5rem] items-center justify-center gap-2 rounded-full border border-[#936a41] px-9 py-3.5 font-sans text-[10px] uppercase tracking-[0.34em] text-[#fff8ef] transition-all duration-300 hover:-translate-y-0.5"
                         style={{
                           background:
-                            "linear-gradient(135deg, rgba(209,156,91,1) 0%, rgba(186,131,73,1) 42%, rgba(149,100,55,1) 100%)",
+                            "linear-gradient(135deg, #a13749 0%, #7f1d2f 48%, #5d1220 100%)",
                           boxShadow:
-                            "0 14px 24px rgba(120,86,50,0.22), inset 0 1px 0 rgba(255,243,225,0.42)",
+                            "0 14px 28px rgba(93,18,32,0.30), inset 0 1px 0 rgba(255,243,225,0.32)",
                         }}
                       >
-                        <span>Enter The Wedding Site</span>
+                        <span>{language === "vi" ? "Mở Thiệp Cưới" : "Enter The Wedding Site"}</span>
                         <span className="text-[0.8rem] transition-transform duration-300 group-hover:translate-x-0.5">
                           →
                         </span>
@@ -335,7 +342,7 @@ const WelcomeOverlay = ({ open, onComplete }: WelcomeOverlayProps) => {
                     dragSnapToOrigin
                     onDragEnd={handlePullEnd}
                     onClick={startOpening}
-                    aria-label="Pull or click the monogram to open"
+                    aria-label={language === "vi" ? "Kéo hoặc nhấn vào chữ lồng để mở thiệp" : "Pull or click the monogram to open"}
                     className="cursor-grab rounded-full active:cursor-grabbing"
                     style={{
                       background:
@@ -375,7 +382,7 @@ const WelcomeOverlay = ({ open, onComplete }: WelcomeOverlayProps) => {
                 </div>
                 <div className="mt-2 rounded-full border border-[#e0ceb7] bg-[linear-gradient(180deg,#fbf3e8_0%,#f4e8d6_100%)] px-6 py-3 shadow-[0_12px_24px_rgba(150,118,80,0.1),inset_0_1px_0_rgba(255,255,255,0.82)]">
                   <p className="font-sans text-[10px] uppercase tracking-[0.3em] text-primary/70">
-                    Click or gently pull the monogram to open your invitation
+                    {language === "vi" ? "Nhấn hoặc kéo nhẹ chữ lồng để mở thiệp" : "Click or gently pull the monogram to open your invitation"}
                   </p>
                 </div>
               </motion.div>

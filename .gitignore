@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Local source album; optimized web copies live in public/photos.
+/Wedding Love Story/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
