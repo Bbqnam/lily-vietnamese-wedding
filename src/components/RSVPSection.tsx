@@ -11,13 +11,19 @@ type SubmitPhase = "idle" | "sending" | "done";
 const RSVPSection = () => {
   const { language } = useLanguage();
   const [formData, setFormData] = useState({ name: "", attending: "", event: "", wishes: "" });
+  const [website, setWebsite] = useState("");
   const [submitPhase, setSubmitPhase] = useState<SubmitPhase>("idle");
   const [submitError, setSubmitError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const endpoint = import.meta.env.VITE_RSVP_ENDPOINT;
+    const endpoint = import.meta.env.VITE_RSVP_ENDPOINT?.trim();
     setSubmitError("");
+
+    if (website) {
+      setSubmitPhase("done");
+      return;
+    }
 
     if (!endpoint) {
       setSubmitError(language === "vi" ? "Biểu mẫu chưa được kết nối. Vui lòng liên hệ trực tiếp với Nam hoặc Linh." : "The RSVP destination has not been connected yet. Please contact Nam or Linh directly.");
@@ -26,15 +32,38 @@ const RSVPSection = () => {
 
     setSubmitPhase("sending");
     try {
+      const payload = {
+        ...formData,
+        event: formData.attending === "decline" ? "" : formData.event,
+        language,
+        submittedAt: new Date().toISOString(),
+        submissionId: window.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+      };
+      const isGoogleAppsScript = endpoint.startsWith("https://script.google.com/macros/s/");
+
+      if (isGoogleAppsScript && !endpoint.endsWith("/exec")) {
+        throw new Error("The Google Apps Script endpoint must be the deployed /exec URL.");
+      }
+
       const [response] = await Promise.all([
-        fetch(endpoint, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify({ ...formData, event: formData.attending === "decline" ? "" : formData.event, submittedAt: new Date().toISOString() }),
-        }),
+        fetch(
+          endpoint,
+          isGoogleAppsScript
+            ? {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify(payload),
+              }
+            : {
+                method: "POST",
+                headers: { "Content-Type": "application/json", Accept: "application/json" },
+                body: JSON.stringify(payload),
+              },
+        ),
         new Promise((resolve) => window.setTimeout(resolve, 700)),
       ]);
-      if (!response.ok) throw new Error(`RSVP request failed (${response.status})`);
+      if (!isGoogleAppsScript && !response.ok) throw new Error(`RSVP request failed (${response.status})`);
       setSubmitPhase("done");
       toast.success(language === "vi" ? "Đã nhận được xác nhận của bạn." : "Your RSVP has been received.");
     } catch (error) {
@@ -113,6 +142,18 @@ const RSVPSection = () => {
             ) : (
               <AnimatedSection className="w-full">
                 <form onSubmit={handleSubmit} className="space-y-7 text-left">
+                  <div className="absolute -left-[9999px]" aria-hidden="true">
+                    <label htmlFor="website">Website</label>
+                    <input
+                      id="website"
+                      name="website"
+                      type="text"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={website}
+                      onChange={(event) => setWebsite(event.target.value)}
+                    />
+                  </div>
                   <div>
                     <p className="mb-3 flex items-center gap-3 font-sans text-[0.66rem] uppercase tracking-[0.22em] text-primary"><span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-[0.6rem] text-primary-foreground">1</span>{language === "vi" ? "Tên của bạn" : "Your name"}</p>
                     <input type="text" placeholder={language === "vi" ? "Họ và tên" : "Full name"} required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="min-h-12 w-full rounded-xl border border-border bg-white/75 px-4 py-3 font-sans text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary focus:ring-2 focus:ring-primary/10" />
