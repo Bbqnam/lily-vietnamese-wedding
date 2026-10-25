@@ -36,6 +36,7 @@ const GallerySection = () => {
   const [isPlaying, setIsPlaying] = useState(() =>
     typeof window === "undefined" || !window.matchMedia?.("(prefers-reduced-motion: reduce)").matches,
   );
+  const thumbnailsContainerRef = useRef<HTMLDivElement | null>(null);
   const thumbnailRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
   const active = moments[activeIndex];
@@ -62,10 +63,14 @@ const GallerySection = () => {
   }, [isPlaying, selectedIndex]);
 
   useEffect(() => {
-    thumbnailRefs.current[activeIndex]?.scrollIntoView({
+    const container = thumbnailsContainerRef.current;
+    const thumbnail = thumbnailRefs.current[activeIndex];
+
+    if (!container || !thumbnail) return;
+
+    container.scrollTo({
       behavior: "smooth",
-      block: "nearest",
-      inline: "center",
+      left: thumbnail.offsetLeft - (container.clientWidth - thumbnail.clientWidth) / 2,
     });
   }, [activeIndex]);
 
@@ -239,6 +244,7 @@ const GallerySection = () => {
           </div>
 
           <div
+            ref={thumbnailsContainerRef}
             className="mt-4 flex gap-2 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             aria-label={language === "vi" ? "Chọn kỷ niệm" : "Choose a memory"}
           >
