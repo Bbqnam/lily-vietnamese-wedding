@@ -56,7 +56,7 @@ const WeddingNav = ({ onOpenInvitation }: WeddingNavProps) => {
               <a
                 key={link.href}
                 href={link.href}
-                className="text-[0.68rem] uppercase tracking-[0.23em] text-muted-foreground transition-colors duration-300 hover:text-primary"
+                className={`whitespace-nowrap uppercase text-muted-foreground transition-colors duration-300 hover:text-primary ${language === "vi" ? "text-[0.64rem] tracking-[0.17em] xl:text-[0.68rem] xl:tracking-[0.2em]" : "text-[0.68rem] tracking-[0.23em]"}`}
               >
                 {link.label}
               </a>
@@ -101,7 +101,7 @@ const WeddingNav = ({ onOpenInvitation }: WeddingNavProps) => {
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className="text-[0.72rem] uppercase tracking-[0.28em] text-muted-foreground transition-colors hover:text-primary"
+                  className={`whitespace-nowrap uppercase text-muted-foreground transition-colors hover:text-primary ${language === "vi" ? "text-[0.7rem] tracking-[0.2em]" : "text-[0.72rem] tracking-[0.28em]"}`}
                 >
                   {link.label}
                 </a>

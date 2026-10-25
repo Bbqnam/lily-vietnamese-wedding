@@ -155,17 +155,17 @@ const RSVPSection = () => {
                     />
                   </div>
                   <div>
-                    <p className="mb-3 flex items-center gap-3 font-sans text-[0.66rem] uppercase tracking-[0.22em] text-primary"><span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-[0.6rem] text-primary-foreground">1</span>{language === "vi" ? "Tên của bạn" : "Your name"}</p>
+                    <p className={`mb-3 flex items-center gap-3 whitespace-nowrap font-sans uppercase text-primary ${language === "vi" ? "text-[0.64rem] tracking-[0.17em]" : "text-[0.66rem] tracking-[0.22em]"}`}><span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-[0.6rem] text-primary-foreground">1</span>{language === "vi" ? "Tên của bạn" : "Your name"}</p>
                     <input type="text" placeholder={language === "vi" ? "Họ và tên" : "Full name"} required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="min-h-12 w-full rounded-xl border border-border bg-white/75 px-4 py-3 font-sans text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary focus:ring-2 focus:ring-primary/10" />
                   </div>
 
                   <fieldset>
-                    <legend className="mb-3 flex items-center gap-3 font-sans text-[0.66rem] uppercase tracking-[0.22em] text-primary"><span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-[0.6rem] text-primary-foreground">2</span>{language === "vi" ? "Bạn có thể tham dự?" : "Can you attend?"}</legend>
+                    <legend className={`mb-3 flex items-center gap-3 whitespace-nowrap font-sans uppercase text-primary ${language === "vi" ? "text-[0.64rem] tracking-[0.17em]" : "text-[0.66rem] tracking-[0.22em]"}`}><span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-[0.6rem] text-primary-foreground">2</span>{language === "vi" ? "Bạn có thể tham dự?" : "Can you attend?"}</legend>
                     <div className="grid gap-3 sm:grid-cols-2">
                       {attendanceOptions.map((option) => (
                         <label key={option.value} className={`flex min-h-[64px] cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 text-left transition-all focus-within:ring-2 focus-within:ring-primary/25 ${formData.attending === option.value ? "border-primary bg-primary text-primary-foreground shadow-[0_8px_20px_rgba(120,27,42,0.16)]" : "border-border bg-white/70 text-muted-foreground hover:border-primary/50"}`}>
-                          <span className={`flex h-5 w-5 items-center justify-center rounded-full border ${formData.attending === option.value ? "border-primary-foreground/50 bg-primary-foreground text-primary" : "border-border"}`}>{formData.attending === option.value ? <Check size={12} /> : null}</span>
-                          <span className="font-sans text-sm">{option.label}</span>
+                          <span className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${formData.attending === option.value ? "border-primary-foreground/50 bg-primary-foreground text-primary" : "border-border"}`}>{formData.attending === option.value ? <Check size={12} /> : null}</span>
+                          <span className={`whitespace-nowrap font-sans ${language === "vi" ? "text-[0.76rem] sm:text-[0.8rem] xl:text-sm" : "text-sm"}`}>{option.label}</span>
                           <input type="radio" name="attending" value={option.value} checked={formData.attending === option.value} onChange={(e) => setFormData({ ...formData, attending: e.target.value, event: e.target.value === "decline" ? "" : formData.event })} className="sr-only" required />
                         </label>
                       ))}
@@ -174,7 +174,7 @@ const RSVPSection = () => {
 
                   {formData.attending !== "decline" ? (
                     <fieldset>
-                      <legend className="mb-3 flex items-center gap-3 font-sans text-[0.66rem] uppercase tracking-[0.22em] text-primary"><span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-[0.6rem] text-primary-foreground">3</span>{language === "vi" ? "Bạn sẽ tham dự tiệc nào?" : "Which celebration?"}</legend>
+                      <legend className={`mb-3 flex items-center gap-3 whitespace-nowrap font-sans uppercase text-primary ${language === "vi" ? "text-[0.64rem] tracking-[0.15em]" : "text-[0.66rem] tracking-[0.22em]"}`}><span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-[0.6rem] text-primary-foreground">3</span>{language === "vi" ? "Bạn sẽ tham dự tiệc nào?" : "Which celebration?"}</legend>
                       <div className="grid grid-cols-3 gap-2">
                         {eventOptions.map((option) => (
                           <label key={option.value} className={`flex min-h-[86px] cursor-pointer flex-col items-center justify-center rounded-xl border px-2 py-3 text-center transition-all focus-within:ring-2 focus-within:ring-accent/25 ${formData.event === option.value ? "border-accent bg-accent text-accent-foreground shadow-[0_8px_18px_rgba(44,98,73,0.16)]" : "border-border bg-white/70 text-muted-foreground hover:border-accent/50"}`}>
@@ -188,7 +188,7 @@ const RSVPSection = () => {
                   ) : null}
 
                   <div>
-                    <label htmlFor="wishes" className="mb-3 flex items-center gap-3 font-sans text-[0.66rem] uppercase tracking-[0.22em] text-primary"><span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-[0.6rem] text-primary-foreground">{formData.attending === "decline" ? "3" : "4"}</span>{language === "vi" ? "Lời nhắn (không bắt buộc)" : "A note (optional)"}</label>
+                    <label htmlFor="wishes" className={`mb-3 flex items-center gap-3 whitespace-nowrap font-sans uppercase text-primary ${language === "vi" ? "text-[0.62rem] tracking-[0.14em]" : "text-[0.66rem] tracking-[0.22em]"}`}><span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-[0.6rem] text-primary-foreground">{formData.attending === "decline" ? "3" : "4"}</span>{language === "vi" ? "Lời nhắn (không bắt buộc)" : "A note (optional)"}</label>
                     <textarea id="wishes" placeholder={language === "vi" ? "Gửi lời chúc đến cô dâu chú rể" : "Send your wishes to the couple"} value={formData.wishes} onChange={(e) => setFormData({ ...formData, wishes: e.target.value })} rows={3} className="min-h-[92px] w-full resize-none rounded-xl border border-border bg-white/75 px-4 py-3 font-sans text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary focus:ring-2 focus:ring-primary/10" />
                   </div>
 

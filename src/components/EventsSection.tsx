@@ -37,7 +37,7 @@ const EventsSection = () => {
         </AnimatedSection>
         <div className="mx-auto mb-7 grid max-w-xl grid-cols-2 rounded-full border border-primary/20 bg-background p-1.5">
           {(Object.keys(places) as PlaceKey[]).map((key) => (
-            <button key={key} type="button" onClick={() => setActive(key)} className={`min-h-11 rounded-full px-3 text-sm transition-all sm:px-5 ${active === key ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-primary"}`} aria-pressed={active === key}>
+            <button key={key} type="button" onClick={() => setActive(key)} className={`min-h-11 whitespace-nowrap rounded-full px-3 text-sm transition-all sm:px-5 ${active === key ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-primary"}`} aria-pressed={active === key}>
               {places[key].location} · {places[key].time}
             </button>
           ))}
@@ -51,7 +51,7 @@ const EventsSection = () => {
                 <div className="flex min-h-[132px] flex-col items-start justify-between rounded-2xl bg-champagne/45 p-5">
                   <Calendar size={18} className="text-primary" />
                   <div className="mt-5">
-                    <p className="font-serif text-2xl leading-none text-foreground">{language === "vi" ? place.dateVi : place.dateEn}</p>
+                    <p className={`whitespace-nowrap font-serif leading-none text-foreground ${language === "vi" ? "text-[1.32rem] sm:text-[1.4rem]" : "text-2xl"}`}>{language === "vi" ? place.dateVi : place.dateEn}</p>
                     <p className="mt-2 text-[0.62rem] uppercase tracking-[0.18em] text-muted-foreground">{language === "vi" ? "Ngày tổ chức" : "Wedding date"}</p>
                   </div>
                 </div>
