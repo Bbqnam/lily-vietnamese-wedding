@@ -93,6 +93,31 @@ section[id] {
   scroll-margin-top: 6.5rem;
 }
 
+@keyframes story-photo-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.story-photo-track {
+  animation: story-photo-scroll 52s linear infinite;
+  will-change: transform;
+}
+
+.story-photo-reel:hover .story-photo-track,
+.story-photo-reel:focus-within .story-photo-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-photo-track {
+    animation: none;
+  }
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;

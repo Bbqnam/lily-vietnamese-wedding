@@ -44,15 +44,27 @@ const EventsSection = () => {
         </div>
         <AnimatedSection>
           <div className="grid overflow-hidden rounded-[30px] border border-border/80 bg-background shadow-[0_24px_60px_rgba(124,92,60,0.08)] lg:grid-cols-[0.88fr_1.12fr]">
-            <div className="flex flex-col justify-center p-7 md:p-10 lg:p-12">
+            <div className="flex flex-col justify-center p-7 text-left md:p-10 lg:p-12">
               <p className="font-sans text-xs uppercase tracking-[0.28em] text-primary/70">{place.location}</p>
               <h3 className="mt-3 font-serif text-3xl font-light text-foreground md:text-4xl">{language === "vi" ? place.venueVi : place.venueEn}</h3>
-              <div className="mt-7 grid grid-cols-2 gap-3">
-                <div className="rounded-2xl bg-champagne/45 p-4"><Calendar size={16} className="mb-3 text-primary" /><p className="font-sans text-sm text-foreground">{language === "vi" ? place.dateVi : place.dateEn}</p></div>
-                <div className="rounded-2xl bg-champagne/45 p-4"><Clock size={16} className="mb-3 text-primary" /><p className="font-serif text-xl text-foreground">{place.time}</p><p className="text-[0.65rem] uppercase tracking-[0.18em] text-muted-foreground">{language === "vi" ? "Bắt đầu tiệc" : "Party starts"}</p></div>
+              <div className="mt-7 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <div className="flex min-h-[132px] flex-col items-start justify-between rounded-2xl bg-champagne/45 p-5">
+                  <Calendar size={18} className="text-primary" />
+                  <div className="mt-5">
+                    <p className="font-serif text-2xl leading-none text-foreground">{language === "vi" ? place.dateVi : place.dateEn}</p>
+                    <p className="mt-2 text-[0.62rem] uppercase tracking-[0.18em] text-muted-foreground">{language === "vi" ? "Ngày tổ chức" : "Wedding date"}</p>
+                  </div>
+                </div>
+                <div className="flex min-h-[132px] flex-col items-start justify-between rounded-2xl bg-champagne/45 p-5">
+                  <Clock size={18} className="text-primary" />
+                  <div className="mt-5">
+                    <p className="font-serif text-2xl leading-none text-foreground">{place.time}</p>
+                    <p className="mt-2 text-[0.62rem] uppercase tracking-[0.18em] text-muted-foreground">{language === "vi" ? "Bắt đầu tiệc" : "Party starts"}</p>
+                  </div>
+                </div>
               </div>
-              <div className="mt-6 flex gap-3 text-sm leading-6 text-muted-foreground"><MapPin size={17} className="mt-1 shrink-0 text-primary" /><p>{language === "vi" ? place.addressVi : place.addressEn}</p></div>
-              <div className="mt-4 flex gap-3 text-sm leading-6 text-muted-foreground"><Plane size={17} className="mt-1 shrink-0 text-primary" /><p>{language === "vi" ? place.arrivalVi : place.arrivalEn}</p></div>
+              <div className="mt-6 grid grid-cols-[1.25rem_minmax(0,1fr)] items-start gap-3 text-sm leading-6 text-muted-foreground"><MapPin size={17} className="mt-1 text-primary" /><p>{language === "vi" ? place.addressVi : place.addressEn}</p></div>
+              <div className="mt-4 grid grid-cols-[1.25rem_minmax(0,1fr)] items-start gap-3 text-sm leading-6 text-muted-foreground"><Plane size={17} className="mt-1 text-primary" /><p>{language === "vi" ? place.arrivalVi : place.arrivalEn}</p></div>
               <a href={place.mapsLink} target="_blank" rel="noreferrer" className="mt-7 inline-flex min-h-11 items-center justify-center gap-2 self-start rounded-full border border-primary/25 px-5 text-xs uppercase tracking-[0.2em] text-primary transition-colors hover:bg-primary hover:text-primary-foreground"><Navigation size={14} />{language === "vi" ? "Mở Google Maps" : "Open Google Maps"}</a>
             </div>
             <div className="relative min-h-[360px] overflow-hidden border-t border-border/70 lg:min-h-[520px] lg:border-l lg:border-t-0">

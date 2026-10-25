@@ -3,7 +3,23 @@ import AnimatedSection from "./AnimatedSection";
 import traditionalPhoto from "@/assets/photos/story-traditional.jpg";
 import dancePhoto from "@/assets/photos/gallery-dance.jpg";
 import gardenPhoto from "@/assets/photos/hero-garden.jpg";
+import archPhoto from "@/assets/photos/gallery-arch.jpg";
+import signsPhoto from "@/assets/photos/gallery-signs.jpg";
+import studioPhoto from "@/assets/photos/gallery-studio.jpg";
+import formalPhoto from "@/assets/photos/hero-formal.jpg";
+import bridePhoto from "@/assets/photos/portrait-bride.jpg";
 import { useLanguage } from "@/contexts/LanguageContext";
+
+const weddingPhotos = [
+  { src: gardenPhoto, vi: "Nam và Linh trong khu vườn", en: "Nam and Linh in the garden", width: "w-[19rem] sm:w-[27rem]" },
+  { src: traditionalPhoto, vi: "Nam và Linh trong trang phục truyền thống", en: "Nam and Linh in traditional Vietnamese attire", width: "w-[13rem] sm:w-[18rem]" },
+  { src: dancePhoto, vi: "Nam và Linh cùng khiêu vũ", en: "Nam and Linh dancing together", width: "w-[13rem] sm:w-[18rem]" },
+  { src: signsPhoto, vi: "Nam và Linh với lời hẹn ngày cưới", en: "Nam and Linh holding their wedding signs", width: "w-[19rem] sm:w-[27rem]" },
+  { src: archPhoto, vi: "Nam và Linh dưới cổng hoa", en: "Nam and Linh beneath the floral arch", width: "w-[13rem] sm:w-[18rem]" },
+  { src: studioPhoto, vi: "Chân dung cưới của Nam và Linh", en: "Nam and Linh's wedding portrait", width: "w-[13rem] sm:w-[18rem]" },
+  { src: formalPhoto, vi: "Nam và Linh trong lễ phục cưới", en: "Nam and Linh in their wedding attire", width: "w-[13rem] sm:w-[18rem]" },
+  { src: bridePhoto, vi: "Chân dung cô dâu Linh", en: "A bridal portrait of Linh", width: "w-[13rem] sm:w-[18rem]" },
+];
 
 const StorySection = () => {
   const { language } = useLanguage();
@@ -94,34 +110,42 @@ const StorySection = () => {
           </div>
         </AnimatedSection>
 
-        <AnimatedSection className="mb-10">
-          <div className="grid h-[440px] grid-cols-2 grid-rows-2 gap-3 overflow-hidden rounded-[30px] sm:h-[520px] md:grid-cols-[1.5fr_0.75fr_0.75fr] md:grid-rows-1">
-            <figure className="col-span-2 overflow-hidden bg-card md:col-span-1">
-              <img
-                src={gardenPhoto}
-                alt={isVietnamese ? "Nam và Linh trong khu vườn" : "Nam and Linh in the garden"}
-                className="h-full w-full object-cover object-center"
-                loading="lazy"
-              />
-            </figure>
-            <figure className="overflow-hidden bg-card">
-              <img
-                src={traditionalPhoto}
-                alt={isVietnamese ? "Nam và Linh trong trang phục truyền thống" : "Nam and Linh in traditional Vietnamese attire"}
-                className="h-full w-full object-cover object-center"
-                loading="lazy"
-              />
-            </figure>
-            <figure className="overflow-hidden bg-card">
-              <img
-                src={dancePhoto}
-                alt={isVietnamese ? "Nam và Linh cùng khiêu vũ" : "Nam and Linh dancing together"}
-                className="h-full w-full object-cover object-[55%_55%]"
-                loading="lazy"
-              />
-            </figure>
+        <AnimatedSection className="mb-12">
+          <div
+            className="story-photo-reel relative -mx-6 overflow-hidden py-2 md:mx-0 md:rounded-[32px]"
+            role="region"
+            aria-label={isVietnamese ? "Ảnh cưới của Nam và Linh tự động cuộn" : "Automatically scrolling wedding photos of Nam and Linh"}
+          >
+            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-background to-transparent md:w-20" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-background to-transparent md:w-20" />
+            <div className="story-photo-track flex w-max">
+              {[0, 1].map((copyIndex) => (
+                <div
+                  key={copyIndex}
+                  className="flex shrink-0 gap-3 pr-3 sm:gap-4 sm:pr-4"
+                  aria-hidden={copyIndex === 1 ? "true" : undefined}
+                >
+                  {weddingPhotos.map((photo, index) => (
+                    <figure
+                      key={`${copyIndex}-${photo.src}`}
+                      className={`relative h-[25rem] shrink-0 overflow-hidden rounded-[26px] bg-card shadow-[0_18px_44px_rgba(72,37,29,0.12)] sm:h-[32rem] ${photo.width}`}
+                    >
+                      <img
+                        src={photo.src}
+                        alt={copyIndex === 0 ? (isVietnamese ? photo.vi : photo.en) : ""}
+                        className={`h-full w-full object-cover transition-transform duration-700 hover:scale-[1.025] ${
+                          index === 0 || index === 3 ? "object-center" : "object-[50%_35%]"
+                        }`}
+                        loading="lazy"
+                      />
+                      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/25 to-transparent" />
+                    </figure>
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="mt-4 flex items-center gap-4">
+          <div className="mt-5 flex items-center gap-4">
             <span className="h-px flex-1 bg-border" />
             <p className="shrink-0 font-serif text-xl italic text-primary sm:text-2xl">
               {isVietnamese ? "2023 — mãi mãi" : "2023 — always"}
@@ -138,8 +162,8 @@ const StorySection = () => {
                 const Icon = chapter.icon;
                 return (
                   <AnimatedSection key={`${chapter.year}-${chapter.title}`} delay={index * 0.05}>
-                    <article className="relative grid grid-cols-[3rem_1fr] gap-4 rounded-[26px] border border-border/80 bg-card/80 p-5 shadow-[0_16px_45px_rgba(72,37,29,0.06)] backdrop-blur-sm md:grid-cols-[3.5rem_1fr] md:gap-6 md:p-8">
-                      <div className="relative z-10 flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[0_9px_22px_rgba(120,27,42,0.24)] md:h-12 md:w-12">
+                    <article className="relative grid grid-cols-[3rem_minmax(0,1fr)] items-start gap-4 rounded-[26px] border border-border/80 bg-card/80 p-5 text-left shadow-[0_16px_45px_rgba(72,37,29,0.06)] backdrop-blur-sm md:grid-cols-[3.5rem_minmax(0,1fr)] md:gap-6 md:p-8">
+                      <div className="relative z-10 flex h-11 w-11 items-center justify-center self-start rounded-full bg-primary text-primary-foreground shadow-[0_9px_22px_rgba(120,27,42,0.24)] md:h-12 md:w-12">
                         <Icon size={18} strokeWidth={1.8} />
                       </div>
                       <div className="min-w-0">
@@ -149,7 +173,7 @@ const StorySection = () => {
                         <h3 className="mt-2 font-serif text-2xl font-light leading-tight text-foreground md:text-[2rem]">
                           {chapter.title}
                         </h3>
-                        <p className="mt-3 font-sans text-[0.9rem] leading-7 text-muted-foreground md:text-[0.95rem]">
+                        <p className="mt-3 max-w-3xl font-sans text-[0.9rem] leading-7 text-muted-foreground md:text-[0.95rem]">
                           {chapter.text}
                         </p>
                       </div>

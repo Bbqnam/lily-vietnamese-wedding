@@ -72,21 +72,25 @@ const RSVPSection = () => {
               <img src={rsvpPhoto} alt={language === "vi" ? "Nam và Linh cùng tấm bảng Save the Date" : "Nam and Linh with their Save the Date signs"} className="h-full w-full object-cover object-center" loading="lazy" />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/65 via-transparent to-transparent" />
             </div>
-            <div className="space-y-5 px-7 py-7 md:px-9 md:py-8">
+            <div className="space-y-5 px-7 py-7 text-left md:px-9 md:py-8">
               <div>
                 <p className="font-sans text-[0.65rem] uppercase tracking-[0.28em] text-primary-foreground/65">{language === "vi" ? "Hai ngày chung vui" : "Two celebrations"}</p>
                 <h3 className="mt-2 font-serif text-3xl font-light">{language === "vi" ? "Một lời hẹn từ trái tim" : "One heartfelt invitation"}</h3>
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <div className="rounded-2xl border border-primary-foreground/20 bg-black/10 p-4">
-                  <CalendarDays size={17} className="mb-3 text-[#e4bc72]" />
-                  <p className="font-serif text-xl">22.11.2026</p>
-                  <p className="mt-1 text-xs uppercase tracking-[0.18em] text-primary-foreground/70">Nam Định · 09:30</p>
+                <div className="flex min-h-[126px] flex-col items-start justify-between rounded-2xl border border-primary-foreground/20 bg-black/10 p-4">
+                  <CalendarDays size={18} className="text-[#e4bc72]" />
+                  <div className="mt-5">
+                    <p className="font-serif text-xl leading-none">22.11.2026</p>
+                    <p className="mt-2 text-[0.66rem] uppercase leading-5 tracking-[0.16em] text-primary-foreground/70">Nam Định · 09:30</p>
+                  </div>
                 </div>
-                <div className="rounded-2xl border border-primary-foreground/20 bg-black/10 p-4">
-                  <Clock3 size={17} className="mb-3 text-[#e4bc72]" />
-                  <p className="font-serif text-xl">28.11.2026</p>
-                  <p className="mt-1 text-xs uppercase tracking-[0.18em] text-primary-foreground/70">Huế · 11:00</p>
+                <div className="flex min-h-[126px] flex-col items-start justify-between rounded-2xl border border-primary-foreground/20 bg-black/10 p-4">
+                  <Clock3 size={18} className="text-[#e4bc72]" />
+                  <div className="mt-5">
+                    <p className="font-serif text-xl leading-none">28.11.2026</p>
+                    <p className="mt-2 text-[0.66rem] uppercase leading-5 tracking-[0.16em] text-primary-foreground/70">Huế · 11:00</p>
+                  </div>
                 </div>
               </div>
               <p className="flex items-center gap-2 text-xs leading-5 text-primary-foreground/65"><MapPin size={14} /> {language === "vi" ? "Việt Nam · Hẹn gặp bạn tại một hoặc cả hai buổi lễ" : "Vietnam · Join us at one or both celebrations"}</p>
@@ -108,7 +112,7 @@ const RSVPSection = () => {
               </AnimatedSection>
             ) : (
               <AnimatedSection className="w-full">
-                <form onSubmit={handleSubmit} className="space-y-7">
+                <form onSubmit={handleSubmit} className="space-y-7 text-left">
                   <div>
                     <p className="mb-3 flex items-center gap-3 font-sans text-[0.66rem] uppercase tracking-[0.22em] text-primary"><span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-[0.6rem] text-primary-foreground">1</span>{language === "vi" ? "Tên của bạn" : "Your name"}</p>
                     <input type="text" placeholder={language === "vi" ? "Họ và tên" : "Full name"} required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="min-h-12 w-full rounded-xl border border-border bg-white/75 px-4 py-3 font-sans text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary focus:ring-2 focus:ring-primary/10" />
@@ -118,7 +122,7 @@ const RSVPSection = () => {
                     <legend className="mb-3 flex items-center gap-3 font-sans text-[0.66rem] uppercase tracking-[0.22em] text-primary"><span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-[0.6rem] text-primary-foreground">2</span>{language === "vi" ? "Bạn có thể tham dự?" : "Can you attend?"}</legend>
                     <div className="grid gap-3 sm:grid-cols-2">
                       {attendanceOptions.map((option) => (
-                        <label key={option.value} className={`flex min-h-14 cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 transition-all focus-within:ring-2 focus-within:ring-primary/25 ${formData.attending === option.value ? "border-primary bg-primary text-primary-foreground shadow-[0_8px_20px_rgba(120,27,42,0.16)]" : "border-border bg-white/70 text-muted-foreground hover:border-primary/50"}`}>
+                        <label key={option.value} className={`flex min-h-[64px] cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 text-left transition-all focus-within:ring-2 focus-within:ring-primary/25 ${formData.attending === option.value ? "border-primary bg-primary text-primary-foreground shadow-[0_8px_20px_rgba(120,27,42,0.16)]" : "border-border bg-white/70 text-muted-foreground hover:border-primary/50"}`}>
                           <span className={`flex h-5 w-5 items-center justify-center rounded-full border ${formData.attending === option.value ? "border-primary-foreground/50 bg-primary-foreground text-primary" : "border-border"}`}>{formData.attending === option.value ? <Check size={12} /> : null}</span>
                           <span className="font-sans text-sm">{option.label}</span>
                           <input type="radio" name="attending" value={option.value} checked={formData.attending === option.value} onChange={(e) => setFormData({ ...formData, attending: e.target.value, event: e.target.value === "decline" ? "" : formData.event })} className="sr-only" required />
@@ -132,7 +136,7 @@ const RSVPSection = () => {
                       <legend className="mb-3 flex items-center gap-3 font-sans text-[0.66rem] uppercase tracking-[0.22em] text-primary"><span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-[0.6rem] text-primary-foreground">3</span>{language === "vi" ? "Bạn sẽ tham dự tiệc nào?" : "Which celebration?"}</legend>
                       <div className="grid grid-cols-3 gap-2">
                         {eventOptions.map((option) => (
-                          <label key={option.value} className={`cursor-pointer rounded-xl border px-2 py-3 text-center transition-all focus-within:ring-2 focus-within:ring-accent/25 ${formData.event === option.value ? "border-accent bg-accent text-accent-foreground shadow-[0_8px_18px_rgba(44,98,73,0.16)]" : "border-border bg-white/70 text-muted-foreground hover:border-accent/50"}`}>
+                          <label key={option.value} className={`flex min-h-[86px] cursor-pointer flex-col items-center justify-center rounded-xl border px-2 py-3 text-center transition-all focus-within:ring-2 focus-within:ring-accent/25 ${formData.event === option.value ? "border-accent bg-accent text-accent-foreground shadow-[0_8px_18px_rgba(44,98,73,0.16)]" : "border-border bg-white/70 text-muted-foreground hover:border-accent/50"}`}>
                             <span className="block font-serif text-lg leading-none">{option.label}</span>
                             <span className="mt-1.5 block text-[0.58rem] uppercase tracking-[0.14em] opacity-75">{option.date}</span>
                             <input type="radio" name="event" value={option.value} checked={formData.event === option.value} onChange={(e) => setFormData({ ...formData, event: e.target.value })} className="sr-only" required={formData.attending === "accept"} />

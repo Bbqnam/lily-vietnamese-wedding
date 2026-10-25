@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, Expand } from "lucide-react";
+import { ChevronLeft, ChevronRight, Expand, Pause, Play } from "lucide-react";
 import AnimatedSection from "./AnimatedSection";
 import {
   Dialog,
@@ -33,6 +33,10 @@ const GallerySection = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [isPlaying, setIsPlaying] = useState(() =>
+    typeof window === "undefined" || !window.matchMedia?.("(prefers-reduced-motion: reduce)").matches,
+  );
+  const thumbnailRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
   const active = moments[activeIndex];
   const selected = selectedIndex === null ? null : moments[selectedIndex];
@@ -45,6 +49,25 @@ const GallerySection = () => {
 
   const showPreviousSlide = () => changeSlide(activeIndex - 1, -1);
   const showNextSlide = () => changeSlide(activeIndex + 1, 1);
+
+  useEffect(() => {
+    if (!isPlaying || selectedIndex !== null) return undefined;
+
+    const timer = window.setInterval(() => {
+      setDirection(1);
+      setActiveIndex((current) => (current + 1) % moments.length);
+    }, 5200);
+
+    return () => window.clearInterval(timer);
+  }, [isPlaying, selectedIndex]);
+
+  useEffect(() => {
+    thumbnailRefs.current[activeIndex]?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "center",
+    });
+  }, [activeIndex]);
 
   const showPreviousPhoto = () => {
     setSelectedIndex((current) =>
@@ -128,10 +151,7 @@ const GallerySection = () => {
                   </motion.div>
                 </AnimatePresence>
 
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex items-end justify-between bg-gradient-to-t from-black/45 to-transparent p-4 pt-16 md:p-6">
-                  <span className="font-sans text-[0.58rem] uppercase tracking-[0.24em] text-white/75">
-                    {language === "vi" ? "Chạm để phóng to" : "Tap to enlarge"}
-                  </span>
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex items-end justify-end bg-gradient-to-t from-black/40 to-transparent p-4 pt-16 md:p-6">
                   <span className="flex h-10 w-10 items-center justify-center rounded-full border border-white/35 bg-black/20 text-white backdrop-blur-sm">
                     <Expand className="h-4 w-4" />
                   </span>
@@ -168,11 +188,6 @@ const GallerySection = () => {
                     <p className="mt-5 font-sans text-[0.64rem] uppercase tracking-[0.28em] text-primary/70">
                       {active.date}
                     </p>
-                    <p className="mt-6 max-w-xs font-serif text-lg italic leading-relaxed text-foreground/55">
-                      {language === "vi"
-                        ? "Một khung hình trong hành trình của Nam & Linh."
-                        : "A frame from Nam & Linh’s journey together."}
-                    </p>
                   </motion.div>
                 </AnimatePresence>
 
@@ -187,7 +202,7 @@ const GallerySection = () => {
                       />
                     ))}
                   </div>
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-center gap-3">
                     <button
                       type="button"
                       onClick={showPreviousSlide}
@@ -196,9 +211,19 @@ const GallerySection = () => {
                     >
                       <ChevronLeft className="h-5 w-5" />
                     </button>
-                    <span className="font-sans text-[0.55rem] uppercase tracking-[0.22em] text-foreground/40">
-                      {language === "vi" ? "Kéo qua kỷ niệm" : "Move through memories"}
-                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setIsPlaying((playing) => !playing)}
+                      className="flex h-10 w-10 items-center justify-center rounded-full text-primary/70 transition hover:bg-primary/10 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                      aria-label={
+                        isPlaying
+                          ? language === "vi" ? "Tạm dừng trình chiếu" : "Pause slideshow"
+                          : language === "vi" ? "Tiếp tục trình chiếu" : "Play slideshow"
+                      }
+                      aria-pressed={!isPlaying}
+                    >
+                      {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+                    </button>
                     <button
                       type="button"
                       onClick={showNextSlide}
@@ -224,6 +249,9 @@ const GallerySection = () => {
               return (
                 <button
                   key={moment.src}
+                  ref={(element) => {
+                    thumbnailRefs.current[index] = element;
+                  }}
                   type="button"
                   onClick={() => changeSlide(index, index >= activeIndex ? 1 : -1)}
                   className={`group/thumb relative h-20 shrink-0 overflow-hidden rounded-[14px] border-2 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-[#f0dfca] ${
