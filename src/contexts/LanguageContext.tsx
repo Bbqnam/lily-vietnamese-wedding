@@ -12,7 +12,7 @@ const LanguageContext = createContext<LanguageContextValue | null>(null);
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const [language, setLanguage] = useState<Language>(() => {
     const saved = window.localStorage.getItem("wedding-language");
-    return saved === "vi" ? "vi" : "en";
+    return saved === "en" ? "en" : "vi";
   });
 
   useEffect(() => {
