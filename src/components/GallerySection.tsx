@@ -2,12 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Expand, Pause, Play } from "lucide-react";
 import AnimatedSection from "./AnimatedSection";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import PhotoLightbox from "./PhotoLightbox";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const moments = [
@@ -40,7 +35,6 @@ const GallerySection = () => {
   const thumbnailRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
   const active = moments[activeIndex];
-  const selected = selectedIndex === null ? null : moments[selectedIndex];
   const activeTitle = language === "vi" ? active.vi : active.en;
 
   const changeSlide = (nextIndex: number, nextDirection: number) => {
@@ -73,18 +67,6 @@ const GallerySection = () => {
       left: thumbnail.offsetLeft - (container.clientWidth - thumbnail.clientWidth) / 2,
     });
   }, [activeIndex]);
-
-  const showPreviousPhoto = () => {
-    setSelectedIndex((current) =>
-      current === null ? 0 : (current - 1 + moments.length) % moments.length,
-    );
-  };
-
-  const showNextPhoto = () => {
-    setSelectedIndex((current) =>
-      current === null ? 0 : (current + 1) % moments.length,
-    );
-  };
 
   return (
     <section id="gallery" className="overflow-hidden bg-[#f0dfca] py-12 md:py-24">
@@ -288,56 +270,19 @@ const GallerySection = () => {
         </AnimatedSection>
       </div>
 
-      <Dialog open={selectedIndex !== null} onOpenChange={(open) => !open && setSelectedIndex(null)}>
-        <DialogContent
-          className="max-h-[94vh] max-w-[94vw] overflow-hidden border-white/10 bg-[#1b1210] p-0 text-white shadow-2xl sm:rounded-[28px] md:max-w-5xl"
-          onKeyDown={(event) => {
-            if (event.key === "ArrowLeft") showPreviousPhoto();
-            if (event.key === "ArrowRight") showNextPhoto();
-          }}
-        >
-          {selected && (
-            <>
-              <div className="relative flex min-h-[54vh] items-center justify-center bg-black/35 md:min-h-[70vh]">
-                <img
-                  src={selected.src}
-                  alt={language === "vi" ? selected.vi : selected.en}
-                  className="max-h-[78vh] w-full object-contain"
-                />
-                <button
-                  type="button"
-                  onClick={showPreviousPhoto}
-                  className="absolute left-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/35 bg-black/35 text-white backdrop-blur transition hover:bg-black/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white md:left-5"
-                  aria-label={language === "vi" ? "Ảnh trước" : "Previous photo"}
-                >
-                  <ChevronLeft className="h-6 w-6" />
-                </button>
-                <button
-                  type="button"
-                  onClick={showNextPhoto}
-                  className="absolute right-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/35 bg-black/35 text-white backdrop-blur transition hover:bg-black/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white md:right-5"
-                  aria-label={language === "vi" ? "Ảnh tiếp theo" : "Next photo"}
-                >
-                  <ChevronRight className="h-6 w-6" />
-                </button>
-              </div>
-              <div className="flex items-end justify-between gap-6 px-5 py-4 md:px-7 md:py-5">
-                <div>
-                  <DialogTitle className="font-serif text-2xl font-normal md:text-3xl">
-                    {language === "vi" ? selected.vi : selected.en}
-                  </DialogTitle>
-                  <DialogDescription className="mt-1 font-sans text-[0.62rem] uppercase tracking-[0.22em] text-white/60">
-                    {selected.date}
-                  </DialogDescription>
-                </div>
-                <span className="shrink-0 font-sans text-[0.65rem] tracking-[0.18em] text-white/55">
-                  {String((selectedIndex ?? 0) + 1).padStart(2, "0")} / {moments.length}
-                </span>
-              </div>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
+      <PhotoLightbox
+        photos={moments.map((moment) => ({
+          src: moment.src,
+          title: language === "vi" ? moment.vi : moment.en,
+          subtitle: moment.date,
+        }))}
+        openIndex={selectedIndex}
+        onOpenIndexChange={setSelectedIndex}
+        previousLabel={language === "vi" ? "Ảnh trước" : "Previous photo"}
+        nextLabel={language === "vi" ? "Ảnh tiếp theo" : "Next photo"}
+        swipeLabel={language === "vi" ? "Vuốt để xem tiếp" : "Swipe for next"}
+        closeLabel={language === "vi" ? "Đóng bộ ảnh" : "Close gallery"}
+      />
     </section>
   );
 };

@@ -1,5 +1,7 @@
-import { Heart, Home, MapPin, Plane, Sparkles } from "lucide-react";
+import { useState } from "react";
+import { Expand, Heart, Home, MapPin, Plane, Sparkles } from "lucide-react";
 import AnimatedSection from "./AnimatedSection";
+import PhotoLightbox from "./PhotoLightbox";
 import traditionalPhoto from "@/assets/photos/story-traditional.jpg";
 import dancePhoto from "@/assets/photos/gallery-dance.jpg";
 import gardenPhoto from "@/assets/photos/hero-garden.jpg";
@@ -30,6 +32,7 @@ const weddingPhotos = [
 const StorySection = () => {
   const { language } = useLanguage();
   const isVietnamese = language === "vi";
+  const [selectedWeddingPhoto, setSelectedWeddingPhoto] = useState<number | null>(null);
 
   const chapters = isVietnamese
     ? [
@@ -136,15 +139,25 @@ const StorySection = () => {
                       key={`${copyIndex}-${photo.src}`}
                       className={`relative h-[20rem] shrink-0 overflow-hidden rounded-[20px] bg-card shadow-[0_14px_34px_rgba(72,37,29,0.1)] sm:h-[27rem] sm:rounded-[22px] ${photo.width}`}
                     >
-                      <img
-                        src={photo.src}
-                        alt={copyIndex === 0 ? (isVietnamese ? photo.vi : photo.en) : ""}
-                        className={`h-full w-full object-cover transition-transform duration-700 hover:scale-[1.025] ${
-                          index === 0 || index === 3 ? "object-center" : "object-[50%_35%]"
-                        }`}
-                        loading="lazy"
-                      />
-                      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/25 to-transparent" />
+                      <button
+                        type="button"
+                        onClick={() => setSelectedWeddingPhoto(index)}
+                        className="group absolute inset-0 h-full w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"
+                        aria-label={`${isVietnamese ? "Mở ảnh" : "Open photo"}: ${isVietnamese ? photo.vi : photo.en}`}
+                      >
+                        <img
+                          src={photo.src}
+                          alt={copyIndex === 0 ? (isVietnamese ? photo.vi : photo.en) : ""}
+                          className={`h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.025] ${
+                            index === 0 || index === 3 ? "object-center" : "object-[50%_35%]"
+                          }`}
+                          loading="lazy"
+                        />
+                        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/30 to-transparent" />
+                        <span className="absolute bottom-3 right-3 flex h-9 w-9 items-center justify-center rounded-full border border-white/35 bg-black/20 text-white opacity-90 backdrop-blur-sm transition group-hover:bg-black/40 sm:bottom-4 sm:right-4">
+                          <Expand className="h-3.5 w-3.5" />
+                        </span>
+                      </button>
                     </figure>
                   ))}
                 </div>
@@ -222,6 +235,19 @@ const StorySection = () => {
           </div>
         </div>
       </div>
+
+      <PhotoLightbox
+        photos={weddingPhotos.map((photo) => ({
+          src: photo.src,
+          title: isVietnamese ? photo.vi : photo.en,
+        }))}
+        openIndex={selectedWeddingPhoto}
+        onOpenIndexChange={setSelectedWeddingPhoto}
+        previousLabel={isVietnamese ? "Ảnh trước" : "Previous photo"}
+        nextLabel={isVietnamese ? "Ảnh tiếp theo" : "Next photo"}
+        swipeLabel={isVietnamese ? "Vuốt để xem tiếp" : "Swipe for next"}
+        closeLabel={isVietnamese ? "Đóng bộ ảnh" : "Close gallery"}
+      />
     </section>
   );
 };
