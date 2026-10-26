@@ -27,12 +27,12 @@ const EventsSection = () => {
   const [active, setActive] = useState<PlaceKey>("namdinh");
   const place = places[active];
   return (
-    <section id="events" className="bg-warm-white py-16 md:py-20">
-      <div className="container mx-auto max-w-6xl px-6">
+    <section id="events" className="bg-warm-white py-12 md:py-20">
+      <div className="container mx-auto max-w-6xl px-4 sm:px-6">
         <AnimatedSection>
-          <div className="mb-10 text-center">
+          <div className="mb-8 text-center md:mb-10">
             <p className="mb-3 font-sans text-xs uppercase tracking-[0.3em] text-muted-foreground">{language === "vi" ? "Thông Tin Tiệc Cưới" : "Wedding Details"}</p>
-            <h2 className="font-serif text-4xl font-light text-foreground md:text-5xl">{language === "vi" ? "Hai Buổi Tiệc, Một Niềm Vui" : "Two Celebrations, One Joy"}</h2>
+            <h2 className="font-serif text-[2.15rem] font-light leading-tight text-foreground sm:text-4xl md:text-5xl">{language === "vi" ? "Hai Buổi Tiệc, Một Niềm Vui" : "Two Celebrations, One Joy"}</h2>
           </div>
         </AnimatedSection>
         <div className="mx-auto mb-7 grid max-w-xl grid-cols-2 rounded-full border border-primary/20 bg-background p-1.5">
@@ -43,19 +43,19 @@ const EventsSection = () => {
           ))}
         </div>
         <AnimatedSection>
-          <div className="grid overflow-hidden rounded-[30px] border border-border/80 bg-background shadow-[0_24px_60px_rgba(124,92,60,0.08)] lg:grid-cols-[0.88fr_1.12fr]">
-            <div className="flex flex-col justify-center p-7 text-left md:p-10 lg:p-12">
+          <div className="grid overflow-hidden rounded-[24px] border border-border/80 bg-background shadow-[0_24px_60px_rgba(124,92,60,0.08)] sm:rounded-[30px] lg:grid-cols-[0.88fr_1.12fr]">
+            <div className="flex flex-col justify-center p-5 text-left sm:p-7 md:p-10 lg:p-12">
               <p className="font-sans text-xs uppercase tracking-[0.28em] text-primary/70">{place.location}</p>
-              <h3 className="mt-3 font-serif text-3xl font-light text-foreground md:text-4xl">{language === "vi" ? place.venueVi : place.venueEn}</h3>
-              <div className="mt-7 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                <div className="flex min-h-[132px] flex-col items-start justify-between rounded-2xl bg-champagne/45 p-5">
+              <h3 className="mt-3 font-serif text-[1.8rem] font-light leading-tight text-foreground sm:text-3xl md:text-4xl">{language === "vi" ? place.venueVi : place.venueEn}</h3>
+              <div className="mt-6 grid grid-cols-2 gap-2.5 sm:mt-7 sm:gap-3">
+                <div className="flex min-h-[108px] flex-col items-start justify-between rounded-2xl bg-champagne/45 p-4 sm:min-h-[132px] sm:p-5">
                   <Calendar size={18} className="text-primary" />
-                  <div className="mt-5">
-                    <p className={`whitespace-nowrap font-serif leading-none text-foreground ${language === "vi" ? "text-[1.32rem] sm:text-[1.4rem]" : "text-2xl"}`}>{language === "vi" ? place.dateVi : place.dateEn}</p>
+                  <div className="mt-4 sm:mt-5">
+                    <p className={`font-serif leading-tight text-foreground ${language === "vi" ? "text-[1.02rem] sm:whitespace-nowrap sm:text-[1.4rem]" : "text-[1.05rem] sm:text-2xl"}`}>{language === "vi" ? place.dateVi : place.dateEn}</p>
                     <p className="mt-2 text-[0.62rem] uppercase tracking-[0.18em] text-muted-foreground">{language === "vi" ? "Ngày tổ chức" : "Wedding date"}</p>
                   </div>
                 </div>
-                <div className="flex min-h-[132px] flex-col items-start justify-between rounded-2xl bg-champagne/45 p-5">
+                <div className="flex min-h-[108px] flex-col items-start justify-between rounded-2xl bg-champagne/45 p-4 sm:min-h-[132px] sm:p-5">
                   <Clock size={18} className="text-primary" />
                   <div className="mt-5">
                     <p className="font-serif text-2xl leading-none text-foreground">{place.time}</p>
@@ -65,9 +65,9 @@ const EventsSection = () => {
               </div>
               <div className="mt-6 grid grid-cols-[1.25rem_minmax(0,1fr)] items-start gap-3 text-sm leading-6 text-muted-foreground"><MapPin size={17} className="mt-1 text-primary" /><p>{language === "vi" ? place.addressVi : place.addressEn}</p></div>
               <div className="mt-4 grid grid-cols-[1.25rem_minmax(0,1fr)] items-start gap-3 text-sm leading-6 text-muted-foreground"><Plane size={17} className="mt-1 text-primary" /><p>{language === "vi" ? place.arrivalVi : place.arrivalEn}</p></div>
-              <a href={place.mapsLink} target="_blank" rel="noreferrer" className="mt-7 inline-flex min-h-11 items-center justify-center gap-2 self-start rounded-full border border-primary/25 px-5 text-xs uppercase tracking-[0.2em] text-primary transition-colors hover:bg-primary hover:text-primary-foreground"><Navigation size={14} />{language === "vi" ? "Mở Google Maps" : "Open Google Maps"}</a>
+              <a href={place.mapsLink} target="_blank" rel="noreferrer" className="mt-7 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full border border-primary/25 px-5 text-[0.65rem] uppercase tracking-[0.17em] text-primary transition-colors hover:bg-primary hover:text-primary-foreground sm:w-auto sm:self-start sm:text-xs sm:tracking-[0.2em]"><Navigation size={14} />{language === "vi" ? "Mở Google Maps" : "Open Google Maps"}</a>
             </div>
-            <div className="relative min-h-[360px] overflow-hidden border-t border-border/70 lg:min-h-[520px] lg:border-l lg:border-t-0">
+            <div className="relative min-h-[300px] overflow-hidden border-t border-border/70 sm:min-h-[360px] lg:min-h-[520px] lg:border-l lg:border-t-0">
               <iframe key={active} title={`${place.location} map`} src={place.map} className="absolute inset-0 h-full w-full border-0" loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
             </div>
           </div>

@@ -102,11 +102,11 @@ const StorySection = () => {
     : "The most beautiful journey is not one without difficulty, but one where we always have each other.";
 
   return (
-    <section id="story" className="relative overflow-hidden bg-background py-16 md:py-24">
+    <section id="story" className="relative overflow-hidden bg-background py-12 md:py-24">
       <div className="pointer-events-none absolute -left-24 top-16 h-64 w-64 rounded-full bg-secondary/55 blur-3xl" />
-      <div className="container relative mx-auto max-w-6xl px-6">
+      <div className="container relative mx-auto max-w-6xl px-5 sm:px-6">
         <AnimatedSection>
-          <div className="mb-10 max-w-3xl md:mb-14">
+          <div className="mb-8 max-w-3xl md:mb-14">
             <p className="mb-4 font-sans text-xs uppercase tracking-[0.32em] text-primary">
               {isVietnamese ? "Chuyện Chúng Mình" : "Our Story"}
             </p>
@@ -116,9 +116,9 @@ const StorySection = () => {
           </div>
         </AnimatedSection>
 
-        <AnimatedSection className="mb-12">
+        <AnimatedSection className="mb-9 md:mb-12">
           <div
-            className="story-photo-reel relative -mx-6 overflow-hidden py-2 md:mx-0 md:rounded-[32px]"
+            className="story-photo-reel relative -mx-5 overflow-hidden py-2 sm:-mx-6 md:mx-0 md:rounded-[32px]"
             role="region"
             aria-label={isVietnamese ? "Ảnh cưới của Nam và Linh tự động cuộn" : "Automatically scrolling wedding photos of Nam and Linh"}
           >
@@ -134,7 +134,7 @@ const StorySection = () => {
                   {weddingPhotos.map((photo, index) => (
                     <figure
                       key={`${copyIndex}-${photo.src}`}
-                      className={`relative h-[22rem] shrink-0 overflow-hidden rounded-[22px] bg-card shadow-[0_14px_34px_rgba(72,37,29,0.1)] sm:h-[27rem] ${photo.width}`}
+                      className={`relative h-[20rem] shrink-0 overflow-hidden rounded-[20px] bg-card shadow-[0_14px_34px_rgba(72,37,29,0.1)] sm:h-[27rem] sm:rounded-[22px] ${photo.width}`}
                     >
                       <img
                         src={photo.src}
@@ -168,7 +168,7 @@ const StorySection = () => {
                 const Icon = chapter.icon;
                 return (
                   <AnimatedSection key={`${chapter.year}-${chapter.title}`} delay={index * 0.05}>
-                    <article className="relative grid grid-cols-[2.5rem_minmax(0,1fr)] gap-5 py-7 text-left md:grid-cols-[1fr_4.5rem_1fr] md:gap-7 md:py-10">
+                    <article className="relative grid grid-cols-[2.5rem_minmax(0,1fr)] gap-4 py-6 text-left md:grid-cols-[1fr_4.5rem_1fr] md:gap-7 md:py-10">
                       <div className="hidden min-w-0 text-right md:col-start-1 md:block">
                         {index % 2 === 0 ? (
                           <>
@@ -190,7 +190,7 @@ const StorySection = () => {
                         <h3 className="mt-2 font-serif text-2xl font-light leading-tight text-foreground md:text-[2rem]">
                           {chapter.title}
                         </h3>
-                        <p className="mt-3 max-w-sm font-sans text-[0.88rem] leading-7 text-muted-foreground md:text-[0.92rem]">
+                        <p className="mt-2 max-w-sm font-sans text-[0.88rem] leading-6 text-muted-foreground md:mt-3 md:text-[0.92rem] md:leading-7">
                           {chapter.text}
                         </p>
                       </div>
@@ -200,10 +200,10 @@ const StorySection = () => {
               })}
             </div>
 
-            <AnimatedSection className="mt-8" delay={0.25}>
-              <blockquote className="mx-auto max-w-3xl border-y border-border px-4 py-9 text-center">
+            <AnimatedSection className="mt-6 md:mt-8" delay={0.25}>
+              <blockquote className="mx-auto max-w-3xl border-y border-border px-2 py-7 text-center sm:px-4 md:py-9">
                 <Sparkles className="mx-auto mb-4 text-primary/70" size={18} strokeWidth={1.5} />
-                <p className="font-serif text-2xl font-light italic leading-snug text-foreground md:text-3xl">
+                <p className="font-serif text-[1.35rem] font-light italic leading-snug text-foreground sm:text-2xl md:text-3xl">
                   “{quote}”
                 </p>
               </blockquote>

@@ -88,7 +88,7 @@ const WelcomeOverlay = ({ open, onComplete }: WelcomeOverlayProps) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.35, ease: "easeOut" }}
-          className="pointer-events-none fixed inset-0 z-[90] flex items-center justify-center px-4 py-8 md:px-6"
+          className="pointer-events-none fixed inset-0 z-[90] flex items-center justify-center overflow-y-auto px-3 py-4 sm:px-4 sm:py-8 md:px-6"
           style={{
             background:
               "radial-gradient(ellipse at center, #fffaf2 0%, #ead8c5 58%, #b98576 100%)",
@@ -100,12 +100,12 @@ const WelcomeOverlay = ({ open, onComplete }: WelcomeOverlayProps) => {
           <motion.div
             animate={phase === "sealed" ? { opacity: 1, y: 0 } : { opacity: 0.34, y: 0 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            className="pointer-events-none absolute inset-x-0 top-10 flex flex-col items-center text-center"
+            className="pointer-events-none absolute inset-x-0 top-5 flex flex-col items-center px-5 text-center sm:top-10"
           >
             <p className="font-sans text-[10px] uppercase tracking-[0.34em] text-primary/60">
               {language === "vi" ? "Trân Trọng Kính Mời" : "Welcome"}
             </p>
-            <h1 className="mt-2 font-serif text-[2rem] font-light leading-none text-foreground/80 md:text-[2.5rem]">
+            <h1 className="mt-2 max-w-[22rem] font-serif text-[1.55rem] font-light leading-tight text-foreground/80 sm:max-w-none sm:text-[2rem] sm:leading-none md:text-[2.5rem]">
               {language === "vi" ? "Đến Chung Vui Cùng Nam & Linh" : "To The Wedding Celebration Of Nam & Linh"}
             </h1>
           </motion.div>
@@ -126,11 +126,11 @@ const WelcomeOverlay = ({ open, onComplete }: WelcomeOverlayProps) => {
                     : { opacity: 0, y: 88, scale: 0.97 }
                 }
                 transition={{ duration: 0.9, ease: EASE }}
-                className="pointer-events-auto absolute inset-x-[-22px] z-[40]"
+                className="pointer-events-auto absolute inset-x-[-3px] z-[40] sm:inset-x-[-22px]"
                 style={{ top: BODY_TOP - 6, pointerEvents: isRevealed && !isLeaving ? "auto" : "none" }}
               >
                 <div
-                  className="relative overflow-hidden rounded-[30px] p-[1.5px] text-center"
+                    className="relative overflow-hidden rounded-[24px] p-[1.5px] text-center sm:rounded-[30px]"
                   style={{
                     boxShadow: "0 34px 78px rgba(0,0,0,0.16), 0 10px 24px rgba(124,92,60,0.08)",
                   }}
@@ -147,14 +147,14 @@ const WelcomeOverlay = ({ open, onComplete }: WelcomeOverlayProps) => {
                   />
 
                   <div
-                    className="pointer-events-none absolute inset-[1.5px] rounded-[28px]"
+                    className="pointer-events-none absolute inset-[1.5px] rounded-[22px] sm:rounded-[28px]"
                     style={{
                       background:
                         "linear-gradient(180deg, rgba(255,252,247,0.985) 0%, rgba(252,247,239,1) 45%, rgba(247,238,226,1) 100%)",
                     }}
                   />
 
-                  <div className="pointer-events-none absolute inset-[10px] rounded-[22px] border border-[#eadfcd]/90" />
+                  <div className="pointer-events-none absolute inset-[8px] rounded-[17px] border border-[#eadfcd]/90 sm:inset-[10px] sm:rounded-[22px]" />
 
                   <div
                     className="pointer-events-none absolute inset-x-10 top-0 h-24"
@@ -164,42 +164,42 @@ const WelcomeOverlay = ({ open, onComplete }: WelcomeOverlayProps) => {
                     }}
                   />
 
-                  <div className="relative z-10 flex flex-col items-center px-10 py-11 md:px-12 md:py-12">
-                    <div className="mb-5 flex w-full items-center gap-4 text-[#d8c0a1]/90">
+                  <div className="relative z-10 flex flex-col items-center px-5 py-7 sm:px-10 sm:py-11 md:px-12 md:py-12">
+                    <div className="mb-3 flex w-full items-center gap-3 text-[#d8c0a1]/90 sm:mb-5 sm:gap-4">
                       <div className="h-px flex-1 bg-gradient-to-r from-transparent to-current" />
                       <div className="h-1.5 w-1.5 rounded-full bg-current" />
                       <div className="h-px flex-1 bg-gradient-to-l from-transparent to-current" />
                     </div>
 
-                    <div className="mb-4 scale-[0.9]">
+                    <div className="mb-2 scale-[0.76] sm:mb-4 sm:scale-[0.9]">
                       <WeddingLogo size="default" showText={false} />
                     </div>
 
-                    <p className="mb-4 bg-gradient-to-r from-[#b97743] via-[#d8a46b] to-[#c88756] bg-clip-text font-sans text-[13px] uppercase tracking-[0.38em] text-transparent">
+                    <p className="mb-3 bg-gradient-to-r from-[#b97743] via-[#d8a46b] to-[#c88756] bg-clip-text font-sans text-[10px] uppercase tracking-[0.3em] text-transparent sm:mb-4 sm:text-[13px] sm:tracking-[0.38em]">
                       {language === "vi" ? "Trân Trọng Kính Mời" : "You Are Invited"}
                     </p>
 
-                    <h2 className="whitespace-nowrap bg-gradient-to-r from-[#681626] via-[#b8793f] to-[#681626] bg-clip-text font-serif text-[3.85rem] font-light leading-none text-transparent md:text-[4.5rem]">
+                    <h2 className="whitespace-nowrap bg-gradient-to-r from-[#681626] via-[#b8793f] to-[#681626] bg-clip-text font-serif text-[2.85rem] font-light leading-none text-transparent sm:text-[3.85rem] md:text-[4.5rem]">
                       Nam &amp; Linh
                     </h2>
 
-                    <p className="mx-auto mt-5 max-w-[360px] font-sans text-[1.05rem] leading-8 text-foreground/72">
+                    <p className="mx-auto mt-4 max-w-[330px] font-sans text-sm leading-6 text-foreground/72 sm:mt-5 sm:max-w-[360px] sm:text-[1.05rem] sm:leading-8">
                       {language === "vi"
                         ? "Mời bạn đến Việt Nam chung vui ngày cưới cùng chúng mình."
                         : "Join us in Vietnam as we celebrate our wedding with the people we love most."}
                     </p>
 
-                    <div className="mt-6 rounded-full border border-[#e2cfb4] bg-[#f6ecde] px-5 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+                    <div className="mt-4 rounded-full border border-[#e2cfb4] bg-[#f6ecde] px-4 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] sm:mt-6 sm:px-5">
                       <p className="bg-gradient-to-r from-[#9c7449] via-[#c19867] to-[#9c7449] bg-clip-text font-sans text-[11px] uppercase tracking-[0.3em] text-transparent">
                         22 &amp; 28 · 11 · 2026
                       </p>
                     </div>
 
-                    <div className="mt-8">
+                    <div className="mt-5 w-full sm:mt-8 sm:w-auto">
                       <button
                         type="button"
                         onClick={handleEnter}
-                        className="group inline-flex min-w-[17.5rem] items-center justify-center gap-2 rounded-full border border-[#936a41] px-9 py-3.5 font-sans text-[10px] uppercase tracking-[0.34em] text-[#fff8ef] transition-all duration-300 hover:-translate-y-0.5"
+                        className="group inline-flex min-h-12 w-full min-w-0 items-center justify-center gap-2 rounded-full border border-[#936a41] px-5 py-3 font-sans text-[9px] uppercase tracking-[0.26em] text-[#fff8ef] transition-all duration-300 hover:-translate-y-0.5 sm:min-w-[17.5rem] sm:px-9 sm:py-3.5 sm:text-[10px] sm:tracking-[0.34em]"
                         style={{
                           background:
                             "linear-gradient(135deg, #a13749 0%, #7f1d2f 48%, #5d1220 100%)",
@@ -214,7 +214,7 @@ const WelcomeOverlay = ({ open, onComplete }: WelcomeOverlayProps) => {
                       </button>
                     </div>
 
-                    <div className="mt-6 flex w-full items-center gap-4 text-[#d8c0a1]/80">
+                    <div className="mt-4 flex w-full items-center gap-3 text-[#d8c0a1]/80 sm:mt-6 sm:gap-4">
                       <div className="h-px flex-1 bg-gradient-to-r from-transparent to-[#d8c0a1]" />
                       <div className="h-1.5 w-1.5 rounded-full bg-[#d8c0a1]" />
                       <div className="h-px flex-1 bg-gradient-to-l from-transparent to-[#d8c0a1]" />

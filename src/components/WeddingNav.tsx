@@ -36,8 +36,8 @@ const WeddingNav = ({ onOpenInvitation }: WeddingNavProps) => {
 
   return (
     <nav className="fixed left-0 right-0 top-0 z-50 border-b border-primary/15 bg-background/95 shadow-[0_5px_24px_rgba(74,15,25,0.08)] backdrop-blur-lg">
-      <div className="container mx-auto px-6">
-        <div className="flex items-center justify-between py-4 lg:grid lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:items-center lg:gap-5 lg:py-5 xl:gap-8">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="flex items-center justify-between py-3 lg:grid lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:items-center lg:gap-5 lg:py-5 xl:gap-8">
           <a
             href="#"
             aria-label="Nam and Linh wedding home"

@@ -87,10 +87,10 @@ const GallerySection = () => {
   };
 
   return (
-    <section id="gallery" className="overflow-hidden bg-[#f0dfca] py-16 md:py-24">
-      <div className="container mx-auto max-w-6xl px-5 md:px-6">
+    <section id="gallery" className="overflow-hidden bg-[#f0dfca] py-12 md:py-24">
+      <div className="container mx-auto max-w-6xl px-4 sm:px-5 md:px-6">
         <AnimatedSection>
-          <div className="mb-10 text-center md:mb-14">
+          <div className="mb-8 text-center md:mb-14">
             <div className="mb-4 flex items-center justify-center gap-4 text-primary">
               <span className="h-px w-10 bg-current/45 md:w-16" />
               <p className="font-sans text-[0.68rem] uppercase tracking-[0.34em]">
@@ -98,13 +98,13 @@ const GallerySection = () => {
               </p>
               <span className="h-px w-10 bg-current/45 md:w-16" />
             </div>
-            <h2 className="mx-auto max-w-5xl font-serif text-4xl font-light leading-[0.95] text-foreground sm:text-5xl md:text-7xl">
+            <h2 className="mx-auto max-w-5xl font-serif text-[2.25rem] font-light leading-[1.02] text-foreground sm:text-5xl sm:leading-[0.95] md:text-7xl">
               {language === "vi"
                 ? "Những khoảnh khắc bên nhau"
                 : "The moments that brought us here"}
             </h2>
             <div className="mx-auto mt-5 h-1.5 w-1.5 rotate-45 bg-[#b9873e]" />
-            <p className="mx-auto mt-6 max-w-xl font-serif text-lg italic leading-relaxed text-foreground/65 md:text-xl">
+            <p className="mx-auto mt-5 max-w-xl font-serif text-base italic leading-relaxed text-foreground/65 sm:mt-6 sm:text-lg md:text-xl">
               {language === "vi"
                 ? "Từ buổi hẹn đầu tiên đến ngày chúng mình chọn nhau mãi mãi."
                 : "From our first date to the day we chose forever."}
@@ -124,7 +124,7 @@ const GallerySection = () => {
             }}
           >
             <div className="grid md:grid-cols-[minmax(0,1.7fr)_minmax(280px,0.72fr)]">
-              <div className="relative min-h-[430px] overflow-hidden bg-[#261714] sm:min-h-[560px] md:min-h-[640px]">
+              <div className="relative h-[54svh] min-h-[350px] max-h-[490px] overflow-hidden bg-[#261714] sm:h-auto sm:min-h-[560px] sm:max-h-none md:min-h-[640px]">
                 <AnimatePresence initial={false} mode="wait">
                   <motion.div
                     key={active.src}
@@ -163,7 +163,7 @@ const GallerySection = () => {
                 </div>
               </div>
 
-              <div className="relative flex min-h-[340px] flex-col overflow-hidden bg-[#f7ead9] px-6 py-7 text-[#321d17] sm:px-8 sm:py-9 md:min-h-full md:px-9 md:py-10">
+              <div className="relative flex min-h-[245px] flex-col overflow-hidden bg-[#f7ead9] px-5 py-6 text-[#321d17] sm:min-h-[340px] sm:px-8 sm:py-9 md:min-h-full md:px-9 md:py-10">
                 <span className="pointer-events-none absolute -right-2 -top-12 font-serif text-[11rem] leading-none text-primary/[0.045] md:text-[13rem]">
                   {String(activeIndex + 1).padStart(2, "0")}
                 </span>
@@ -184,13 +184,13 @@ const GallerySection = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -14 }}
                     transition={{ duration: 0.42, ease: "easeOut" }}
-                    className="relative z-10 my-auto py-9"
+                    className="relative z-10 my-auto py-6 sm:py-9"
                   >
-                    <span className="mb-6 block h-1.5 w-1.5 rotate-45 bg-[#b9873e]" />
-                    <h3 className="font-serif text-4xl font-light leading-[0.98] sm:text-5xl md:text-5xl">
+                    <span className="mb-4 block h-1.5 w-1.5 rotate-45 bg-[#b9873e] sm:mb-6" />
+                    <h3 className="font-serif text-[2rem] font-light leading-[1.02] sm:text-5xl sm:leading-[0.98] md:text-5xl">
                       {activeTitle}
                     </h3>
-                    <p className="mt-5 font-sans text-[0.64rem] uppercase tracking-[0.28em] text-primary/70">
+                    <p className="mt-4 font-sans text-[0.62rem] uppercase tracking-[0.24em] text-primary/70 sm:mt-5 sm:text-[0.64rem] sm:tracking-[0.28em]">
                       {active.date}
                     </p>
                   </motion.div>
@@ -211,7 +211,7 @@ const GallerySection = () => {
                     <button
                       type="button"
                       onClick={showPreviousSlide}
-                      className="flex h-12 w-12 items-center justify-center rounded-full border border-primary/20 text-primary transition hover:border-primary hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                      className="flex h-11 w-11 items-center justify-center rounded-full border border-primary/20 text-primary transition hover:border-primary hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:h-12 sm:w-12"
                       aria-label={language === "vi" ? "Ảnh trước" : "Previous slide"}
                     >
                       <ChevronLeft className="h-5 w-5" />
@@ -232,7 +232,7 @@ const GallerySection = () => {
                     <button
                       type="button"
                       onClick={showNextSlide}
-                      className="flex h-12 w-12 items-center justify-center rounded-full border border-primary/20 text-primary transition hover:border-primary hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                      className="flex h-11 w-11 items-center justify-center rounded-full border border-primary/20 text-primary transition hover:border-primary hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:h-12 sm:w-12"
                       aria-label={language === "vi" ? "Ảnh tiếp theo" : "Next slide"}
                     >
                       <ChevronRight className="h-5 w-5" />
