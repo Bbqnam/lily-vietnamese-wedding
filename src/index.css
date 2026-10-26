@@ -103,7 +103,7 @@ section[id] {
 }
 
 .story-photo-track {
-  animation: story-photo-scroll 52s linear infinite;
+  animation: story-photo-scroll 70s linear infinite;
   will-change: transform;
 }
 

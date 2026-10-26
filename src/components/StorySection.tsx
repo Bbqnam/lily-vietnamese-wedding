@@ -8,17 +8,23 @@ import signsPhoto from "@/assets/photos/gallery-signs.jpg";
 import studioPhoto from "@/assets/photos/gallery-studio.jpg";
 import formalPhoto from "@/assets/photos/hero-formal.jpg";
 import bridePhoto from "@/assets/photos/portrait-bride.jpg";
+import traditionalPortraitPhoto from "@/assets/photos/wedding-traditional-portrait.jpg";
+import veilPortraitPhoto from "@/assets/photos/wedding-veil-portrait.jpg";
+import vowsPortraitPhoto from "@/assets/photos/wedding-vows-portrait.jpg";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const weddingPhotos = [
-  { src: gardenPhoto, vi: "Nam và Linh trong khu vườn", en: "Nam and Linh in the garden", width: "w-[19rem] sm:w-[27rem]" },
-  { src: traditionalPhoto, vi: "Nam và Linh trong trang phục truyền thống", en: "Nam and Linh in traditional Vietnamese attire", width: "w-[13rem] sm:w-[18rem]" },
-  { src: dancePhoto, vi: "Nam và Linh cùng khiêu vũ", en: "Nam and Linh dancing together", width: "w-[13rem] sm:w-[18rem]" },
-  { src: signsPhoto, vi: "Nam và Linh với lời hẹn ngày cưới", en: "Nam and Linh holding their wedding signs", width: "w-[19rem] sm:w-[27rem]" },
-  { src: archPhoto, vi: "Nam và Linh dưới cổng hoa", en: "Nam and Linh beneath the floral arch", width: "w-[13rem] sm:w-[18rem]" },
-  { src: studioPhoto, vi: "Chân dung cưới của Nam và Linh", en: "Nam and Linh's wedding portrait", width: "w-[13rem] sm:w-[18rem]" },
-  { src: formalPhoto, vi: "Nam và Linh trong lễ phục cưới", en: "Nam and Linh in their wedding attire", width: "w-[13rem] sm:w-[18rem]" },
-  { src: bridePhoto, vi: "Chân dung cô dâu Linh", en: "A bridal portrait of Linh", width: "w-[13rem] sm:w-[18rem]" },
+  { src: gardenPhoto, vi: "Nam và Linh trong khu vườn", en: "Nam and Linh in the garden", width: "w-[17rem] sm:w-[23rem]" },
+  { src: traditionalPhoto, vi: "Nam và Linh trong trang phục truyền thống", en: "Nam and Linh in traditional Vietnamese attire", width: "w-[11.5rem] sm:w-[15.5rem]" },
+  { src: traditionalPortraitPhoto, vi: "Nam và Linh trong cổ phục Việt", en: "Nam and Linh in traditional Vietnamese ceremonial attire", width: "w-[11.5rem] sm:w-[15.5rem]" },
+  { src: dancePhoto, vi: "Nam và Linh cùng khiêu vũ", en: "Nam and Linh dancing together", width: "w-[11.5rem] sm:w-[15.5rem]" },
+  { src: veilPortraitPhoto, vi: "Nam nâng khăn voan cho Linh", en: "Nam lifting Linh's veil", width: "w-[11.5rem] sm:w-[15.5rem]" },
+  { src: signsPhoto, vi: "Nam và Linh với lời hẹn ngày cưới", en: "Nam and Linh holding their wedding signs", width: "w-[17rem] sm:w-[23rem]" },
+  { src: archPhoto, vi: "Nam và Linh dưới cổng hoa", en: "Nam and Linh beneath the floral arch", width: "w-[11.5rem] sm:w-[15.5rem]" },
+  { src: vowsPortraitPhoto, vi: "Nam và Linh cùng đọc lời hẹn ước", en: "Nam and Linh reading their vows", width: "w-[11.5rem] sm:w-[15.5rem]" },
+  { src: studioPhoto, vi: "Chân dung cưới của Nam và Linh", en: "Nam and Linh's wedding portrait", width: "w-[11.5rem] sm:w-[15.5rem]" },
+  { src: formalPhoto, vi: "Nam và Linh trong lễ phục cưới", en: "Nam and Linh in their wedding attire", width: "w-[11.5rem] sm:w-[15.5rem]" },
+  { src: bridePhoto, vi: "Chân dung cô dâu Linh", en: "A bridal portrait of Linh", width: "w-[11.5rem] sm:w-[15.5rem]" },
 ];
 
 const StorySection = () => {
@@ -29,64 +35,64 @@ const StorySection = () => {
     ? [
         {
           year: "2023",
-          title: "Từ ánh mắt đầu tiên đến chung một mái nhà",
-          text: "Một cuộc gặp gỡ tại TP. Hồ Chí Minh đã mở đầu cho câu chuyện của chúng mình. Từ ánh mắt đầu tiên, lời chào giản dị, hai người xa lạ dần trở thành một phần không thể thiếu trong cuộc sống của nhau. Những bữa cơm, những chuyến đi và những khoảnh khắc bình dị đã trở thành những kỷ niệm đáng nhớ.",
+          title: "Gặp nhau tại Sài Gòn",
+          text: "Một lời chào giản dị đã mở đầu cho câu chuyện của hai đứa.",
           icon: MapPin,
         },
         {
           year: "2023 — 2025",
           title: "Cùng nhau trưởng thành",
-          text: "Hơn hai năm sống cùng nhau tại Việt Nam, chúng mình đã trải qua những ngày vui, những lúc khó khăn và học cách thấu hiểu nhau hơn. Tình yêu không chỉ là những khoảnh khắc đẹp mà còn là sự sẻ chia, quan tâm và đồng hành trong cuộc sống mỗi ngày.",
+          text: "Hơn hai năm sẻ chia những ngày bình dị, những chuyến đi và một mái nhà chung.",
           icon: Heart,
         },
         {
           year: "2025",
           title: "Yêu thương qua khoảng cách",
-          text: "Khi Nam trở về Thụy Điển để chuẩn bị cho tương lai, chúng mình bắt đầu những ngày yêu xa. Dù cách nhau hàng nghìn cây số, những cuộc gọi mỗi ngày và niềm mong chờ những lần gặp lại đã giúp chúng mình luôn cảm thấy gần nhau.",
+          text: "Việt Nam và Thụy Điển cách xa, nhưng những cuộc gọi mỗi ngày luôn giữ hai đứa thật gần.",
           icon: Plane,
         },
         {
           year: "2026",
-          title: "Ngày mình về chung một nhà",
-          text: "Sau những năm tháng yêu thương và chờ đợi, chúng mình quyết định cùng nhau bước sang một chương mới. Hai lễ cưới tại Nam Định và Huế không chỉ là ngày hạnh phúc của riêng hai đứa mà còn là dịp để hai gia đình cùng chung vui và chứng kiến lời hẹn ước trọn đời.",
+          title: "Hai ngày chung vui",
+          text: "Nam Định và Huế — hai lễ cưới, hai gia đình, một lời hẹn ước trọn đời.",
           icon: Sparkles,
         },
         {
           year: "2027 — MÃI MÃI",
-          title: "Chương mới nơi phương xa",
-          text: "Tạm biệt những ngày tháng yêu xa, chúng mình mong chờ được bắt đầu cuộc sống mới tại Thụy Điển. Một đất nước mới, những trải nghiệm mới và một mái ấm nhỏ của riêng hai đứa. Phía trước chắc chắn sẽ có những thử thách, nhưng từ nay, chúng mình sẽ cùng nhau đối mặt, cùng nhau trưởng thành và viết tiếp câu chuyện tình yêu của mình.",
+          title: "Cùng viết chương mới",
+          text: "Một mái ấm tại Thụy Điển và hành trình phía trước — từ nay luôn có nhau.",
           icon: Home,
         },
       ]
     : [
         {
           year: "2023",
-          title: "From the first glance to sharing a home",
-          text: "A meeting in Ho Chi Minh City began our story. From the first glance and a simple hello, two strangers gradually became an irreplaceable part of each other’s lives. Shared meals, journeys and ordinary moments became memories we will always treasure.",
+          title: "We met in Saigon",
+          text: "A simple hello began the story of us.",
           icon: MapPin,
         },
         {
           year: "2023 — 2025",
           title: "Growing together",
-          text: "For more than two years living together in Vietnam, we shared joyful days, difficult moments and learned to understand one another more deeply. Love became more than beautiful moments — it was sharing, caring and walking beside each other every day.",
+          text: "More than two years of ordinary days, shared journeys and one home together.",
           icon: Heart,
         },
         {
           year: "2025",
           title: "Love across the distance",
-          text: "When Nam returned to Sweden to prepare for our future, our long-distance chapter began. Though thousands of kilometres apart, daily calls and the anticipation of every reunion always kept us feeling close.",
+          text: "Vietnam and Sweden were far apart, but our daily calls kept us close.",
           icon: Plane,
         },
         {
           year: "2026",
-          title: "The day we become one home",
-          text: "After years of love and waiting, we chose to begin a new chapter together. Our two weddings in Nam Định and Huế are not only celebrations of our happiness, but a chance for both families to share our joy and witness our promise for life.",
+          title: "Two celebrations",
+          text: "Nam Định and Huế — two weddings, two families and one promise for life.",
           icon: Sparkles,
         },
         {
           year: "2027 — ALWAYS",
-          title: "A new chapter far from home",
-          text: "As the long-distance days come to an end, we look forward to beginning our new life in Sweden — a new country, new experiences and a small home of our own. Challenges will surely come, but from now on we will face them together, keep growing together and continue writing our love story.",
+          title: "Our next chapter",
+          text: "A home in Sweden and the journey ahead — now, always together.",
           icon: Home,
         },
       ];
@@ -128,7 +134,7 @@ const StorySection = () => {
                   {weddingPhotos.map((photo, index) => (
                     <figure
                       key={`${copyIndex}-${photo.src}`}
-                      className={`relative h-[25rem] shrink-0 overflow-hidden rounded-[26px] bg-card shadow-[0_18px_44px_rgba(72,37,29,0.12)] sm:h-[32rem] ${photo.width}`}
+                      className={`relative h-[22rem] shrink-0 overflow-hidden rounded-[22px] bg-card shadow-[0_14px_34px_rgba(72,37,29,0.1)] sm:h-[27rem] ${photo.width}`}
                     >
                       <img
                         src={photo.src}
@@ -154,26 +160,37 @@ const StorySection = () => {
           </div>
         </AnimatedSection>
 
-        <div className="mx-auto max-w-4xl">
+        <div className="mx-auto max-w-5xl pt-3">
           <div className="relative">
-            <div className="pointer-events-none absolute bottom-32 left-[1.45rem] top-10 w-px bg-border md:left-[1.7rem]" />
-            <div className="space-y-4">
+            <div className="pointer-events-none absolute bottom-12 left-5 top-8 w-px bg-border md:left-1/2 md:-translate-x-1/2" />
+            <div className="space-y-2 md:space-y-0">
               {chapters.map((chapter, index) => {
                 const Icon = chapter.icon;
                 return (
                   <AnimatedSection key={`${chapter.year}-${chapter.title}`} delay={index * 0.05}>
-                    <article className="relative grid grid-cols-[3rem_minmax(0,1fr)] items-start gap-4 rounded-[26px] border border-border/80 bg-card/80 p-5 text-left shadow-[0_16px_45px_rgba(72,37,29,0.06)] backdrop-blur-sm md:grid-cols-[3.5rem_minmax(0,1fr)] md:gap-6 md:p-8">
-                      <div className="relative z-10 flex h-11 w-11 items-center justify-center self-start rounded-full bg-primary text-primary-foreground shadow-[0_9px_22px_rgba(120,27,42,0.24)] md:h-12 md:w-12">
-                        <Icon size={18} strokeWidth={1.8} />
+                    <article className="relative grid grid-cols-[2.5rem_minmax(0,1fr)] gap-5 py-7 text-left md:grid-cols-[1fr_4.5rem_1fr] md:gap-7 md:py-10">
+                      <div className="hidden min-w-0 text-right md:col-start-1 md:block">
+                        {index % 2 === 0 ? (
+                          <>
+                            <p className="font-sans text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-primary">{chapter.year}</p>
+                            <h3 className="mt-2 font-serif text-[2rem] font-light leading-tight text-foreground">{chapter.title}</h3>
+                            <p className="ml-auto mt-3 max-w-sm font-sans text-[0.92rem] leading-7 text-muted-foreground">{chapter.text}</p>
+                          </>
+                        ) : null}
                       </div>
-                      <div className="min-w-0">
-                        <p className="font-sans text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-primary md:text-xs">
+
+                      <div className="relative z-10 flex h-10 w-10 items-center justify-center rounded-full border border-primary/20 bg-background text-primary shadow-[0_7px_20px_rgba(120,27,42,0.1)] md:col-start-2 md:h-12 md:w-12 md:justify-self-center">
+                        <Icon size={17} strokeWidth={1.6} />
+                      </div>
+
+                      <div className={`min-w-0 ${index % 2 === 0 ? "md:hidden" : "md:col-start-3"}`}>
+                        <p className="font-sans text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-primary md:text-[0.65rem]">
                           {chapter.year}
                         </p>
                         <h3 className="mt-2 font-serif text-2xl font-light leading-tight text-foreground md:text-[2rem]">
                           {chapter.title}
                         </h3>
-                        <p className="mt-3 max-w-3xl font-sans text-[0.9rem] leading-7 text-muted-foreground md:text-[0.95rem]">
+                        <p className="mt-3 max-w-sm font-sans text-[0.88rem] leading-7 text-muted-foreground md:text-[0.92rem]">
                           {chapter.text}
                         </p>
                       </div>
@@ -183,12 +200,10 @@ const StorySection = () => {
               })}
             </div>
 
-            <AnimatedSection className="mt-5" delay={0.25}>
-              <blockquote className="relative overflow-hidden rounded-[26px] bg-primary px-7 py-8 text-primary-foreground shadow-[0_20px_50px_rgba(120,27,42,0.18)] md:px-10 md:py-10">
-                <div className="pointer-events-none absolute -right-10 -top-12 h-40 w-40 rounded-full border border-primary-foreground/15" />
-                <div className="pointer-events-none absolute -right-3 -top-5 h-32 w-32 rounded-full border border-primary-foreground/15" />
-                <Sparkles className="mb-5 text-secondary" size={22} strokeWidth={1.5} />
-                <p className="max-w-2xl font-serif text-2xl font-light italic leading-snug md:text-3xl">
+            <AnimatedSection className="mt-8" delay={0.25}>
+              <blockquote className="mx-auto max-w-3xl border-y border-border px-4 py-9 text-center">
+                <Sparkles className="mx-auto mb-4 text-primary/70" size={18} strokeWidth={1.5} />
+                <p className="font-serif text-2xl font-light italic leading-snug text-foreground md:text-3xl">
                   “{quote}”
                 </p>
               </blockquote>
