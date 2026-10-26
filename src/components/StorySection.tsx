@@ -200,10 +200,21 @@ const StorySection = () => {
               })}
             </div>
 
-            <AnimatedSection className="mt-6 md:mt-8" delay={0.25}>
-              <blockquote className="mx-auto max-w-3xl border-y border-border px-2 py-7 text-center sm:px-4 md:py-9">
-                <Sparkles className="mx-auto mb-4 text-primary/70" size={18} strokeWidth={1.5} />
-                <p className="font-serif text-[1.35rem] font-light italic leading-snug text-foreground sm:text-2xl md:text-3xl">
+            <AnimatedSection className="mt-7 md:mt-12" delay={0.25}>
+              <blockquote className="relative mx-auto max-w-4xl overflow-hidden rounded-[24px] border border-border/80 bg-card/65 px-6 py-9 text-center shadow-[0_18px_50px_rgba(72,37,29,0.06)] sm:px-10 md:rounded-[32px] md:px-16 md:py-12">
+                <div className="pointer-events-none absolute -right-12 -top-16 h-40 w-40 rounded-full border border-primary/10" />
+                <div className="pointer-events-none absolute -bottom-20 -left-12 h-48 w-48 rounded-full border border-primary/10" />
+
+                <div className="relative flex items-center justify-center gap-3">
+                  <span className="h-px w-8 bg-primary/25 sm:w-12" />
+                  <Sparkles className="text-primary/70" size={15} strokeWidth={1.5} />
+                  <p className="font-sans text-[0.58rem] font-medium uppercase tracking-[0.28em] text-primary sm:text-[0.64rem]">
+                    {isVietnamese ? "Cùng nhau" : "Together"}
+                  </p>
+                  <span className="h-px w-8 bg-primary/25 sm:w-12" />
+                </div>
+
+                <p className="relative mx-auto mt-5 max-w-[42rem] text-balance font-serif text-[1.45rem] font-light italic leading-[1.3] text-foreground sm:text-[1.8rem] md:mt-6 md:text-[2.25rem] md:leading-[1.22]">
                   “{quote}”
                 </p>
               </blockquote>
