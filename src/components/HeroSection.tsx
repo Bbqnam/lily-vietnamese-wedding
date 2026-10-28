@@ -54,8 +54,12 @@ const HeroSection = () => {
             <h1 className="whitespace-nowrap font-serif text-[clamp(2.8rem,15vw,3.35rem)] font-light leading-[0.92] sm:text-[4.1rem] lg:text-[4.5rem] xl:text-[5.25rem]">
               Nam <span className="text-[#e4bc72]">&amp;</span> Linh
             </h1>
-            <p className="mt-5 max-w-md font-serif text-xl font-light italic leading-8 text-[#fff8ee]/85 sm:text-2xl">
-              {isVietnamese ? "Hai thành phố, hai ngày vui, một hành trình trọn đời." : "Two cities, two celebrations, one life together."}
+            <p className="mt-5 text-balance font-serif text-xl font-light italic leading-8 text-[#fff8ee]/85 sm:text-2xl">
+              {isVietnamese ? (
+                <>Hai thành phố, hai ngày vui, <span className="inline-block">một hành trình trọn đời.</span></>
+              ) : (
+                <>Two cities, two celebrations, <span className="inline-block">one life together.</span></>
+              )}
             </p>
 
             <div className="mt-7 border-y border-[#fff8ee]/16">
