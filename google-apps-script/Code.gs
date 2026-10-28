@@ -7,6 +7,7 @@ const RSVP_HEADERS = [
   "Message",
   "Language",
   "Submission ID",
+  "Number of people",
 ];
 
 function doGet() {
@@ -29,6 +30,14 @@ function doPost(event) {
       throw new Error("Name and attendance are required.");
     }
 
+    // Older website versions omit guestCount. Leave that value unknown.
+    const guestCount = attendance === "decline" ? 0
+      : payload.guestCount == null ? "" : Number(payload.guestCount);
+    if (guestCount !== "" && attendance === "accept" &&
+        (!Number.isInteger(guestCount) || guestCount < 1 || guestCount > 5)) {
+      throw new Error("Number of people must be an integer from 1 to 5.");
+    }
+
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
     if (!spreadsheet) {
       throw new Error("This script must be bound to the RSVP Google Sheet.");
@@ -45,15 +54,28 @@ function doPost(event) {
       sheet.setFrozenRows(1);
     }
 
-    sheet.appendRow([
-      new Date(),
-      name,
-      attendance,
-      attendance === "decline" ? "" : cleanCell(payload.event),
-      cleanCell(payload.wishes),
-      cleanCell(payload.language),
-      cleanCell(payload.submissionId),
-    ]);
+    // Append missing headers without moving existing columns or guest responses.
+    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    RSVP_HEADERS.forEach(function (header) {
+      if (headers.indexOf(header) === -1) {
+        headers.push(header);
+        sheet.getRange(1, headers.length).setValue(header).setFontWeight("bold");
+      }
+    });
+
+    const values = {
+      "Received at": new Date(),
+      "Name": name,
+      "Attendance": attendance,
+      "Celebration": attendance === "decline" ? "" : cleanCell(payload.event),
+      "Message": cleanCell(payload.wishes),
+      "Language": cleanCell(payload.language),
+      "Submission ID": cleanCell(payload.submissionId),
+      "Number of people": guestCount,
+    };
+    sheet.appendRow(headers.map(function (header) {
+      return Object.prototype.hasOwnProperty.call(values, header) ? values[header] : "";
+    }));
 
     return jsonResponse({ ok: true });
   } catch (error) {

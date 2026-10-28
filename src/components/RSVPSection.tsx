@@ -10,7 +10,7 @@ type SubmitPhase = "idle" | "sending" | "done";
 
 const RSVPSection = () => {
   const { language } = useLanguage();
-  const [formData, setFormData] = useState({ name: "", attending: "", event: "", wishes: "" });
+  const [formData, setFormData] = useState({ name: "", attending: "", event: "", guestCount: "1", wishes: "" });
   const [website, setWebsite] = useState("");
   const [submitPhase, setSubmitPhase] = useState<SubmitPhase>("idle");
   const [submitError, setSubmitError] = useState("");
@@ -35,6 +35,7 @@ const RSVPSection = () => {
       const payload = {
         ...formData,
         event: formData.attending === "decline" ? "" : formData.event,
+        guestCount: formData.attending === "decline" ? 0 : Number(formData.guestCount),
         language,
         submittedAt: new Date().toISOString(),
         submissionId: window.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2)}`,
@@ -187,8 +188,20 @@ const RSVPSection = () => {
                     </fieldset>
                   ) : null}
 
+                  {formData.attending !== "decline" ? (
+                    <div>
+                      <label htmlFor="guestCount" className={`mb-3 flex items-center gap-3 font-sans uppercase leading-5 text-primary ${language === "vi" ? "text-[0.64rem] tracking-[0.13em]" : "text-[0.66rem] tracking-[0.19em]"}`}><span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-[0.6rem] text-primary-foreground">4</span>{language === "vi" ? "Số người tham dự" : "Number of people"}</label>
+                      <select id="guestCount" name="guestCount" required value={formData.guestCount} onChange={(e) => setFormData({ ...formData, guestCount: e.target.value })} aria-describedby="guestCountHelp" className="min-h-12 w-full rounded-xl border border-border bg-white/75 px-4 py-3 font-sans text-base text-foreground outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/10">
+                        {[1, 2, 3, 4, 5].map((count) => (
+                          <option key={count} value={count}>{language === "vi" ? `${count} người` : `${count} ${count === 1 ? "person" : "people"}`}</option>
+                        ))}
+                      </select>
+                      <p id="guestCountHelp" className="mt-2 font-sans text-xs leading-5 text-muted-foreground">{language === "vi" ? "Bao gồm cả bạn. Nếu chọn cả hai tiệc, số người này áp dụng cho mỗi tiệc." : "Including yourself. If attending both celebrations, this number applies to each."}</p>
+                    </div>
+                  ) : null}
+
                   <div>
-                    <label htmlFor="wishes" className={`mb-3 flex items-center gap-3 font-sans uppercase leading-5 text-primary ${language === "vi" ? "text-[0.62rem] tracking-[0.12em]" : "text-[0.66rem] tracking-[0.19em]"}`}><span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-[0.6rem] text-primary-foreground">{formData.attending === "decline" ? "3" : "4"}</span>{language === "vi" ? "Lời nhắn (không bắt buộc)" : "A note (optional)"}</label>
+                    <label htmlFor="wishes" className={`mb-3 flex items-center gap-3 font-sans uppercase leading-5 text-primary ${language === "vi" ? "text-[0.62rem] tracking-[0.12em]" : "text-[0.66rem] tracking-[0.19em]"}`}><span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-[0.6rem] text-primary-foreground">{formData.attending === "decline" ? "3" : "5"}</span>{language === "vi" ? "Lời nhắn (không bắt buộc)" : "A note (optional)"}</label>
                     <textarea id="wishes" placeholder={language === "vi" ? "Gửi lời chúc đến cô dâu chú rể" : "Send your wishes to the couple"} value={formData.wishes} onChange={(e) => setFormData({ ...formData, wishes: e.target.value })} rows={3} className="min-h-[92px] w-full resize-none rounded-xl border border-border bg-white/75 px-4 py-3 font-sans text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary focus:ring-2 focus:ring-primary/10" />
                   </div>
 
