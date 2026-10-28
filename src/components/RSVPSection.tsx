@@ -126,7 +126,7 @@ const RSVPSection = () => {
               <div className="border-t border-[#e4bc72]/30 pt-4 text-center">
                 <Heart size={18} strokeWidth={1.3} className="mx-auto mb-2 text-[#e4bc72]" aria-hidden="true" />
                 <p className="text-balance font-serif text-lg italic leading-6 text-primary-foreground/90">{language === "vi" ? (
-                  <><span className="block">Có bạn chung vui,</span><span className="inline-block">ngày cưới thêm trọn vẹn.</span></>
+                  <><span className="block">Có bạn chung vui,</span><span className="inline-block">ngày cưới trọn vẹn.</span></>
                 ) : (
                   <><span className="block">Our day is even more special</span><span className="inline-block">with you there.</span></>
                 )}</p>
