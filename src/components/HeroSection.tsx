@@ -25,7 +25,7 @@ const HeroSection = () => {
             decoding="async"
           />
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/30 to-transparent" />
-          <p className="absolute bottom-4 right-5 font-sans text-[0.56rem] uppercase tracking-[0.24em] text-white/90 drop-shadow-md">Việt Nam · 11.2026</p>
+          <p className="absolute bottom-4 right-5 font-sans text-xs uppercase tracking-[0.2em] text-white/90 drop-shadow-md">Việt Nam · 11.2026</p>
         </motion.div>
 
         <div className="relative flex items-center bg-[#651827] px-5 py-7 text-[#fff8ee] sm:px-9 sm:py-10 lg:order-1 lg:px-[clamp(2.5rem,4vw,4rem)] lg:py-12">
@@ -36,32 +36,47 @@ const HeroSection = () => {
             transition={{ duration: 0.8, delay: 0.18 }}
             className="relative w-full max-w-xl"
           >
-            <div className="mb-5 flex items-center gap-4">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#e4bc72]/45 font-serif text-xs text-[#e4bc72]">N&amp;L</div>
-              <p className="font-sans text-[0.6rem] uppercase tracking-[0.3em] text-[#e4bc72]">{isVietnamese ? "Lễ Thành Hôn" : "The Wedding Of"}</p>
+            <div className="mb-9 flex flex-col items-center text-[#e4bc72] sm:mb-12">
+              <svg aria-hidden="true" viewBox="0 0 180 100" fill="none" className="h-20 w-36 sm:h-24 sm:w-44" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M87 48C72 24 30 17 36 37c4 15 32 18 51 11Zm6 0c15-24 57-31 51-11-4 15-32 18-51 11Z" />
+                <path d="M85 49c-4 15-14 28-24 37l-1-15-13 3c16-7 26-17 34-27m14 2c4 15 14 28 24 37l1-15 13 3c-16-7-26-17-34-27" />
+                <ellipse cx="90" cy="47" rx="7" ry="6" />
+                <path d="M20 18v8m-4-4h8m132 48v8m-4-4h8M144 12c-7-8-17 2 0 12 17-10 7-20 0-12Z" />
+              </svg>
+              <p className="mt-2 font-serif text-lg italic tracking-wide sm:text-xl">{isVietnamese ? "Để dành ngày vui cho chúng mình nhé!" : "Save a little room for our big day!"}</p>
+            </div>
+
+            <div className="mb-6 flex items-center gap-3 sm:gap-4">
+              <div aria-hidden="true" className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-[#e4bc72]/60 font-serif text-sm text-[#e4bc72]">N&amp;L</div>
+              <p className="font-serif text-[clamp(1.65rem,5.7vw,2.5rem)] font-medium uppercase leading-tight tracking-[0.07em] text-[#f1d18e]">{isVietnamese ? "Lễ Thành Hôn" : "The Wedding Of"}</p>
             </div>
 
             <h1 className="whitespace-nowrap font-serif text-[clamp(2.8rem,15vw,3.35rem)] font-light leading-[0.92] sm:text-[4.1rem] lg:text-[4.5rem] xl:text-[5.25rem]">
               Nam <span className="text-[#e4bc72]">&amp;</span> Linh
             </h1>
-            <p className="mt-5 max-w-md font-serif text-lg font-light italic leading-7 text-[#fff8ee]/72 sm:text-xl">
+            <p className="mt-5 max-w-md font-serif text-xl font-light italic leading-8 text-[#fff8ee]/85 sm:text-2xl">
               {isVietnamese ? "Hai thành phố, hai ngày vui, một hành trình trọn đời." : "Two cities, two celebrations, one life together."}
             </p>
 
             <div className="mt-7 border-y border-[#fff8ee]/16">
               <a href="#events" className="group grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 py-3.5">
-                <span className="font-sans text-[0.56rem] uppercase tracking-[0.14em] text-[#e4bc72] sm:text-[0.6rem] sm:tracking-[0.19em]">22 · 11 · 2026</span>
-                <span className="whitespace-nowrap font-serif text-[0.95rem] text-[#fff8ee] transition-colors group-hover:text-[#e4bc72] sm:text-lg">Nam Định · 09:30</span>
+                <span className="font-sans text-xs font-medium uppercase tracking-[0.1em] text-[#e4bc72] sm:text-sm sm:tracking-[0.14em]">22 · 11 · 2026</span>
+                <span className="whitespace-nowrap font-serif text-base text-[#fff8ee] transition-colors group-hover:text-[#e4bc72] sm:text-xl">Nam Định · 09:30</span>
               </a>
               <a href="#events" className="group grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-t border-[#fff8ee]/16 py-3.5">
-                <span className="font-sans text-[0.56rem] uppercase tracking-[0.14em] text-[#e4bc72] sm:text-[0.6rem] sm:tracking-[0.19em]">28 · 11 · 2026</span>
-                <span className="whitespace-nowrap font-serif text-[0.95rem] text-[#fff8ee] transition-colors group-hover:text-[#e4bc72] sm:text-lg">Huế · 11:00</span>
+                <span className="font-sans text-xs font-medium uppercase tracking-[0.1em] text-[#e4bc72] sm:text-sm sm:tracking-[0.14em]">28 · 11 · 2026</span>
+                <span className="whitespace-nowrap font-serif text-base text-[#fff8ee] transition-colors group-hover:text-[#e4bc72] sm:text-xl">Huế · 11:00</span>
               </a>
             </div>
 
             <div className="mt-7 grid grid-cols-2 gap-2.5 sm:gap-3">
-              <a href="#rsvp" className="inline-flex min-h-11 items-center justify-center whitespace-nowrap rounded-full bg-[#e4bc72] px-3 font-sans text-[0.58rem] font-medium uppercase tracking-[0.16em] text-[#54111e] transition-colors hover:bg-[#f1d18e] sm:px-6 sm:text-[0.62rem] sm:tracking-[0.2em]">{isVietnamese ? "Xác nhận" : "RSVP"}</a>
-              <a href="#story" className="inline-flex min-h-11 items-center justify-center whitespace-nowrap rounded-full border border-[#fff8ee]/28 px-3 font-sans text-[0.58rem] uppercase tracking-[0.14em] text-[#fff8ee] transition-colors hover:border-[#e4bc72] hover:text-[#e4bc72] sm:px-6 sm:text-[0.62rem] sm:tracking-[0.18em]">{isVietnamese ? "Hành trình" : "Our journey"}</a>
+              <a href="#rsvp" className="inline-flex min-h-12 items-center justify-center whitespace-nowrap rounded-full bg-[#e4bc72] px-3 font-sans text-xs font-medium uppercase tracking-[0.16em] text-[#54111e] transition-colors hover:bg-[#f1d18e] sm:px-6 sm:text-sm sm:tracking-[0.2em]">{isVietnamese ? "Xác nhận" : "RSVP"}</a>
+              <a href="#story" className="inline-flex min-h-12 items-center justify-center whitespace-nowrap rounded-full border border-[#fff8ee]/28 px-3 font-sans text-xs uppercase tracking-[0.14em] text-[#fff8ee] transition-colors hover:border-[#e4bc72] hover:text-[#e4bc72] sm:px-6 sm:text-sm sm:tracking-[0.18em]">{isVietnamese ? "Hành trình" : "Our journey"}</a>
+            </div>
+            <div className="mt-9 flex items-center justify-center gap-4 text-[#e4bc72]/70 sm:mt-12" aria-hidden="true">
+              <span className="h-px w-12 bg-current opacity-40" />
+              <svg viewBox="0 0 54 28" fill="none" stroke="currentColor" strokeWidth="1.2" className="h-7 w-14"><path d="M18 7C6-5-8 12 18 25 44 12 30-5 18 7Z" /><path d="M36 5C26-5 14 10 36 22 58 10 46-5 36 5Z" /></svg>
+              <span className="h-px w-12 bg-current opacity-40" />
             </div>
           </motion.div>
         </div>
