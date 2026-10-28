@@ -13,12 +13,12 @@ const HeroSection = () => {
           initial={{ opacity: 0, scale: 1.015 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, ease: "easeOut" }}
-          className="relative h-[min(44svh,420px)] min-h-[310px] overflow-hidden bg-[#eee9e8] sm:h-[min(52svh,490px)] sm:min-h-0 lg:order-2 lg:h-auto"
+          className="relative h-[min(44svh,420px)] min-h-[310px] overflow-hidden bg-[#eee9e8] sm:h-[min(52svh,490px)] sm:min-h-0 lg:order-2 lg:aspect-[3/4] lg:h-auto"
         >
           <img
             src={heroImage}
             alt={isVietnamese ? "Nam và Linh trong lễ phục cưới" : "Nam and Linh in their wedding attire"}
-            className="h-full w-full object-cover object-[50%_28%]"
+            className="h-full w-full object-cover object-[50%_28%] lg:absolute lg:inset-0 lg:object-bottom"
             width={1200}
             height={1800}
             fetchPriority="high"
